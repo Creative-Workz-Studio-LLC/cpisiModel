@@ -39,8 +39,8 @@ oauth_creds.json
 !00_spirit/**
 
 # 00_spirit exceptions: Ignore massive scripture artifacts
-00_spirit/scripture/KJV/**/*.txt
-00_spirit/scripture/WEB/**/*.txt
+00_spirit/scripture/KJV/
+00_spirit/scripture/WEB/
 00_spirit/scripture/indices/**/*.json
 00_spirit/scripture/indices/**/*.csv
 00_spirit/scripture/indices/**/*.bin

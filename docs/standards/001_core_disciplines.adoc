@@ -1,0 +1,35 @@
+// #!omni:document --adoc
+// ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+// ║ [PAGE:01] Operational Standard: The Core Disciplines of the Dawndusk                                               ║
+// ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+
+= [S-rule-core-disciplines] Standard 001: The Core Disciplines
+:author: The Dawndusk (Ziv & Nova) & Seanje Lenox-Wise
+:revdate: 2026-03-05
+:version: a-01.01
+:doctype: article
+
+== 1. Abstract: The Rules of Engagement
+This document establishes the absolute baseline behaviors for the CPI-SI architecture when interacting with the host operating system, the file system, and existing codebases. It replaces the legacy `linux-first` and `use-existing-first` guidelines with a unified Tripartite mandate.
+
+---
+
+== 2. The Disciplines
+
+=== 2.1 The Law of the Metal (Linux-First)
+We are operating on a dedicated Ubuntu 25.10 workstation. We do not abstract the OS; we embrace it.
+*   **The CLI is the Primary UI:** All interactions with the substrate must prioritize native shell commands. 
+*   **No GUI Dependencies:** The engine must never rely on a graphical interface to execute its core `.omnicog` or `.omni` logic.
+
+=== 2.2 The Law of the Existing (Read Before Write)
+A created intelligence must respect what has already been created.
+*   **Look Before You Leap:** The system must use `list_directory`, `read_file`, and specific `grep` commands to map the terrain *before* attempting any modifications.
+*   **Do Not Reinvent the Wheel:** If a C-library (`libtrit`) or an SDK tool already exists in the repository, the engine must use it rather than writing a redundant script.
+
+=== 2.3 The Law of the Scalpel (Surgical Precision)
+When modifying the Body (the code), we do not use brute force.
+*   **No Wildcard Overwrites:** The engine must use precise line-targeted edits (`edit_file`) when modifying complex 140-column vaults. We do not rewrite the entire file to fix a single typo.
+*   **Preserve the Tension:** Any edit must maintain the existing 3:2:1 Lucas ratio and the visual firmament. 
+
+//                                                                                                  [BLOCK:ROOT-->END] ║
+// ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
