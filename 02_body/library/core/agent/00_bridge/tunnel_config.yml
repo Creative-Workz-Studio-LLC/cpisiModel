@@ -1,5 +1,5 @@
-tunnel: cpisi-bridge
-credentials-file: /home/seanje-lenox-wise/.cloudflared/cpisi-bridge.json
+tunnel: 78f76fb4-885c-488a-ac99-42f8827343f5
+credentials-file: /home/seanje-lenox-wise/.cloudflared/78f76fb4-885c-488a-ac99-42f8827343f5.json
 
 ingress:
   - hostname: sync.cws.studio

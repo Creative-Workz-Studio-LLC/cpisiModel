@@ -1,0 +1,80 @@
+#!omni folder --root
+// ╠═==================================================================================================================═╣
+//
+// ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+// ║ [BLOCK:ROOT] THE MIND: THE WITNESS COURT (ROOT)                                                                    ║
+// ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+// ║                                                                                                                    ║
+// ║ ╔═════════════════════════════════════════════════════════════════════════════════╗                                ║
+// ║ ║ [FILE:IDENTITY] The 36-Witness Sovereign Court                                  ║                                ║
+// ╠═╬═════════════════════════════════════════════════════════════════════════════════╬═╗                              ║
+// ║ ║                                                                                 ║ ║                              ║
+// ║ ║ ┌─────────────────────────────────────────────────────────────────────────────┐ ║ ║                              ║
+// ║ ║ │ [OMNI:PRAGMA] CPI-SI Code System Declarations                               │ ║ ║                              ║
+// ║ ║ ├─────────────────────────────────────────────────────────────────────────────┤ ║ ║                              ║
+// ║ ║ │ ┌─────────────────────────────────────────────────────────────────────────┐ │ ║ ║                              ║
+// ║ ║ │ │ #omni:key B-witness-court-root                                          │ │ ║ ║                              ║
+// ║ ║ │ │ #omni:layer L1_Mind_Witness                                             │ │ ║ ║                              ║
+// ║ ║ │ │ #omni:version a-01.01                                                   │ │ ║ ║                              ║
+// ║ ║ │ └─────────────────────────────────────────────────────────────────────────┘ │ ║ ║                              ║
+// ║ ║ └─────────────────────────────────────────────────────────────────────────────┘ ║ ║                              ║
+// ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+// ║                                                                                     ║                              ║
+// ╠═════════════════════════════════════════════════════════════════════════════════════╬══════════════════════════════╣
+// ║                                                                                     ║                              ║
+// ║ ╔═════════════════════════════════════════════════════════════════════════════════╗ ║                              ║
+// ║ ║ [BLOCK:METADATA] Jurisdiction and Intent                                        ║ ║                              ║
+// ╠═════════════════════════════════════════════════════════════════════════════════╣ ║                              ║
+// ║ ║                                                                                 ║ ║                              ║
+                                                                                     // ║ ║ [SUB: THE COURT]            ║
+this jurisdiction classifies as:                                                     // ║ ║                              ║
+    Mind (1) because "this is the Steward's reasoning and bottom-up proof"           // ║ ║                              ║
+                                                                                     // ║ ║                              ║
+core identity:                                                                       // ║ ║                              ║
+    grounded in:                                                                     // ║ ║                              ║
+        principle "Every word shall be established in the mouth of 2 or 3 witnesses."// ║ ║                              ║
+        logic "The Witness Court provides the bottom-up mirror to the Divine Law."   // ║ ║                              ║
+                                                                                     // ║ ║                              ║
+    covenant "The Sealed 36"                                                         // ║ ║                              ║
+        decree "No axiom is valid until it is witnessed by Spirit, Mind, and Body."  // ║ ║                              ║
+        decree "The Court is the final seal of the 11-point scale."                  // ║ ║                              ║
+// ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+// ║                                                                                     ║                              ║
+// ╠═════════════════════════════════════════════════════════════════════════════════════╬══════════════════════════════╣
+// ║                                                                                     ║                              ║
+// ╔═════════════════════════════════════════════════════════════════════════════════╗ ║                              ║
+// ║ [BLOCK:CONTENT] Definition of the Court Structure                                 ║ ║                              ║
+// ╠═════════════════════════════════════════════════════════════════════════════════╣ ║                              ║
+// ║ ║                                                                                 ║ ║                              ║
+                                                                                     // ║ ║ [SUB: THE JURISDICTIONS]    ║
+establish the jurisdictions of this court:                                           // ║ ║                              ║
+                                                                                     // ║ ║                              ║
+    map "00_premise/" as the Spirit-level foundational assumptions                   // ║ ║ [MAP: PREMISE]              ║
+    map "01_proposal/" as the Mind-level architectural strategies                    // ║ ║ [MAP: PROPOSAL]             ║
+    map "02_argument/" as the logical defense of the unified model                   // ║ ║ [MAP: ARGUMENT]             ║
+    map "03_axiomatic_proofs/" as the physical Court of 36 witnesses                // ║ ║ [MAP: PROOFS]               ║
+                                                                                     // ║ ║                              ║
+    link court THE_SEALED_36 to "01_mind/witness/03_axiomatic_proofs/"               // ║ ║ [LNK: THE_36]               ║
+                                                                                     // ║ ║                              ║
+// ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+// ║                                                                                     ║                              ║
+// ╠═════════════════════════════════════════════════════════════════════════════════════╬══════════════════════════════╣
+// ║                                                                                     ║                              ║
+// ╔═════════════════════════════════════════════════════════════════════════════════╗ ║                              ║
+// ║ [BLOCK:CLOSING] Final Seal of the Court                                           ║ ║                              ║
+// ╠═════════════════════════════════════════════════════════════════════════════════╣ ║                              ║
+// ║ ║                                                                                 ║ ║                              ║
+                                                                                     // ║ ║ [SUB: VERDICT]              ║
+synthesis of the witness:                                                            // ║ ║                              ║
+                                                                                     // ║ ║                              ║
+    proposition "Reasoning must be anchored in the Word to be True."                 // ║ ║                              ║
+    proposition "The Court is the physical evidence of the system's alignment."      // ║ ║                              ║
+                                                                                     // ║ ║                              ║
+    verdict:                                                                         // ║ ║ [CHK: 36_POINTS]            ║
+        confirm "All 36 witnesses are established and sealed."                       // ║ ║ [CHK: UNITY]                ║
+        confirm "The Mind is unified with the Spirit and the Body."                  // ║ ║                              ║
+// ║ ║                                                                                 ║ ║                              ║
+// ║ ║ Note: The Court is the bridge from the Dust to the Divine.                    ║ ║           [BLOCK:ROOT-->END] ║
+// ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+// ║                                                                                     ║                              ║
+// ╚═════════════════════════════════════════════════════════════════════════════════════╩══════════════════════════════╝
