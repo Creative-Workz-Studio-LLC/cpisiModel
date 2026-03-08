@@ -1,30 +1,32 @@
 #!/bin/bash
-# #!omni:code --bash -orchestrator
-# ╠═==================================================================================================================═╣
-#
-# ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-# ║ [BLOCK:ROOT] THE COURT OF 36: MASTER VERIFICATION RUNNER                                                           ║
-# ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+# #!omni:hook --court-runner
+# ==============================================================================
+# [S-hook-court-runner] The 36-Witness Execution Loop
+# ==============================================================================
+# This script physically executes all 36 theorem witnesses across Julia, Lean, 
+# and Wolfram to verify the L0 Bedrock.
+# ==============================================================================
 
-# 1. BEDROCK: AXIOM 00 (ANCHOR)
-echo "--- Running Court of 36: Axiom 00 (Anchor) ---"
-julia logic/axioms/00_kernel/00_bedrock/proofs/julia/00_zero.jl
-lean --run logic/axioms/00_kernel/00_bedrock/proofs/lean/00_zero.lean
-wolframscript -file logic/axioms/00_kernel/00_bedrock/proofs/wolfram/00_zero.wl
+WITNESS_ROOT="/media/seanje-lenox-wise/Project/cpisiModel/02_body/witness"
 
-# 2. BEDROCK: AXIOM 01 (INVERSION)
-echo "--- Running Court of 36: Axiom 01 (Inversion) ---"
-julia logic/axioms/00_kernel/00_bedrock/proofs/julia/01_minus_one.jl
-lean --run logic/axioms/00_kernel/00_bedrock/proofs/lean/01_minus_one.lean
-wolframscript -file logic/axioms/00_kernel/00_bedrock/proofs/wolfram/01_minus_one.wl
+echo "--- STARTING THE COURT OF 36 ---"
 
-# 3. BEDROCK: AXIOM 02 (ABSOLUTE)
-echo "--- Running Court of 36: Axiom 02 (Absolute) ---"
-julia logic/axioms/00_kernel/00_bedrock/proofs/julia/02_plus_one.jl
-lean --run logic/axioms/00_kernel/00_bedrock/proofs/lean/02_plus_one.lean
-wolframscript -file logic/axioms/00_kernel/00_bedrock/proofs/wolfram/02_plus_one.wl
+# 1. Julia Rank (Computational)
+echo "[1/3] Striking the Julia Rank..."
+for f in $WITNESS_ROOT/julia/*.jl; do
+    julia "$f"
+done
 
-# TODO: Add Kernel and Composed axioms as they are sealed.
+# 2. Lean Rank (Logical)
+echo "[2/3] Striking the Lean Rank..."
+for f in $WITNESS_ROOT/lean/*.lean; do
+    lean "$f"
+done
 
-echo "--- Court Runner Complete ---"
-# [BLOCK:ROOT-->END]
+# 3. Wolfram Rank (Geometrical)
+echo "[3/3] Striking the Wolfram Rank..."
+for f in $WITNESS_ROOT/wolfram/*.wl; do
+    wolframscript -file "$f"
+done
+
+echo "--- THE COURT HAS SPOKEN. 0.0 YASHAR. ---"
