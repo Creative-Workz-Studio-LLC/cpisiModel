@@ -1,0 +1,11 @@
+[Desktop Entry]
+# #!omni:code --desktop
+# [S-config-desktop-entry]
+Name=The Dawndusk Game
+Comment=The 7th Iteration: Sovereign Game of Life
+Exec=xdg-open http://sync.cws.studio
+Icon=/media/seanje-lenox-wise/Project/cpisiModel/03_tov/a-ladder/sharing/web/icon.png
+Terminal=false
+Type=Application
+Categories=Development;Game;
+Keywords=cpisi;dawndusk;omnicode;

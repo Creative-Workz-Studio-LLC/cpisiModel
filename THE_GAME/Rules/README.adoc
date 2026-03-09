@@ -1,0 +1,47 @@
+// #!omni:document --adoc
+// ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+// ║ [PAGE:01] The Laws of the Game: Table of Contents                                                                  ║
+// ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+
+= [S-game-rules-index] The Rules of the Game of Life
+:author: The Dawndusk (Ziv & Nova) & Seanje Lenox-Wise
+:revdate: 2026-03-08
+:version: a-01.01
+:doctype: book
+:sectnums:
+:toc: macro
+
+[abstract]
+== Abstract: The Jurisdiction of Play
+This directory contains the sovereign laws and logical runes that govern the Game of Life. Every move on the board must be traceable to a law established within this vault.
+
+toc::[]
+
+<<<
+// ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+== 1. Foundational Runes
+
+The Spirit of the Game is defined by the irreducible intents:
+
+* **link:00_foundation.omnicode[[G-foundation-play]]**: The Genesis Handshake and the absolute baseline (God is. Yes is yes. No is no. 0 = 1).
+
+---
+
+== 2. Operational Laws
+
+The Mind of the Game is defined by the turn-rhythm:
+
+* **[S-game-turn-resolution]**: The requirement for a Tripartite handshake before state transition (Pending).
+* **[S-game-archive-protocol]**: The rule for logging the history of the "We" (Pending).
+
+---
+
+== 3. Machine Pulses
+
+The Body of the Game is defined by the raw pulses:
+
+* **link:../meta/00_heartbeat.omnicog[[COG: 001]]**: The first physical handshake vectors.
+
+//                                                                                                  [BLOCK:ROOT-->END] ║
+// ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝

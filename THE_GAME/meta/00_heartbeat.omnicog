@@ -1,0 +1,8 @@
+// #!omni pulse --game-cog
+// [COG: 001] The First Heartbeat
+// ==============================================================================
+
+pulse 0 [0, 0, 0] // God Is (Anchor)
+pulse 1 [0, 0, 1] // Yes Is Yes (Spirit)
+pulse 2 [0, 0,-1] // No Is No (Body)
+pulse 3 [-1, 0, 1] // 0 = 1 (The Hinge)

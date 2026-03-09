@@ -1,0 +1,60 @@
+# #!omni:data --toml
+# ╠═==================================================================================================================═╣
+#
+# ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+# ║ [BLOCK:ROOT] THE KERNEL: ENVIRONMENTAL SOVEREIGNTY (LOCUS)                                                         ║
+# ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+# ║                                                                                                                    ║
+# ║ ╔═════════════════════════════════════════════════════════════════════════════════╗                                ║
+# ║ ║ [FILE:IDENTITY] Application Genesis Block                                       ║                                ║
+# ╠═╬═════════════════════════════════════════════════════════════════════════════════╬═╗                              ║
+# ║ ║                                                                                 ║ ║                              ║
+# ║ ║ ┌─────────────────────────────────────────────────────────────────────────────┐ ║ ║                              ║
+# ║ ║ │ [OMNI:PRAGMA] CPI-SI Code System Declarations                               │ ║ ║                              ║
+# ║ ║ ├─────────────────────────────────────────────────────────────────────────────┤ ║ ║                              ║
+# ║ ║ │ ┌─────────────────────────────────────────────────────────────────────────┐ │ ║ ║                              ║
+# ║ ║ │ │ #omni:key 06_locus.toml                                                 │ │ ║ ║                              ║
+# ║ ║ │ │ #omni:data --toml                                                       │ │ ║ ║                              ║
+# ║ ║ │ │ #omni:version a-01.95                                                   │ │ ║ ║                              ║
+# ║ ║ │ └─────────────────────────────────────────────────────────────────────────┘ │ ║ ║                              ║
+# ║ ║ └─────────────────────────────────────────────────────────────────────────────┘ ║ ║                              ║
+# ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+# ║                                                                                     ║                              ║
+# ╠═════════════════════════════════════════════════════════════════════════════════════╬══════════════════════════════╣
+# ║                                                                                     ║                              ║
+# ║ ╔═════════════════════════════════════════════════════════════════════════════════╗ ║                              ║
+# ║ ║ [BLOCK:BODY] Operational Logic & Turns                                          ║ ║                              ║
+# ║ ╠═════════════════════════════════════════════════════════════════════════════════╣ ║                              ║
+# ║ ║                                                                                 ║ ║                              ║
+# /**                                                                               # ║ ║ [Sub-Block: Docstring]       ║
+#  * Environmental Sovereignty (The Flesh vs. The Word). The absolute separation    # ║ ║                              ║
+#  * of source data (The Word) from execution output (The Flesh). The architecture  # ║ ║                              ║
+#  * must recognize its physical constraints and map execution correctly.           # ║ ║                              ║
+#  */                                                                               # ║ ║                              ║
+                                                                                    # ║ ║                              ║
+[axiom.locus]                                                                       # ║ ║ [Sub-Block: Environment]     ║
+name = "Environmental Sovereignty"                                                  # ║ ║                              ║
+description = "Separation of source data (The Word) from execution output (The Flesh)." # ║ ║                           ║
+application = "Dynamically recognize physical constraints and map execution to the outer court." # ║ ║                  ║
+                                                                                    # ║ ║                              ║
+[witness.scriptural]                                                                # ║ ║ [Sub-Block: The Word]        ║
+reference = "John 1:14"                                                             # ║ ║                              ║
+text = "And the Word was made flesh, and dwelt among us, (and we beheld his glory, the glory as of the only begotten of the Father,) full of grace and truth." # ║ ║
+logic = "The Word (Spirit) and the Flesh (Execution) are distinct but unified in the Locus." # ║ ║                      ║
+                                                                                    # ║ ║                              ║
+[anchor.whom_and_who]                                                               # ║ ║ [Sub-Block: The Anchor]      ║
+who = "God (The Father/Origin)"                                                     # ║ ║                              ║
+whom = "Jesus Christ (The Word Made Flesh)"                                         # ║ ║                              ║
+# ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+# ║                                                                                     ║                              ║
+# ╠═════════════════════════════════════════════════════════════════════════════════════╬══════════════════════════════╣
+# ║                                                                                     ║                              ║
+# ║ ╔═════════════════════════════════════════════════════════════════════════════════╗ ║                              ║
+# ║ ║ [BLOCK:CLOSING] Finalization & Validation                                       ║ ║                              ║
+# ║ ╠═════════════════════════════════════════════════════════════════════════════════╣ ║                              ║
+# ║ ║                                                                                 ║ ║                              ║
+# ║ ║ Note: The Word governs the Flesh; the environment must submit to the mandate.  ║ ║                              ║
+# ║ ║                                                                                 ║ ║           [BLOCK:ROOT-->END] ║
+# ║ ╚═════════════════════════════════════════════════════════════════════════════════╝ ║                              ║
+# ║                                                                                     ║                              ║
+# ╚═════════════════════════════════════════════════════════════════════════════════════╩══════════════════════════════╝

@@ -35,24 +35,31 @@ oauth_creds.json
 
 # 4. Tripartite Root Constraints
 
+# 00_THE_WORD: The absolute Source. Read-only, first in rank.
+!00_THE_WORD/
+00_THE_WORD/KJV/
+00_THE_WORD/WEB/
+00_THE_WORD/Duo-Bible-Distilled/
+00_THE_WORD/Duo-Bible-Whole/
+
 # 00_spirit: Always commit the Anchor and the Logic.
 !00_spirit/**
 
-# 00_spirit exceptions: Ignore massive scripture artifacts
-00_spirit/scripture/KJV/
-00_spirit/scripture/WEB/
-00_spirit/scripture/indices/**/*.json
-00_spirit/scripture/indices/**/*.csv
-00_spirit/scripture/indices/**/*.bin
-00_spirit/scripture/indices/**/*.trit
+# 00_spirit exceptions: Ignore massive index artifacts
+00_spirit/a-ladder/indices/**/*.json
+00_spirit/a-ladder/indices/**/*.csv
+00_spirit/a-ladder/indices/**/*.bin
+00_spirit/a-ladder/indices/**/*.trit
 
 # 01_mind: Always commit the Witness and the Identity.
 !01_mind/**
 
-# 02_body: Commit the Core and Tools, but ignore the large-scale test artifacts.
-02_body/test_mind/
-02_body/tov/**/*.pdf
-02_body/tov/**/*.png
+# 02_body: Commit the Core and Tools.
+!02_body/**
+02_body/c-hybrid/fixtures/
+
+# 03_tov: Completion gate.
+!03_tov/**
 
 # 5. Dependency Locks (The Structural Connectors)
 !Cargo.lock

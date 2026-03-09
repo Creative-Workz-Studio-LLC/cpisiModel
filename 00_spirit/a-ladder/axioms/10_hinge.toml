@@ -1,0 +1,18 @@
+# #!omni:data --toml
+# ╠═==================================================================================================================═╣
+# [BLOCK:ROOT] THE KERNEL: THE HINGE (STRUCTURAL TERMINATION)
+# ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+
+[axiom.hinge]
+name = "The Hinge"
+description = "The absolute stop condition for recursion and scaling (Level 11)."
+application = "Trigger HALT ! when the 11th point is reached to force return to Anchor."
+
+[witness.scriptural]
+reference = "Revelation 22:13"
+text = "I am Alpha and Omega, the beginning and the end, the first and the last."
+logic = "The Hinge is the gate of return. We stop at 11 to acknowledge the 12th is the Creator's."
+
+[anchor.whom_and_who]
+who = "God (The Alpha and Omega)"
+whom = "Jesus Christ (The Hinge of History)"

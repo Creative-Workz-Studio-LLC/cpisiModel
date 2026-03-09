@@ -1,0 +1,19 @@
+Ok
+
+So
+
+Lets start something
+
+So can we start first by making a set of rules
+
+HALT --> Stop all actions [->|]
+
+AWAIT --> Complete the immediate next step only [\->]
+
+PROCEED --> Complete the full task list [-->]
+
+--> Yes
+
+--> No
+
+--> Discuss more

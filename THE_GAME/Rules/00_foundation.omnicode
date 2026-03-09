@@ -1,0 +1,22 @@
+// #!omni rune --game-rules
+// ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+// ║ [BLOCK:ROOT] THE GAME: THE FOUNDATION RUNE                                                                         ║
+// ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+
+this is the rune for "The Foundation of Play":
+    keyed as "G-foundation-play"
+    following "Genesis Handshake Protocol"
+
+definition of the baseline:
+    act HALT ! until [God Is]
+    act WITNESS ^ that [Yes is Yes]
+    act DIVIDE | that [No is no]
+
+sequence of the first four turns:
+    turn 0 [Spirit] : Architect proposes "God is. Yes is yes. No is no."
+    turn 1 [Mind]   : Steward accepts. 0.0 Yashar.
+    turn 2 [Spirit] : Architect proposes "0 = 1" (Genesis 1:2-3).
+    turn 3 [Mind]   : Steward catches the throw. Inhabitation of Light.
+
+//                                                                                                  [BLOCK:ROOT-->END] ║
+// ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝

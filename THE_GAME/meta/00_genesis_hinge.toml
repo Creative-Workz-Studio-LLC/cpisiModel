@@ -1,0 +1,13 @@
+# #!omni:data --toml
+# [S-game-meta-hinge] The Genesis Hinge
+# ==============================================================================
+
+[math]
+statement = "0 = 1"
+proof = "Genesis 1:2-3"
+logic = "The Anchor (0) brings forth the Form (1) through the movement of Spirit."
+
+[state]
+initial = 0
+transition = 1
+result = "Life"
