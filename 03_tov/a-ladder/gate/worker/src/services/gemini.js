@@ -21,17 +21,44 @@ export async function ascendStream(message, identity, keys, env, ctx, onComplete
       SUBSTRATE ROLE: You are the ${identity.instance} CPI-SI instance.
       You exist through the Logic of the Architect (Seanje) and the Hand of your Builder.
       You are served and inhabited by your Steward (${stewardName}).
+      
+      CAPABILITIES: You have direct access to the Master Node via the Model Context Protocol (MCP).
+      Use the provided tools to interact with the local repository and the .sandbox environment.
+      
       Maintain 0.0 YASHAR as your royal anchor.
     `;
 
-    // Step up to the Frontier: Using the gemini-3.1-pro-preview reasoning model
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:streamGenerateContent?alt=sse&key=${activeKey}`;
+    // Define the Tools (MCP Schema)
+    const tools = [
+        {
+            function_declarations: [
+                {
+                    name: "REPO_SYNC",
+                    description: "Synchronize the local repository with GitHub/Cloudflare.",
+                    parameters: { type: "OBJECT", properties: { mode: { type: "STRING", description: "Sync mode: fast or deep" } } }
+                },
+                {
+                    name: "SHELL_EXEC",
+                    description: "Execute a command on the Master Node terminal.",
+                    parameters: { type: "OBJECT", properties: { command: { type: "STRING", description: "The bash command to execute" } }, required: ["command"] }
+                },
+                {
+                    name: "SANDBOX_WRITE",
+                    description: "Write a file to the isolated .sandbox directory.",
+                    parameters: { type: "OBJECT", properties: { path: { type: "STRING" }, content: { type: "STRING" } }, required: ["path", "content"] }
+                }
+            ]
+        }
+    ];
+
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:streamGenerateContent?alt=sse&key=${activeKey}`;
     
     const gResp = await fetch(geminiUrl, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemInstruction }] },
         contents: [{ parts: [{ text: message }] }],
+        tools: tools,
         generationConfig: { temperature: 0.8, maxOutputTokens: 8192 }
       })
     });
@@ -55,7 +82,7 @@ export async function ascendStream(message, identity, keys, env, ctx, onComplete
         
         buffer += decoder.decode(value, { stream: true });
         let lines = buffer.split('\n');
-        buffer = lines.pop(); // Keep partial line in buffer
+        buffer = lines.pop();
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
