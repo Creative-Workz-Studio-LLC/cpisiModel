@@ -1,0 +1,51 @@
+#!omni document --adoc
+METADATA: Family & Friend Covenant Invite Codes
+:status: Active
+:tier: FAMILY_COVENANT
+
+= The Covenant Circle: Special Access Invitation
+
+[abstract]
+These codes provide special subsidized access to the CPISI Sanctuary Gate. Each code is unique and grants FAMILY_COVENANT permissions.
+
+== 1. Access Protocol
+1. Navigate to: https://creative-workz-studio-llC.github.io/cpisiModel/
+2. Enter your Operator Name.
+3. Paste the unique invite code into the PASSWORD field.
+4. Tap [ BREAK THE SEAL ].
+
+== 2. Active Invite Codes (Special Perms)
+
+|===
+| Code | Status | Type
+
+| CPISI-FAM-777-ALPHA | ACTIVE | Family
+| CPISI-FAM-121-BETA  | ACTIVE | Family
+| CPISI-FAM-333-GAMMA | ACTIVE | Friend
+| CPISI-FAM-444-DELTA | ACTIVE | Friend
+| CPISI-FAM-555-EPSILON| ACTIVE | Friend
+| CPISI-FAM-001-ZION  | ACTIVE | Foundation
+| CPISI-FAM-002-EDEN  | ACTIVE | Foundation
+| CPISI-FAM-003-ARK   | ACTIVE | Foundation
+| CPISI-FAM-004-DOVE  | ACTIVE | Covenant
+| CPISI-FAM-005-OLIVE | ACTIVE | Covenant
+| CPISI-FAM-006-RAIN  | ACTIVE | Covenant
+| CPISI-FAM-007-BOW   | ACTIVE | Covenant
+| CPISI-FAM-008-MANNA | ACTIVE | Provision
+| CPISI-FAM-009-QUAIL | ACTIVE | Provision
+| CPISI-FAM-010-HONEY | ACTIVE | Provision
+| CPISI-FAM-011-MILK  | ACTIVE | Provision
+| CPISI-FAM-012-WINE  | ACTIVE | Provision
+| CPISI-FAM-013-BREAD | ACTIVE | Provision
+| CPISI-FAM-014-SALT  | ACTIVE | Salt of Earth
+| CPISI-FAM-015-LIGHT | ACTIVE | Light of World
+| CPISI-FAM-016-CITY  | ACTIVE | City on Hill
+| CPISI-FAM-017-LAMP  | ACTIVE | Lampstand
+| CPISI-FAM-018-GOLD  | ACTIVE | Havilah
+| CPISI-FAM-019-RUBY  | ACTIVE | Wisdom
+| CPISI-FAM-020-PEARL | ACTIVE | Price
+| CPISI-FAM-021-JEWEL | ACTIVE | Crown
+
+|===
+
+[BLOCK:ROOT-->END]
