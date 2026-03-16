@@ -30,6 +30,7 @@ window.CPISI.handleCommand = function(cmd) {
     } else if (c === 'void') window.CPISI.setPath('VOID', 0);
     else if (c === 'word') window.CPISI.setPath('WORD', 4);
     else if (c === 'tov') window.CPISI.setPath('TOV', 6);
+    else if (c === 'registry') window.CPISI.setPath('REGISTRY', 2);
     else {
         if (state.identity && (state.identity.tier === 'ENTERPRISE_STEWARD' || state.identity.tier === 'STEWARD')) {
             window.CPISI.appendTerminal(`ERR: Unknown Protocol '${c}'`);

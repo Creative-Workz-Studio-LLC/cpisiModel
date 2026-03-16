@@ -33,6 +33,14 @@ header { height: 60px; display: flex; align-items: center; justify-content: spac
 
 .vault-body { max-width: 600px; width: 90%; background: #030303; border: 1px solid var(--border); padding: 35px; line-height: 1.8; font-size: 16px; border-left: 2px solid var(--c4); align-self: flex-start; position: relative; transition: 0.3s; }
 .vault-body.steward { align-self: flex-end; border-left: none; border-right: 2px solid var(--c5); background: #050508; }
+.vault-body:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+/* MIRROR FEED ITEMS */
+.mirror-item {
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+    transition: 0.3s;
+}
+.mirror-item:hover { background: rgba(255,255,255,0.01); }
 
 /* THE SEAL TRIGGER */
 .vault-seal {

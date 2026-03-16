@@ -14,6 +14,12 @@ window.CPISI.setPath = function(path, idx) {
     segments.forEach((seg, i) => {
         seg.classList.toggle('active', i === parseInt(idx));
     });
+
+    if (path === 'REGISTRY' && window.CPISI.social) {
+        window.CPISI.social.loadRegistry();
+    }
+
+    if (identity?.tier === 'STEWARD' && window.CPISI.appendTerminal) window.CPISI.appendTerminal(`PATH_SHIFT: ${path}`);
 };
 
 // Expose to global scope for HTML inline handlers

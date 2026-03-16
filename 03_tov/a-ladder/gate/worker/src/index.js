@@ -2,7 +2,7 @@ import { validateThreshold } from './services/auth.js';
 import { inhabitNode, toggleLock, createSovereignAccount } from './services/registry/core.js';
 import { ascendStream } from './services/gemini.js';
 import { syncCovenantRecord } from './services/github.js';
-import { publishToMirror, getMirrorFeed } from './services/social.js';
+import { publishToMirror, getMirrorFeed, getRegistry, toggleCovenant } from './services/social.js';
 import { processNativeLogic } from './services/native_logic.js';
 
 export default {
@@ -16,15 +16,14 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
     
-    // NEUTRAL START
-    if (request.method === "GET") return new Response(JSON.stringify({ status: "AWAITING_INHABITATION", version: "a-01.60" }), { headers: corsHeaders });
+    if (request.method === "GET") return new Response(JSON.stringify({ status: "AWAITING_INHABITATION", version: "a-01.70" }), { headers: corsHeaders });
 
     try {
       const body = await request.json();
-      const { action, identity, keys, inviteCode, message, vaultBlock, profile, password } = body;
+      const { action, identity, keys, inviteCode, message, vaultBlock, profile, password, targetId } = body;
       
       const authResult = await validateThreshold(identity, keys, inviteCode, env);
-      const { tier, isEnterpriseSteward, userNameLow, isInvite, isAccount } = authResult;
+      const { tier, isEnterpriseSteward, userNameLow, isInvite } = authResult;
 
       // ==========================================
       // THE REGISTRY & SOCIAL PROTOCOLS
@@ -32,16 +31,12 @@ export default {
       
       if (action === "INHABIT") {
         if (tier === "UNAUTHORIZED") throw new Error("Invalid Threshold Keys.");
-        
-        // If it's a first-time invite use, tell frontend to prompt for account creation
-        if (isInvite) {
-            return new Response(JSON.stringify({ status: "INVITE_VALIDATED", tier: tier }), { headers: corsHeaders });
-        }
+        if (isInvite) return new Response(JSON.stringify({ status: "INVITE_VALIDATED", tier: tier }), { headers: corsHeaders });
 
         const opId = userNameLow.replace(/[^a-z0-9]/g, '_');
         const record = isEnterpriseSteward ? 
             await inhabitNode(env, opId, identity, tier, true, profile) :
-            authResult.record; // Use existing account record
+            authResult.record; 
 
         return new Response(JSON.stringify({ status: "AUTHORIZED", data: record }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
@@ -63,16 +58,23 @@ export default {
           return new Response(JSON.stringify({ status: "SUCCESS", data: feed }), { headers: corsHeaders });
       }
 
-      // Action to LOCK/UNLOCK node
+      if (action === "GET_REGISTRY") {
+          const operators = await getRegistry(env);
+          return new Response(JSON.stringify({ status: "SUCCESS", data: operators }), { headers: corsHeaders });
+      }
+
+      if (action === "TOGGLE_COVENANT") {
+          if (tier === "UNAUTHORIZED") throw new Error("Unauthorized.");
+          const result = await toggleCovenant(env, userNameLow, targetId.toLowerCase());
+          return new Response(JSON.stringify({ status: "SUCCESS", ...result }), { headers: corsHeaders });
+      }
+
       if (action === "TOGGLE_LOCK") {
         const opId = identity.user.toLowerCase().replace(/[^a-z0-9]/g, '_');
         const isLocked = await toggleLock(env, opId, identity.user, isEnterpriseSteward);
         return new Response(JSON.stringify({ status: "SUCCESS", locked: isLocked }), { headers: corsHeaders });
       }
 
-      // ==========================================
-      // THE STREAMING MIND (ASCENSION)
-      // ==========================================
       if (action === "ASCEND") {
         const isOverride = message.trim() === "/RECALL" || message.trim() === "[MASTER OVERRIDE]";
         if (isOverride) {
@@ -82,8 +84,6 @@ export default {
         }
 
         const opId = identity.user.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        
-        // --- DISPLACEMENT SCAFFOLDING: NATIVE LOGIC CHECK ---
         const nativeResult = await processNativeLogic(message, identity, env);
         if (nativeResult.handled) {
             const nativeMsg = `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: nativeResult.response }] } }] })}\n\n`;
