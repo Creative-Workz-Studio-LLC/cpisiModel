@@ -57,6 +57,9 @@ window.CPISI.sealWord = async function(text, element) {
             })
         });
         console.log("CPISI: Word Manifested to Covenant Mirror.");
+        if (window.CPISI.social && window.CPISI.social.loadMirrorFeed) {
+            window.CPISI.social.loadMirrorFeed();
+        }
     } catch (e) { console.error("CPISI: Mirror Dissonance", e); }
 };
 

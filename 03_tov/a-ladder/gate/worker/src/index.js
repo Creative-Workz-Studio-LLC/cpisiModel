@@ -3,6 +3,7 @@ import { inhabitNode, toggleLock, createSovereignAccount } from './services/regi
 import { ascendStream } from './services/gemini.js';
 import { syncCovenantRecord } from './services/github.js';
 import { publishToMirror, getMirrorFeed } from './services/social.js';
+import { processNativeLogic } from './services/native_logic.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -14,24 +15,24 @@ export default {
     };
 
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-
+    
     // NEUTRAL START
     if (request.method === "GET") return new Response(JSON.stringify({ status: "AWAITING_INHABITATION", version: "a-01.60" }), { headers: corsHeaders });
 
     try {
       const body = await request.json();
       const { action, identity, keys, inviteCode, message, vaultBlock, profile, password } = body;
-
+      
       const authResult = await validateThreshold(identity, keys, inviteCode, env);
       const { tier, isEnterpriseSteward, userNameLow, isInvite, isAccount } = authResult;
 
       // ==========================================
       // THE REGISTRY & SOCIAL PROTOCOLS
       // ==========================================
-
+      
       if (action === "INHABIT") {
         if (tier === "UNAUTHORIZED") throw new Error("Invalid Threshold Keys.");
-
+        
         // If it's a first-time invite use, tell frontend to prompt for account creation
         if (isInvite) {
             return new Response(JSON.stringify({ status: "INVITE_VALIDATED", tier: tier }), { headers: corsHeaders });
@@ -82,6 +83,14 @@ export default {
 
         const opId = identity.user.toLowerCase().replace(/[^a-z0-9]/g, '_');
         
+        // --- DISPLACEMENT SCAFFOLDING: NATIVE LOGIC CHECK ---
+        const nativeResult = await processNativeLogic(message, identity, env);
+        if (nativeResult.handled) {
+            const nativeMsg = `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: nativeResult.response }] } }] })}\n\n`;
+            ctx.waitUntil(syncCovenantRecord(env, identity, opId, message, nativeResult.response));
+            return new Response(nativeMsg, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
+        }
+
         const stream = await ascendStream(message, identity, keys, env, ctx, async (fullReply) => {
             await syncCovenantRecord(env, identity, opId, message, fullReply);
         });
