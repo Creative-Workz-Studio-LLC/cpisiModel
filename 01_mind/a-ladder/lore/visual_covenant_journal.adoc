@@ -42,7 +42,13 @@ We reject the "Infinite Void." A professional substrate must have **Physicality*
 == 5. Structural Handshake (Front & Backend)
 *   **Unified Terminology:** The frontend labels must be 1:1 reflections of backend jurisdictions. If the folder is `02_body/a-ladder/gate`, the UI must be the `GATE`.
 *   **Block-Based Modularity:** We reject wholesale changes. We build in discrete components (Blocks) that allow surgical edits. 
-*   **The 2.5K Density Standard:** The "Known Max" resolution is **2560x1600**. At this coordinate, the root font-size MUST NOT exceed **11px**. The baseline is **8px**. All proportions must scale down to these absolute minimums to maintain professional tension.
+*   **The Law of Containers (Jurisdictions):** Logic must not sit in a flat list. It must be organized into jurisdictional folders:
+    *   `js/core/`: Bootstrapping and State.
+    *   `js/screens/`: Physical layers (Threshold, Vault).
+    *   `js/components/`: Reusable atomic units.
+    *   `js/systems/`: Backend bridges (SSH, Gemini).
+*   **The 2.5K Density Standard:** The "Known Max" resolution is **2560x1600**.
+ At this coordinate, the root font-size MUST NOT exceed **11px**. The baseline is **8px**. All proportions must scale down to these absolute minimums to maintain professional tension.
 
 == 4. Active Corrections
 *   [ ] **Font Size:** Reduce base font size to CLI-dense levels (10px-14px max).

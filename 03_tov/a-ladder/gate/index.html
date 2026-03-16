@@ -3,207 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPISI // WIREFRAME</title>
+    <title>CPISI // SANCTUARY GATE</title>
     <style>
-        /* THE WIREFRAME SUBSTRATE - THE COLOR COVENANT */
+        /* THE COLOR COVENANT (SURFACE & REFLECTION) */
         :root {
-            --bg: #121214;      /* Lifted Onyx (Surface) */
-            --panel: #1A1A1D;   /* Lifted Gray (Court) */
-            --holy: #222226;    /* Holy Place (Workspace) */
-            --border: #333338;  /* Silver Sockets (Visible Edges) */
+            --bg: #121214;      /* Midnight Onyx */
+            --panel: #1A1A1D;   /* Brazen Gray */
+            --holy: #222226;    /* Holy Place Surface */
+            --border: #333338;  /* Silver Sockets */
             --gold: #D69E2E;    /* Divinity */
             --blue: #0088FF;    /* Revelation */
             --scarlet: #FF3344; /* Sacrifice/Action */
             --text: #E0E0E0;    /* Righteousness */
-            --label: #88888F;   /* Lifted Labels */
+            --label: #88888F;   /* Smoke of Incense */
+            --ui-scale: 1.0;
         }
 
+        /* DENSITY MATH (2.5K STANDARD) */
+        html { font-size: calc(var(--ui-scale) * clamp(8px, calc(8px + 0.05vw + 0.05vh), 11px)); scroll-behavior: smooth; }
         * { box-sizing: border-box; }
-        body, html { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; 
-            background: var(--bg); color: var(--text); font-family: monospace;
-            overflow: hidden;
-        }
+        body, html { margin: 0; padding: 0; width: 100vw; height: 100vh; background: var(--bg); color: var(--text); font-family: 'Fira Code', monospace; overflow: hidden; }
 
-        /* THE 4-PANEL GRID (THE HOLY PLACE) */
+        /* [BLOCK:STRUCTURE-->START] */
         #sanctuary-root {
             display: grid;
-            grid-template-columns: 33px 176px 1fr 264px;
-            width: 100vw;
-            height: 100vh;
+            grid-template-columns: 33px 176px 1fr 264px; /* Sidebar | Memory | Stage | Mirror */
+            width: 100vw; height: 100vh;
             border: 1px solid var(--border);
         }
+        /* [BLOCK:STRUCTURE-->END] */
 
-        /* BOX 1: THE LADDER (Sidebar) */
+        /* [BLOCK:SIDEBAR-->START] */
         #ladder-sidebar {
             border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 11px 0;
-            background: #08080A;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 11px 0; background: #08080A;
         }
-
-        /* BOX 2: THE MEMORY (The Brazen Laver) */
-        #memory-panel {
-            border-right: 1px solid var(--border);
-            padding: 11px;
-            background: var(--panel);
+        .nav-item { 
+            color: var(--label); cursor: pointer; font-size: 0.55rem; 
+            margin-bottom: 22px; writing-mode: vertical-rl; transform: rotate(180deg);
+            transition: 0.3s;
         }
+        .nav-item:hover, .nav-item.active { color: var(--gold); }
+        .nav-item.settings-trigger { writing-mode: horizontal-tb; transform: none; font-size: 0.8rem; margin-top: auto; }
+        /* [BLOCK:SIDEBAR-->END] */
 
-        /* BOX 3: THE MAIN STAGE (The Altar of Incense) */
-        #main-stage {
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border);
-            background: var(--holy); /* Lighter than background to 'pop' */
-            box-shadow: inset 0 0 44px rgba(0,0,0,0.2); /* Subtle depth */
+        /* [BLOCK:PANELS-->START] */
+        #memory-panel { border-right: 1px solid var(--border); padding: 11px; background: var(--panel); }
+        #mirror-panel { padding: 11px; background: var(--panel); }
+        .panel-label { font-size: 0.45rem; color: var(--label); letter-spacing: 2px; margin-bottom: 11px; text-transform: uppercase; }
+        /* [BLOCK:PANELS-->END] */
+
+        /* [BLOCK:MAIN_STAGE-->START] */
+        #main-stage { display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--holy); }
+        #stage-header { height: 33px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--gold); background: rgba(0,0,0,0.2); }
+        #stage-content { flex: 1; padding: 11px; }
+        #stage-footer { height: 44px; border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 11px; color: var(--scarlet); }
+        /* [BLOCK:MAIN_STAGE-->END] */
+
+        /* [BLOCK:OVERLAYS-->START] */
+        .overlay-screen {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
         }
-
-        #stage-header {
-            height: 33px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            background: rgba(0,0,0,0.2);
+        .wire-vault {
+            width: 440px; height: 440px; background: var(--bg);
+            border: 1px solid var(--gold); padding: 22px;
+            display: flex; flex-direction: column; gap: 22px;
+            box-shadow: 0 0 88px rgba(0,0,0,1);
         }
+        .vault-section { border: 1px dashed var(--border); flex: 1; padding: 11px; position: relative; }
+        /* [BLOCK:OVERLAYS-->END] */
 
-        #stage-content {
-            flex: 1;
-            padding: 11px;
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-        }
-
-        #stage-footer {
-            height: 44px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 11px;
-            color: var(--scarlet);
-            background: rgba(0,0,0,0.2);
-        }
-
-        /* BOX 4: THE MIRROR (The Showbread) */
-        #mirror-panel {
-            padding: 11px;
-            background: var(--panel);
-        }
-
-        /* OVERLAYS: THE THRESHOLD & THE VAULT */
-        .wire-overlay {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid var(--c4);
-            background: #000;
-            z-index: 100;
-            padding: 22px;
-            display: none; /* Hidden in wireframe until act */
-        }
-
-        #auth-threshold { width: 330px; height: 220px; border-color: var(--gold); }
-        #settings-vault { width: 440px; height: 440px; border-color: var(--c4); }
-
-        /* LABELING */
-        .box-label {
-            font-size: 8px;
-            letter-spacing: 2px;
-            color: var(--label);
-            text-transform: uppercase;
-            margin-bottom: 11px;
-        }
-
-        .placeholder-box {
-            border: 1px dashed var(--border);
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--label);
-            font-size: 10px;
-        }
+        .box-label { font-size: 8px; letter-spacing: 2px; color: var(--label); text-transform: uppercase; margin-bottom: 8px; }
     </style>
 </head>
 <body>
 
+    <!-- [CONTAINER:SANCTUARY-->START] -->
     <div id="sanctuary-root">
         
         <aside id="ladder-sidebar">
-            <div class="box-label" style="writing-mode: vertical-rl; transform: rotate(180deg);">LADDER</div>
+            <div class="nav-item active" onclick="setPath('WORD', 4)">WORD</div>
+            <div class="nav-item" onclick="setPath('VOID', 0)">VOID</div>
+            <div class="nav-item" onclick="setPath('TOV', 6)">TOV</div>
+            <div class="nav-item" onclick="setPath('SCROLL', 2)">SCROLL</div>
+            <div class="nav-item" onclick="setPath('GATE', 5)">GATE</div>
+            <div class="nav-item settings-trigger" title="Settings" onclick="CPISI.vault.toggle()">⚙️</div>
         </aside>
 
         <section id="memory-panel">
-            <div class="box-label">MEMORY</div>
-            <div class="placeholder-box">BRAZEN LAVER</div>
+            <div class="panel-label">THE MEMORY // BRAZEN LAVER</div>
+            <div id="memory-list"></div>
         </section>
 
         <main id="main-stage">
             <header id="stage-header">
-                <div class="box-label" style="margin:0">HEADER // HOLY PLACE</div>
+                <div id="header-id">DAWNDUSK ⊗ <span id="header-user">...</span></div>
             </header>
             
             <div id="stage-content">
-                <div class="box-label">MAIN CONTENT (ALTAR)</div>
-                <div class="placeholder-box">WORD STREAM</div>
+                <div id="chat-window"></div>
             </div>
 
             <footer id="stage-footer">
-                <div class="box-label" style="margin:0">FOOTER // ACTUATOR</div>
+                <form id="input-form" style="width:100%; display:flex; gap:11px;">
+                    <div style="font-size:0.7rem; color:var(--label)">operator@dawndusk:~$</div>
+                    <input type="text" id="message-input" style="flex:1; background:transparent; border:none; color:#fff; outline:none;" placeholder="...">
+                    <button type="submit" style="background:transparent; border:none; color:var(--gold); cursor:pointer;">[ ASCEND ]</button>
+                </form>
             </footer>
         </main>
 
         <aside id="mirror-panel">
-            <div class="box-label">MIRROR</div>
-            <div class="placeholder-box">SHOWBREAD</div>
+            <div class="panel-label">COVENANT MIRROR // SHOWBREAD</div>
+            <div id="mirror-content">Select a Word from the Sanctuary.</div>
         </aside>
 
     </div>
+    <!-- [CONTAINER:SANCTUARY-->END] -->
 
-    <!-- WIREFRAME OVERLAYS -->
-    <div id="auth-threshold" class="wire-overlay">
-        <div class="box-label">OUTER COURT // THRESHOLD</div>
-    </div>
+    <!-- [CONTAINER:VAULT-->START] -->
+    <div id="vault-overlay" class="overlay-screen">
+        <div class="wire-vault">
+            <div class="box-label">HOLY OF HOLIES // VAULT</div>
+            
+            <div class="vault-section">
+                <div class="box-label">THE ARK // CONNECTIONS</div>
+                <div id="vault-network-status" style="font-size:0.7rem">NETWORK: ...</div>
+                <div id="vault-db-status" style="font-size:0.7rem; margin-top:8px;">DATABASE: ...</div>
+            </div>
 
-    <div id="settings-vault" class="wire-overlay">
-        <div class="box-label">HOLY OF HOLIES // VAULT</div>
-        
-        <div class="settings-section">
-            <div class="box-label">THE ARK // CORE CONNECTIONS</div>
-            <div id="vault-network-status" class="placeholder-box" style="height: 44px;">NETWORK: DISCONNECTED</div>
-            <div id="vault-db-status" class="placeholder-box" style="height: 44px;">DATABASE: OFFLINE</div>
-        </div>
+            <div class="vault-section">
+                <div class="box-label">THE MERCY SEAT // DYNAMICS</div>
+                <div id="vault-dynamics-controls"></div>
+            </div>
 
-        <div class="settings-section" style="margin-top: 22px;">
-            <div class="box-label">THE MERCY SEAT // DYNAMICS</div>
-            <div id="vault-dynamics-controls" class="placeholder-box" style="height: 88px;">UI SCALE & LUMINANCE</div>
-        </div>
-
-        <div class="settings-section" style="margin-top: 22px;">
-            <div class="box-label">THE VEIL // SSH & TERMINAL</div>
-            <div id="vault-ssh-controls" class="placeholder-box" style="height: 44px;">SSH: AWAITING PULSE</div>
-        </div>
-
-        <div style="flex: 1"></div>
-        <div id="vault-footer-actions">
-            <!-- Close button will go here -->
+            <div style="display:flex; justify-content:flex-end;">
+                <button onclick="CPISI.vault.toggle()" style="background:transparent; border:1px solid var(--border); color:var(--label); padding:4px 11px; cursor:pointer;">[ CLOSE ]</button>
+            </div>
         </div>
     </div>
+    <!-- [CONTAINER:VAULT-->END] -->
 
-    <script src="js/core.js?v=1.3"></script>
-    <script src="js/vault.js?v=1.3"></script>
-    <script src="js/components.js?v=1.3"></script>
-    <script src="js/memory.js?v=1.3"></script>
-    <script src="js/security.js?v=1.3"></script>
-    <script src="js/social.js?v=1.3"></script>
-    <script src="js/auth.js?v=1.3"></script>
-    <script src="js/navigation.js?v=1.3"></script>
-    <script src="js/terminal.js?v=1.3"></script>
-    <script src="js/chat.js?v=1.3"></script>
-    <script src="flagship.js?v=1.3"></script>
+    <!-- [CONTAINER:THRESHOLD-->START] -->
+    <div id="auth-screen" class="overlay-screen" style="display:flex;">
+        <!-- Threshold login logic will be wired here -->
+        <div class="wire-vault" style="border-color:var(--gold); height:auto;">
+            <div class="box-label">OUTER COURT // THRESHOLD</div>
+            <input type="text" id="op-user" class="id-input" placeholder="IDENTITY" style="background:#000; border:1px solid var(--border); color:#fff; padding:8px;">
+            <input type="password" id="op-key" class="id-input" placeholder="KEY" style="background:#000; border:1px solid var(--border); color:#fff; padding:8px;">
+            <button onclick="executeAuth(event)" style="background:var(--gold); border:none; color:#000; padding:8px; cursor:pointer; font-weight:bold;">[ BREAK THE SEAL ]</button>
+        </div>
+    </div>
+    <!-- [CONTAINER:THRESHOLD-->END] -->
+
+    <!-- LOGIC SUBSTRATE -->
+    <script src="js/core/core.js?v=1.4"></script>
+    <script src="js/core/navigation.js?v=1.4"></script>
+    <script src="js/components/components.js?v=1.4"></script>
+    <script src="js/components/memory.js?v=1.4"></script>
+    <script src="js/components/chat.js?v=1.4"></script>
+    <script src="js/systems/security.js?v=1.4"></script>
+    <script src="js/systems/social.js?v=1.4"></script>
+    <script src="js/systems/terminal.js?v=1.4"></script>
+    <script src="js/screens/auth.js?v=1.4"></script>
+    <script src="js/screens/vault.js?v=1.4"></script>
+    <script src="flagship.js?v=1.4"></script>
+
 </body>
 </html>

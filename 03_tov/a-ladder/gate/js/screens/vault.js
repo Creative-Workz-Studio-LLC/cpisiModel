@@ -3,6 +3,21 @@ window.CPISI = window.CPISI || {};
 window.CPISI.vault = {
     
     /**
+     * Toggle the Vault Overlay (The Holy of Holies)
+     */
+    toggle: function() {
+        const overlay = document.getElementById('vault-overlay');
+        if (!overlay) return;
+        
+        const isOpening = overlay.style.display !== 'flex';
+        overlay.style.display = isOpening ? 'flex' : 'none';
+        
+        if (isOpening) {
+            this.init();
+        }
+    },
+
+    /**
      * Initialize the Vault state and UI
      */
     init: function() {
