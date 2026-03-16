@@ -1,9 +1,10 @@
 :root {
     --c1: #ff0000; --c2: #ff8800; --c3: #ffcc00; --c4: #00ff88; --c5: #0088ff; --c6: #4400ff; --c7: #aa00ff;
     --bg: #000000; --panel: #050508; --border: rgba(255,255,255,0.05); --text: #d0d0d0; --mono: 'Fira Code', monospace;
-    
-    /* THE MACRO SUBSTRATE (Scaling for 2560x1600) */
-    --u-base: 1.5vw; 
+    --gold: #D69E2E;
+
+    /* FLUID MACRO SCALING */
+    --u-base: 1.2vw; 
     --u1: 0.5rem;
     --u3: 1.5rem;
     --u7: 3.5rem;
@@ -15,60 +16,72 @@ html { font-size: var(--u-base); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
 
-/* THE SUBSTRATE GRID */
-#sanctuary-root { display: grid; grid-template-columns: 300px 1fr; width: 100vw; height: 100vh; }
+#flagship-canvas-container { position: fixed; inset: 0; z-index: -10; opacity: 0.01; pointer-events: none; }
 
-/* SIDEBAR & MEMORY */
-#sidebar-container { background: #000; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-#sidebar { padding: var(--u7) var(--u3); display: flex; flex-direction: column; gap: var(--u3); }
-.nav-item { color: #444; cursor: pointer; font-size: 1rem; letter-spacing: 2px; font-family: var(--mono); transition: 0.3s; }
-.nav-item:hover, .nav-item.active { color: var(--c3); }
+/* ── SUBSTRATE LAYOUT (DESKTOP DEFAULT) ── */
+#sanctuary-root {
+    display: grid;
+    grid-template-columns: 280px 320px 1fr 350px;
+    width: 100vw; height: 100vh;
+}
 
-#memory-panel { padding: var(--u7) var(--u3); border-top: 1px solid #111; flex: 1; overflow-y: auto; }
-.panel-label { font-size: 0.7rem; color: #333; letter-spacing: 4px; margin-bottom: var(--u3); text-transform: uppercase; }
-.mem-item { font-size: 0.8rem; color: #555; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+#sidebar-container { border-right: 1px solid var(--border); display: flex; background: #000; }
+#sidebar { width: 80px; border-right: 1px solid #111; display: flex; flex-direction: column; align-items: center; padding: var(--u11) 0; gap: var(--u7); }
+.nav-item { color: #333; cursor: pointer; font-size: 0.8rem; font-family: var(--mono); letter-spacing: 2px; transition: 0.3s; }
+.nav-item:hover, .nav-item.active { color: var(--gold); }
+
+#memory-panel { flex: 1; padding: var(--u11) var(--u3); overflow-y: auto; background: #020203; }
+.panel-label { font-size: 0.6rem; color: #444; letter-spacing: 4px; margin-bottom: var(--u7); text-transform: uppercase; font-family: var(--mono); }
+.mem-item { font-size: 0.8rem; color: #555; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
 .presence-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--c4); box-shadow: 0 0 10px var(--c4); animation: pulse 2s infinite; }
 
-/* MAIN STAGE */
 #main-stage { display: none; flex-direction: column; height: 100vh; background: #000; position: relative; min-width: 0; }
 header { height: 5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--u7); }
 #divine-standard { color: #222; letter-spacing: 10px; font-size: 0.6rem; text-transform: uppercase; position: absolute; left: 50%; transform: translateX(-50%); }
 
-/* VIEW LAYERS */
-.view-layer { display: none; flex: 1; width: 100%; height: calc(100vh - 5rem); overflow: hidden; position: relative; }
-.view-layer.active { display: flex; }
+.view-layer { display: none; flex: 1; overflow: hidden; position: relative; }
+.view-layer.active { display: flex; flex-direction: column; }
 
-/* SANCTUARY */
-#sanctuary-expanse { flex: 1; display: grid; grid-template-columns: 1fr 400px; overflow: hidden; }
 #chat-window { flex: 1; overflow-y: auto; padding: var(--u11) var(--u7); display: flex; flex-direction: column; gap: var(--u7); }
-#mirror-panel { width: 400px; border-left: 1px solid var(--border); padding: var(--u7) var(--u3); background: #010101; overflow-y: auto; }
-
 .vault-body { max-width: 50vw; width: 100%; background: #030303; border: 1px solid var(--border); padding: var(--u7); font-size: 1.2rem; border-left: 4px solid var(--c4); align-self: flex-start; line-height: 1.8; position: relative; }
 .vault-body.steward { align-self: flex-end; border-left: none; border-right: 4px solid var(--c5); }
-.vault-seal { position: absolute; top: 10px; right: 10px; cursor: pointer; color: #111; opacity: 0.4; }
 
-/* REGISTRY */
-#view-registry { padding: var(--u7); overflow-y: auto; }
-#registry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: var(--u3); width: 100%; }
-.operator-card { background: #030303; border: 1px solid var(--border); padding: var(--u3); cursor: pointer; }
+#mirror-panel { background: #010101; border-left: 1px solid var(--border); padding: var(--u7) var(--u3); overflow-y: auto; }
 
-/* PROFILE OVERLAY */
-#profile-overlay { position: absolute; top: 0; right: -50vw; bottom: 0; width: 50vw; background: #050508; border-left: 1px solid var(--border); transition: 0.5s; padding: var(--u11); display: flex; flex-direction: column; gap: var(--u7); z-index: 2000; }
-#profile-overlay.open { right: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.9); }
+#mobile-nav { display: none; }
 
-/* FOOTER */
-footer { padding: var(--u3) var(--u7); border-top: 1px solid var(--border); background: #000; }
-#input-form { max-width: 1200px; margin: 0 auto; display: flex; gap: 2rem; align-items: center; }
-#message-input { flex: 1; background: transparent; border: none; border-bottom: 1px solid #111; color: #fff; padding: 1rem; font-size: 1.5rem; outline: none; font-family: var(--mono);}
-
-/* SETTINGS */
-#settings-vault { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; background: #010101; border: 1px solid var(--c4); padding: var(--u7); display: none; flex-direction: column; gap: var(--u3); z-index: 9500; }
+/* ── OVERLAYS ── */
+#settings-vault { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; background: #010101; border: 1px solid var(--c4); padding: var(--u7); display: none; flex-direction: column; gap: var(--u3); z-index: 9500; }
 #settings-vault.open { display: flex; }
 
-/* AUTH */
+#profile-overlay { position: absolute; top: 0; right: -50vw; bottom: 0; width: 50vw; background: #050508; border-left: 1px solid var(--border); transition: 0.5s; padding: var(--u11); display: flex; flex-direction: column; gap: var(--u7); z-index: 2000; }
+#profile-overlay.open { right: 0; }
+
+/* ── AUTH ── */
 #auth-screen { position: fixed; inset: 0; background: #000; z-index: 9000; display: flex; align-items: center; justify-content: center; }
-#gate-structure { width: 40vw; padding: var(--u11); background: #010101; border: 1px solid #111; border-radius: 1rem; }
-.btn-activate { margin-top: 5rem; background: transparent; border: 2px solid #333; color: #666; padding: 1.5rem 3rem; font-size: 1rem; letter-spacing: 8px; cursor: pointer; }
+#gate-structure { width: 40vw; padding: var(--u11); background: #010101; border: 1px solid #111; border-radius: 1rem; text-align: center; }
+.btn-activate { margin-top: 4rem; background: transparent; border: 2px solid #333; color: #666; padding: 1.2rem 2.5rem; font-size: 1rem; letter-spacing: 8px; cursor: pointer; }
+#purge-btn { margin-top: 2rem; background: transparent; border: none; color: #300; font-family: var(--mono); font-size: 0.6rem; cursor: pointer; letter-spacing: 4px; display: block; width: 100%; }
+
+/* ── MOBILE LIFECYCLE ── */
+@media (max-width: 1024px) {
+    html { font-size: 2.5vw; }
+    #sanctuary-root { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+    
+    #sidebar-container, #mirror-panel, #memory-panel { display: none; }
+    
+    #main-stage { margin: 0; width: 100vw; height: calc(100vh - 60px); display: flex; }
+    
+    #mobile-nav { 
+        display: flex; height: 60px; background: #000; border-top: 1px solid var(--border);
+        justify-content: space-around; align-items: center;
+    }
+    .mobile-nav-item { color: #444; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 2px; }
+    .mobile-nav-item.active { color: var(--gold); }
+    
+    .vault-body { max-width: 90%; }
+    #gate-structure { width: 90vw; }
+    #settings-vault { width: 95vw; }
+}
 
 @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-@media (max-width: 1200px) { #sanctuary-root { grid-template-columns: 80px 1fr; } #memory-panel, #mirror-panel { display: none; } }

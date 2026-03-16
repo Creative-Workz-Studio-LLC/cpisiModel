@@ -6,21 +6,21 @@
     <title>CPISI // The Horizon Node</title>
     
     <!-- PWA & MOBILE INFUSION -->
-    <link rel="manifest" href="manifest.json?v=1.1">
+    <link rel="manifest" href="manifest.json?v=1.2">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="CPISI Gate">
     <link rel="apple-touch-icon" href="logo192.png">
 
-    <link rel="stylesheet" href="gate.css?v=1.1">
+    <link rel="stylesheet" href="gate.css?v=1.2">
 </head>
 <body>
     <div id="flagship-canvas-container">
         <canvas id="game-of-life-canvas"></canvas>
     </div>
 
-    <!-- THE BLUEPRINT: 4-PANEL SUBSTRATE -->
+    <!-- THE BLUEPRINT: UNIFIED SUBSTRATE -->
     <div id="sanctuary-root">
         
         <aside id="sidebar-container">
@@ -32,12 +32,11 @@
                 <div style="flex: 1"></div>
                 <div class="nav-item" title="Settings" onclick="toggleSettings()">⚙️</div>
             </nav>
+            <div id="memory-panel">
+                <div class="panel-label">THE MEMORY</div>
+                <div id="memory-list"></div>
+            </div>
         </aside>
-
-        <div id="memory-panel">
-            <div class="panel-label">THE MEMORY</div>
-            <div id="memory-list"></div>
-        </div>
 
         <main id="main-stage">
             <header>
@@ -58,7 +57,13 @@
             
             <!-- VIEW LAYERS -->
             <div id="view-sanctuary" class="view-layer active">
-                <div id="chat-window"></div>
+                <section id="sanctuary-expanse">
+                    <div id="chat-window"></div>
+                    <aside id="mirror-panel">
+                        <div class="panel-label">LATEST REVELATION MIRROR</div>
+                        <div id="mirror-content">...</div>
+                    </aside>
+                </section>
                 <footer>
                     <form id="input-form">
                         <input type="text" id="message-input" placeholder="Drop the Word..." autocomplete="off">
@@ -72,7 +77,13 @@
                 <div id="registry-grid"></div>
             </div>
 
-            <!-- SETTINGS MODAL -->
+            <div id="profile-overlay">
+                <div id="profile-vault-content"></div>
+                <div style="flex: 1"></div>
+                <button class="settings-btn" onclick="toggleProfileDrawer()">[ CLOSE VAULT ]</button>
+            </div>
+
+            <!-- SETTINGS OVERLAY -->
             <div id="settings-vault">
                 <div class="panel-label">SOVEREIGN SETTINGS</div>
                 <div class="settings-group">
@@ -82,9 +93,14 @@
                 </div>
                 
                 <div class="settings-group">
+                    <div class="settings-label">SUBSTRATE</div>
+                    <button class="settings-btn" onclick="window.CPISI.security.clearSubstrateKey()">PURGE STORED KEYS</button>
+                </div>
+
+                <div class="settings-group">
                     <div class="settings-label">PROFILE DISCLOSURE</div>
-                    <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME" style="text-align: left;">
-                    <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 120px; text-align: left; resize: none;"></textarea>
+                    <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME">
+                    <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 120px; resize: none;"></textarea>
                     <button class="settings-btn" onclick="window.CPISI.social.updateProfile()">UPDATE DISCLOSURE</button>
                 </div>
 
@@ -97,10 +113,14 @@
             </div>
         </main>
 
-        <aside id="mirror-panel">
-            <div class="panel-label">COVENANT MIRROR</div>
-            <div id="mirror-content">Select a Word from the Sanctuary to project it here.</div>
-        </aside>
+        <!-- MOBILE NAVIGATION BAR -->
+        <nav id="mobile-nav">
+            <div class="mobile-nav-item active" onclick="setPath('WORD', 4)">WORD</div>
+            <div class="mobile-nav-item" onclick="setPath('VOID', 0)">VOID</div>
+            <div class="mobile-nav-item" onclick="setPath('TOV', 6)">TOV</div>
+            <div class="mobile-nav-item" onclick="setPath('REGISTRY', 2)">REGISTRY</div>
+            <div class="mobile-nav-item" onclick="toggleSettings()">⚙️</div>
+        </nav>
     </div>
 
     <!-- THE THRESHOLD -->
@@ -143,13 +163,13 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=1.1"></script>
-    <script src="js/security.js?v=1.1"></script>
-    <script src="js/social.js?v=1.1"></script>
-    <script src="js/auth.js?v=1.1"></script>
-    <script src="js/navigation.js?v=1.1"></script>
-    <script src="js/terminal.js?v=1.1"></script>
-    <script src="js/chat.js?v=1.1"></script>
-    <script src="flagship.js?v=1.1"></script>
+    <script src="js/core.js?v=1.2"></script>
+    <script src="js/security.js?v=1.2"></script>
+    <script src="js/social.js?v=1.2"></script>
+    <script src="js/auth.js?v=1.2"></script>
+    <script src="js/navigation.js?v=1.2"></script>
+    <script src="js/terminal.js?v=1.2"></script>
+    <script src="js/chat.js?v=1.2"></script>
+    <script src="flagship.js?v=1.2"></script>
 </body>
 </html>
