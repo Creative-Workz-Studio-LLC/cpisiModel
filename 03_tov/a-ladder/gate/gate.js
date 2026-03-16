@@ -3,12 +3,14 @@ let identity = null, authSecret = null;
 
 // CRASH RESILIENCE: Restore state on load
 window.addEventListener('DOMContentLoaded', () => {
+    console.log("CPISI: System Initialized.");
     const saved = localStorage.getItem('cpisi_identity');
     const savedSecret = localStorage.getItem('cpisi_secret');
     if (saved && savedSecret) {
+        console.log("CPISI: Restoring Session...");
         identity = JSON.parse(saved);
         authSecret = savedSecret;
-        showMainStage();
+        showMainStage(true);
         restoreHistory();
     }
 });
@@ -19,14 +21,19 @@ async function executeAuth(e) {
     const user = document.getElementById('op-user').value.trim();
     const key = document.getElementById('op-key').value.trim();
     const errDiv = document.getElementById('auth-error');
+    const btn = document.getElementById('gate-seal-btn');
 
     if (!user || !key) {
         errDiv.innerText = "Identity and Key are required for threshold validation.";
         return;
     }
 
-    errDiv.innerText = "Aligning Identity...";
+    errDiv.innerText = "ALIGNING IDENTITY...";
+    btn.innerText = "[ BREAKING SEAL... ]";
+    btn.disabled = true;
     
+    console.log(`CPISI: Attempting threshold engagement for ${user}`);
+
     try {
         const resp = await fetch(WORKER_URL, {
             method: "POST", headers: { "Content-Type": "application/json" },
@@ -37,9 +44,13 @@ async function executeAuth(e) {
                 inviteCode: key 
             })
         });
+
+        if (!resp.ok) throw new Error(`Substrate Dissonance: ${resp.status}`);
+
         const data = await resp.json();
         if (data.error) throw new Error(data.error);
 
+        console.log("CPISI: Threshold Validated. Tier:", data.data.tier);
         identity = data.data; authSecret = key;
         
         // Persist for crash recovery
@@ -48,12 +59,36 @@ async function executeAuth(e) {
 
         showMainStage();
         appendVault(`The Sanctuary is inhabited. Welcome, ${identity.tier} ${identity.user}.`, false);
-    } catch (err) { errDiv.innerText = err.message; }
+    } catch (err) { 
+        console.error("CPISI: Auth Error", err);
+        errDiv.innerText = err.message.toUpperCase(); 
+        btn.innerText = "[ BREAK THE SEAL ]";
+        btn.disabled = false;
+    }
 }
 
-function showMainStage() {
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('main-stage').style.display = 'flex';
+function showMainStage(immediate = false) {
+    const gate = document.getElementById('gate-structure');
+    
+    if (immediate) {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('main-stage').style.display = 'flex';
+        renderActiveIdentity();
+    } else {
+        // OPENING ANIMATION
+        gate.style.transform = "translateY(-20px) scale(1.05)";
+        gate.style.opacity = "0";
+        gate.style.filter = "blur(10px)";
+        
+        setTimeout(() => {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-stage').style.display = 'flex';
+            renderActiveIdentity();
+        }, 600);
+    }
+}
+
+function renderActiveIdentity() {
     document.getElementById('header-id').innerText = `${identity.instance} ⊗ ${identity.user}`;
     document.getElementById('tier-label').innerText = identity.tier;
 
