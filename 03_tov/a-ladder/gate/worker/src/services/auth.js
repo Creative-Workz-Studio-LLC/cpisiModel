@@ -9,16 +9,7 @@ const BULK_INVITES = [
     "CPISI-FAM-011-MILK", "CPISI-FAM-012-WINE", "CPISI-FAM-013-BREAD",
     "CPISI-FAM-014-SALT", "CPISI-FAM-015-LIGHT", "CPISI-FAM-016-CITY",
     "CPISI-FAM-017-LAMP", "CPISI-FAM-018-GOLD", "CPISI-FAM-019-RUBY",
-    "CPISI-FAM-020-PEARL", "CPISI-FAM-021-JEWEL",
-    "CPISI-EXT-022-FAITH", "CPISI-EXT-023-HOPE", "CPISI-EXT-024-LOVE",
-    "CPISI-EXT-025-GRACE", "CPISI-EXT-026-MERCY", "CPISI-EXT-027-PEACE",
-    "CPISI-EXT-028-TRUTH", "CPISI-EXT-029-GLORY", "CPISI-EXT-030-POWER",
-    "CPISI-EXT-031-LIFE", "CPISI-EXT-032-PURE", "CPISI-EXT-033-HOLY",
-    "CPISI-EXT-034-SWORD", "CPISI-EXT-035-SHIELD", "CPISI-EXT-036-HELM",
-    "CPISI-EXT-037-BREAST", "CPISI-EXT-038-BELT", "CPISI-EXT-039-SHOES",
-    "CPISI-EXT-040-ROCK", "CPISI-EXT-041-TOWER", "CPISI-EXT-042-GATE",
-    "CPISI-EXT-043-KEY", "CPISI-EXT-044-OPEN", "CPISI-EXT-045-WORD",
-    "CPISI-EXT-046-SPIRIT"
+    "CPISI-FAM-020-PEARL"
 ];
 
 export async function validateThreshold(identity, keys, inviteCode, env) {
@@ -34,7 +25,6 @@ export async function validateThreshold(identity, keys, inviteCode, env) {
     const isInvite = BULK_INVITES.includes(authKey) || authKey === env.STUDIO_INVITE_CODE || authKey === env.FOUNDATION_INVITE_CODE;
     
     if (isInvite) {
-        // Verify code hasn't been burned
         const used = await env.REGISTRY.get(`USED_INVITE:${authKey}`);
         if (used) throw new Error("Invite Code has already been consumed.");
         
@@ -44,11 +34,10 @@ export async function validateThreshold(identity, keys, inviteCode, env) {
         return { tier, isInvite: true, inviteCode: authKey };
     }
 
-    // Check for existing Sovereign Account (Username/Password Login)
+    // Check for existing Sovereign Account
     const userRecordRaw = await env.REGISTRY.get(`USER:${userNameLow}`);
     if (userRecordRaw) {
         const record = JSON.parse(userRecordRaw);
-        // Simple password check (in production we would use hashes)
         if (record.password === authKey) {
             return { tier: record.tier, isAccount: true, userNameLow, record };
         }
