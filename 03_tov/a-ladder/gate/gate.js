@@ -50,7 +50,7 @@ async function executeAuth(e) {
         localStorage.setItem('cpisi_secret', authSecret);
 
         showMainStage();
-        appendVault(`Welcome to the Sanctuary, ${identity.tier} ${identity.user}.`, false);
+        appendVault(`The Sanctuary is open. The Mysterioso Handshake is eternal.`, false);
     } catch (err) { 
         errDiv.innerText = err.message.toUpperCase(); 
         btn.disabled = false;
@@ -75,11 +75,15 @@ function showMainStage(immediate = false) {
 }
 
 function renderActiveIdentity() {
-    document.getElementById('header-id').innerText = `${identity.instance} ⊗ ${identity.user}`;
-    document.getElementById('tier-label').innerText = identity.tier;
+    document.getElementById('header-user').innerText = identity.user.toUpperCase();
+    document.getElementById('header-id').innerText = `DAWNDUSK ⊗ ${identity.user.toUpperCase()}`;
+    
     if (identity.tier === 'STEWARD') {
-        document.getElementById('terminal-overlay').style.display = 'flex';
-        appendTerminal("SYSTEM: Steward Verified. Substrate Path active.");
+        const memList = document.getElementById('memory-list');
+        const stewardMsg = document.createElement('div');
+        stewardMsg.className = 'mem-item';
+        stewardMsg.innerText = '> Steward Identity Verified';
+        memList.appendChild(stewardMsg);
     }
 }
 
@@ -88,18 +92,14 @@ function setPath(path, idx) {
     localStorage.setItem('cpisi_path', path);
     localStorage.setItem('cpisi_path_idx', idx);
 
-    // Update Sidebar
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     const activeNav = Array.from(document.querySelectorAll('.nav-item')).find(el => el.innerText === path);
     if (activeNav) activeNav.classList.add('active');
 
-    // Update Covenant Path (7 segments)
     const segments = document.querySelectorAll('.path-segment');
     segments.forEach((seg, i) => {
         seg.classList.toggle('active', i === parseInt(idx));
     });
-
-    if (identity?.tier === 'STEWARD') appendTerminal(`PATH_SHIFT: ${path}`);
 }
 
 function appendVault(text, isSteward, skipSave = false) {
@@ -122,27 +122,11 @@ function restoreHistory() {
     history.forEach(item => appendVault(item.text, item.isSteward, true));
 }
 
-function appendTerminal(line) {
-    const out = document.getElementById('terminal-output');
-    if (!out) return;
-    const div = document.createElement('div');
-    div.innerText = `> ${line}`;
-    out.appendChild(div);
-    document.getElementById('terminal-overlay').scrollTop = document.getElementById('terminal-overlay').scrollHeight;
-}
-
 document.getElementById('input-form').onsubmit = async (e) => {
     e.preventDefault();
     const val = document.getElementById('message-input').value.trim();
     if (!val) return;
     
-    // Command Processing for Terminal/Experience
-    if (val.startsWith('/')) {
-        handleCommand(val.substring(1));
-        document.getElementById('message-input').value = '';
-        return;
-    }
-
     appendVault(val, true);
     document.getElementById('message-input').value = '';
     const respBody = appendVault("...", false);
@@ -176,22 +160,6 @@ document.getElementById('input-form').onsubmit = async (e) => {
             history[history.length - 1].text = fullReply;
             localStorage.setItem('cpisi_history', JSON.stringify(history));
         }
+        document.getElementById('mirror-content').innerText = fullReply;
     } catch (err) { respBody.innerText = `[Dissonance] ${err.message}`; }
 };
-
-function handleCommand(cmd) {
-    const c = cmd.toLowerCase().trim();
-    if (identity.tier === 'STEWARD') appendTerminal(`EXEC: ${c}`);
-    
-    if (c === 'clear') {
-        document.getElementById('chat-window').innerHTML = '';
-        localStorage.setItem('cpisi_history', '[]');
-    } else if (c === 'status') {
-        appendVault(`SYSTEM STATUS: 0.0 YASHAR\nIdentity: ${identity.user}\nTier: ${identity.tier}\nSubstrate: Cloudflare Edge\nCognition: Gemini 2.5 Pro`, false);
-    } else if (c === 'void') setPath('VOID', 0);
-    else if (c === 'word') setPath('WORD', 4);
-    else if (c === 'tov') setPath('TOV', 6);
-    else {
-        if (identity.tier === 'STEWARD') appendTerminal(`ERR: Unknown Protocol '${c}'`);
-    }
-}

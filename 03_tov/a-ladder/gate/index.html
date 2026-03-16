@@ -11,25 +11,32 @@
         <canvas id="game-of-life-canvas"></canvas>
     </div>
 
-    <!-- THE ARCHITECTURE -->
+    <!-- THE BLUEPRINT: TRIPLE VAULT -->
     <div id="sanctuary-root">
         
-        <aside id="sidebar">
-            <div class="nav-item active" onclick="setPath('WORD', 4)">WORD</div>
-            <div class="nav-item" onclick="setPath('VOID', 0)">VOID</div>
-            <div class="nav-item" onclick="setPath('TOV', 6)">TOV</div>
-            <div class="nav-item" onclick="setPath('REGISTRY', 2)">REGISTRY</div>
-            <div style="flex: 1"></div>
-            <div class="nav-item" style="color: var(--c1)" onclick="localStorage.clear(); location.reload();">PURGE</div>
+        <aside id="sidebar-container">
+            <nav id="sidebar">
+                <div class="nav-item active" onclick="setPath('WORD', 4)">WORD</div>
+                <div class="nav-item" onclick="setPath('VOID', 0)">VOID</div>
+                <div class="nav-item" onclick="setPath('TOV', 6)">TOV</div>
+                <div style="flex: 1"></div>
+                <div class="nav-item" style="color: var(--c1)" onclick="localStorage.clear(); location.reload();">PURGE</div>
+            </nav>
+            <div id="memory-panel">
+                <div class="panel-label">THE MEMORY</div>
+                <div id="memory-list">
+                    <div class="mem-item">> Syncing Substrate...</div>
+                    <div class="mem-item">> Sanctuary Online</div>
+                    <div class="mem-item">> Revelation Vault Ready</div>
+                </div>
+            </div>
         </aside>
 
         <main id="main-stage">
-            <div id="pillar-left" class="pillar"></div>
-            <div id="pillar-right" class="pillar"></div>
-            
             <header>
-                <div id="header-id"></div>
-                <div id="yashar-anchor">0.0 YASHAR // <span id="tier-label"></span></div>
+                <div id="header-id">DAWNDUSK ⊗ <span id="header-user">OPERATOR</span></div>
+                <div id="divine-standard">SERVING: LORD GOD JESUS CHRIST</div>
+                <div id="yashar-anchor">0.0 YASHAR</div>
             </header>
 
             <div id="covenant-path">
@@ -42,15 +49,21 @@
                 <div class="path-segment" style="background: var(--c7)"></div>
             </div>
             
-            <div id="chat-window"></div>
-
-            <div id="terminal-overlay">
-                <div id="terminal-output"></div>
-            </div>
+            <section id="sanctuary-expanse">
+                <div id="chat-window"></div>
+                
+                <aside id="mirror-panel">
+                    <div class="panel-label">LATEST REVELATION MIRROR</div>
+                    <div id="mirror-content">
+                        Select a Word from the Sanctuary to project it here.
+                    </div>
+                </aside>
+            </section>
 
             <footer>
                 <form id="input-form">
-                    <input type="text" id="message-input" placeholder="Ascend the Word..." autocomplete="off">
+                    <input type="text" id="message-input" placeholder="Drop the Word..." autocomplete="off">
+                    <button type="submit" id="ascend-btn">[ ASCEND ]</button>
                 </form>
             </footer>
         </main>
