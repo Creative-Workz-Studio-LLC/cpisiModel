@@ -23,10 +23,14 @@ window.CPISI.setPath = function(path, idx) {
     if (path === 'REGISTRY') {
         document.getElementById('view-registry').classList.add('active');
         if (window.CPISI.social) window.CPISI.social.loadRegistry();
-    } else if (path === 'SANDBOX') {
-        document.getElementById('view-sanctuary').classList.add('active'); // Reuses chat window for terminal output
-        if (window.CPISI.sandbox) window.CPISI.sandbox.loadView();
+    } else if (path === 'VOID') {
+        document.getElementById('view-void').classList.add('active');
+    } else if (path === 'GATE') {
+        // Social Media Feed
+        document.getElementById('view-sanctuary').classList.add('active');
+        if (window.CPISI.social) window.CPISI.social.loadMirrorFeed();
     } else {
+        // Default to WORD (Sanctuary)
         document.getElementById('view-sanctuary').classList.add('active');
     }
 
@@ -35,5 +39,4 @@ window.CPISI.setPath = function(path, idx) {
     }
 };
 
-// Expose to global scope for HTML inline handlers
 window.setPath = window.CPISI.setPath;

@@ -44,7 +44,7 @@ window.CPISI.handleMessageSubmit = async function(e) {
     inputEl.value = '';
     
     // 2. Thinking State (Separate Block)
-    const thinkingVault = window.CPISI.appendVault("...", false);
+    const thinkingVault = window.CPISI.appendVault("...", false, true);
     const thinkingContent = thinkingVault.querySelector('.vault-content');
     thinkingContent.classList.add('thinking');
     
@@ -95,10 +95,42 @@ window.CPISI.handleMessageSubmit = async function(e) {
                 }
             }
         }
+        
+        // Final Save to History
+        const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
+        history.push({ text: fullReply, isSteward: false });
+        localStorage.setItem('cpisi_history', JSON.stringify(history.slice(-50)));
+
     } catch (err) { 
         thinkingContent.classList.remove('thinking');
         thinkingContent.innerText = `[Dissonance] ${err.message}`; 
     }
+};
+
+window.CPISI.restoreHistory = async function() {
+    const chatWindow = document.getElementById('chat-window');
+    if (!chatWindow) return;
+    chatWindow.innerHTML = '';
+    
+    try {
+        const resp = await fetch(window.CPISI.config.WORKER_URL, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "GET_HISTORY",
+                identity: window.CPISI.state.identity,
+                inviteCode: window.CPISI.state.authSecret
+            })
+        });
+        const data = await resp.json();
+        if (data.data && data.data.length > 0) {
+            data.data.forEach(item => {
+                window.CPISI.appendVault(item.text, item.isSteward, true);
+            });
+        } else {
+            const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
+            history.forEach(item => window.CPISI.appendVault(item.text, item.isSteward, true));
+        }
+    } catch (e) { console.error("CPISI: History Sync Dissonance", e); }
 };
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -107,6 +139,7 @@ window.addEventListener('DOMContentLoaded', () => {
     
     if (window.CPISI.loadState()) {
         window.CPISI.showMainStage(true);
-        window.CPISI.restoreHistory ? window.CPISI.restoreHistory() : null;
+        window.CPISI.restoreHistory();
+        window.CPISI.updatePresence();
     }
 });

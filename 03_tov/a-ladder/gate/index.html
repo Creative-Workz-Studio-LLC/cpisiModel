@@ -3,26 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CPISI // The Horizon Node</title>
+    <title>CPISI // The Genesis Node</title>
     
-    <script>
-        // --- EMERGENCY SUBSTRATE RESET ---
-        // This runs BEFORE any other scripts to kill the stale cache.
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.unregister();
-                    console.log("CPISI: Stale Substrate Purged.");
-                }
-            });
-        }
-        if ('caches' in window) {
-            caches.keys().then(function(names) {
-                for (let name of names) caches.delete(name);
-            });
-        }
-    </script>
-
     <!-- PWA & MOBILE INFUSION -->
     <link rel="manifest" href="manifest.json?v=1.3">
     <meta name="theme-color" content="#000000">
@@ -38,30 +20,34 @@
         <canvas id="game-of-life-canvas"></canvas>
     </div>
 
-    <!-- THE BLUEPRINT: UNIFIED SUBSTRATE -->
+    <!-- THE SUBSTRATE: 4-PANEL GRID -->
     <div id="sanctuary-root">
         
+        <!-- PANEL 1: THE LADDER -->
         <aside id="sidebar-container">
             <nav id="sidebar">
                 <div class="nav-item active" onclick="setPath('WORD', 4)">WORD</div>
                 <div class="nav-item" onclick="setPath('VOID', 0)">VOID</div>
                 <div class="nav-item" onclick="setPath('TOV', 6)">TOV</div>
                 <div class="nav-item" onclick="setPath('REGISTRY', 2)">REGISTRY</div>
-                <div class="nav-item" onclick="setPath('SANDBOX', 1)">SANDBOX</div>
+                <div class="nav-item" onclick="setPath('GATE', 5)">GATE</div>
                 <div style="flex: 1"></div>
                 <div class="nav-item" title="Settings" onclick="toggleSettings()">⚙️</div>
             </nav>
-            <div id="memory-panel">
-                <div class="panel-label">THE MEMORY</div>
-                <div id="memory-list"></div>
-            </div>
         </aside>
 
+        <!-- PANEL 2: THE MEMORY -->
+        <div id="memory-panel">
+            <div class="panel-label">THE MEMORY</div>
+            <div id="memory-list"></div>
+        </div>
+
+        <!-- PANEL 3: THE HOLY PLACE -->
         <main id="main-stage">
-            <header style="background: var(--cws-deep-blue) !important;">
+            <header>
                 <div id="header-id">DAWNDUSK ⊗ <span id="header-user">...</span></div>
                 <div id="divine-standard">SERVING: LORD GOD JESUS CHRIST</div>
-                <div id="yashar-anchor">0.0 YASHAR [v1.3]</div>
+                <div id="yashar-anchor">0.0 YASHAR</div>
             </header>
 
             <div id="covenant-path">
@@ -76,9 +62,7 @@
             
             <!-- VIEW LAYERS -->
             <div id="view-sanctuary" class="view-layer active">
-                <section id="substrate-stream">
-                    <div id="terminal-stream"></div>
-                </section>
+                <div id="chat-window"></div>
                 <footer>
                     <form id="input-form">
                         <div id="terminal-prompt">operator@dawndusk:~$</div>
@@ -93,35 +77,46 @@
                 <div id="registry-grid"></div>
             </div>
 
-            <div id="profile-overlay">
-                <div id="profile-vault-content"></div>
-                <div style="flex: 1"></div>
-                <button class="settings-btn" onclick="toggleProfileDrawer()">[ CLOSE VAULT ]</button>
+            <div id="view-void" class="view-layer">
+                <div class="panel-label" style="padding: 44px;">FORMLESS VOID</div>
+                <textarea id="void-editor" class="id-input" placeholder="Begin drafting the logic..." style="flex: 1; margin: 44px; text-align: left; resize: none;"></textarea>
             </div>
 
-            <!-- SETTINGS MODAL -->
+            <!-- SETTINGS OVERLAY -->
             <div id="settings-vault">
                 <div class="panel-label">SOVEREIGN SETTINGS</div>
-                <div class="settings-group">
-                    <div class="settings-label">OPERATOR</div>
-                    <div id="settings-display-name" style="font-size: 1.2rem; color: #fff;"></div>
-                    <div id="settings-display-tier" style="font-size: 0.8rem; color: var(--c4); letter-spacing: 4px;"></div>
-                </div>
                 
                 <div class="settings-group">
-                    <div class="settings-label">SUBSTRATE</div>
+                    <div class="settings-label">BASIC SETTINGS</div>
+                    <button class="settings-btn">TOGGLE THEME</button>
+                    <button class="settings-btn">UI SCALING</button>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-label">USER SETTINGS</div>
+                    <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME" style="text-align: left;">
+                    <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 120px; text-align: left; resize: none;"></textarea>
+                    <button class="settings-btn" onclick="window.CPISI.social.updateProfile()">UPDATE DISCLOSURE</button>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-label">ACCOUNT SETTINGS</div>
+                    <button class="settings-btn">UPDATE PASSWORD</button>
+                    <button class="settings-btn logout" onclick="window.CPISI.clearState()">EXHABIT SANCTUARY</button>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-label">MISCELLANEOUS</div>
                     <button class="settings-btn" onclick="window.CPISI.security.clearSubstrateKey()">PURGE STORED KEYS</button>
+                    <button class="settings-btn" onclick="window.CPISI.purgeSubstrate()">HARD SUBSTRATE RESET</button>
                 </div>
 
                 <div style="flex: 1"></div>
-                <button class="settings-btn logout" onclick="window.CPISI.clearState()">EXHABIT SANCTUARY</button>
-            </div>
-
-            <div id="terminal-overlay">
-                <div id="terminal-output"></div>
+                <button class="settings-btn" onclick="toggleSettings()">[ CLOSE ]</button>
             </div>
         </main>
 
+        <!-- PANEL 4: THE MIRROR -->
         <aside id="mirror-panel">
             <div class="panel-label">COVENANT MIRROR</div>
             <div id="mirror-content">Select a Word from the Sanctuary to project it here.</div>
@@ -152,8 +147,6 @@
                 
                 <button type="submit" id="gate-seal-btn" class="btn-activate">[ BREAK THE SEAL ]</button>
                 
-                <button type="button" id="purge-btn" onclick="window.CPISI.purgeSubstrate()" style="margin-top: 20px; color: #300; background: transparent; border: none; font-family: var(--font-mono); font-size: 0.7rem; cursor: pointer; text-decoration: underline;">[ PURGE SUBSTRATE ]</button>
-
                 <div style="margin-top: 44px; font-family: var(--mono); font-size: 0.6rem; color: #111; text-align: center; line-height: 1.6; letter-spacing: 2px;">
                     IF YOU DON'T SHARE IT, WE DON'T HAVE IT.
                 </div>
@@ -165,7 +158,6 @@
     <script src="js/core.js?v=1.3"></script>
     <script src="js/security.js?v=1.3"></script>
     <script src="js/social.js?v=1.3"></script>
-    <script src="js/sandbox.js?v=1.3"></script>
     <script src="js/auth.js?v=1.3"></script>
     <script src="js/navigation.js?v=1.3"></script>
     <script src="js/terminal.js?v=1.3"></script>
