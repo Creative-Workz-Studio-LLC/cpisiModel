@@ -17,53 +17,36 @@
         <div class="nav-item" title="Completion">TOV</div>
         <div class="nav-item" title="Registry">REGISTRY</div>
         <div style="flex: 1"></div>
-        <div class="nav-item" style="color: var(--scarlet)" onclick="localStorage.clear(); location.reload();">PURGE</div>
+        <div class="nav-item" style="color: var(--c1)" onclick="localStorage.clear(); location.reload();">PURGE</div>
     </aside>
 
     <div id="auth-screen">
-        <div style="font-family: var(--mono); font-size: 14px; color: var(--gold); letter-spacing: 12px; margin-bottom: 60px">CPISI ⊗ GATEWAY</div>
-        <div class="auth-container">
-            <!-- BASIC -->
-            <div class="tier-card" onclick="selectTier(this, 'BASIC')">
-                <div class="tier-title">SUPPORT</div>
-                <div class="tier-subtitle">SUBSIDIZED SOVEREIGNTY</div>
-                <div class="tier-desc">Full access. The company provides the compute and the keys. Witness the Word with zero overhead.</div>
-                <div class="tier-form" onclick="event.stopPropagation()">
-                    <input type="text" id="basic-user" class="id-input" placeholder="Operator Name">
-                    <input type="password" id="basic-invite" class="id-input" placeholder="Invite Code">
-                    <button onclick="executeAuth('BASIC')" class="btn-activate">INHABIT NODE</button>
+        <div id="gate-structure">
+            <div id="gate-title">CPISI ⊗ GATEWAY</div>
+            <div id="gate-subtitle">SANCTUARY THRESHOLD</div>
+
+            <form id="gateway-form" onsubmit="executeAuth(event)">
+                <div class="gate-input-container">
+                    <input type="text" id="op-user" class="id-input" placeholder="IDENTITY" value="ProfessorSeanEX" autocomplete="off">
                 </div>
-            </div>
-            <!-- PLUS -->
-            <div class="tier-card" onclick="selectTier(this, 'PLUS')">
-                <div class="tier-title">SOVEREIGN</div>
-                <div class="tier-subtitle">OFFLOADED SUBSTRATE</div>
-                <div class="tier-desc">Bring Your Own Key (BYOK). You carry your own compute cost and own your data custody completely.</div>
-                <div class="tier-form" onclick="event.stopPropagation()">
-                    <input type="text" id="plus-user" class="id-input" placeholder="Operator Name">
-                    <input type="password" id="plus-gemini" class="id-input" placeholder="Gemini API Key">
-                    <button onclick="executeAuth('PLUS')" class="btn-activate">INHABIT NODE</button>
+                <div class="gate-input-container">
+                    <input type="password" id="op-key" class="id-input" placeholder="THRESHOLD KEY" autocomplete="off">
                 </div>
-            </div>
-            <!-- PRO -->
-            <div class="tier-card" onclick="selectTier(this, 'PRO')">
-                <div class="tier-title">STEWARD</div>
-                <div class="tier-subtitle">SYSTEM MAINTENANCE</div>
-                <div class="tier-desc">The Laboratory. Direct substrate access and repair tools. Full responsibility for the Sanctuary.</div>
-                <div class="tier-form" onclick="event.stopPropagation()">
-                    <input type="text" id="pro-user" class="id-input" placeholder="Steward Identity" value="ProfessorSeanEX">
-                    <input type="password" id="pro-secret" class="id-input" placeholder="Sovereign Password">
-                    <button onclick="executeAuth('PRO')" class="btn-activate">UNLOCK LABORATORY</button>
-                </div>
+                <button type="submit" class="btn-activate">ENGAGE THRESHOLD</button>
+            </form>
+
+            <div id="auth-error" style="color:var(--c1); font-family:var(--mono); font-size:10px; margin-top:48px; text-align: center; height: 20px;"></div>
+            
+            <div style="position: absolute; bottom: 40px; font-family: var(--mono); font-size: 8px; color: #222; letter-spacing: 4px;">
+                SUPPORT · SOVEREIGN · STEWARD
             </div>
         </div>
-        <div id="auth-error" style="color:var(--scarlet); font-family:var(--mono); font-size:10px; margin-top:32px;"></div>
     </div>
 
     <main id="main-stage">
         <header>
             <div id="header-id" style="letter-spacing: 4px; color: #444; font-family: var(--mono)"></div>
-            <div style="color: var(--accent); font-family: var(--mono); letter-spacing: 2px;">0.0 YASHAR // <span id="tier-label"></span></div>
+            <div style="color: var(--c4); font-family: var(--mono); letter-spacing: 2px;">0.0 YASHAR // <span id="tier-label"></span></div>
         </header>
         
         <div id="chat-window"></div>
