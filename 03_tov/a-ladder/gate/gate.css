@@ -1,131 +1,72 @@
-/* ── CWS Brand & SSH-Native Substrate ── */
 :root {
     --c1: #ff0000; --c2: #ff8800; --c3: #ffcc00; --c4: #00ff88; --c5: #0088ff; --c6: #4400ff; --c7: #aa00ff;
-    --bg-dark: #000000;
-    --bg-panel: #050508;
-    --bg-overlay: #0a0a0f;
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.15);
+    --bg: #000000; --panel: #020202; --border: rgba(255,255,255,0.05); --text: #d0d0d0; --mono: 'Fira Code', monospace;
+    --gold: #D69E2E;
+
+    /* MACRO LUCAS SCALING (N=11) - FOR 2560x1600 */
+    --u1: 11px;   
+    --u3: 33px;   
+    --u4: 44px;   
+    --u7: 77px;   
+    --u11: 121px; /* Vault Padding (N^2) */
+    --u18: 198px; /* Layout Gap */
     
-    --cws-deep-blue: #1A365D;
-    --cws-gold: #D69E2E;
-    --accent-emerald: #00ff88;
-    --accent-sapphire: #0088ff;
-    
-    --text-main: #e2e8f0;
-    --text-muted: #444;
-    
-    --font-ui: 'Inter', system-ui, sans-serif;
-    --font-mono: 'Fira Code', 'Courier New', monospace;
+    --font-base: 22px;
+    --font-header: 14px;
+    --font-label: 11px;
 }
 
-html { font-size: 16px; scroll-behavior: smooth; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    font-family: var(--font-ui);
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    height: 100vh; width: 100vw; overflow: hidden;
+body { 
+    background: var(--bg); color: var(--text); 
+    font-family: 'Inter', system-ui, sans-serif; 
+    height: 100vh; overflow: hidden; 
 }
 
-#flagship-canvas-container { position: fixed; inset: 0; z-index: -10; opacity: 0.03; pointer-events: none; }
-
-/* ── LAYOUT FOUNDATION ── */
-#sanctuary-root { display: flex; height: 100vh; width: 100vw; }
-
-#sidebar-container {
-    display: flex; flex-direction: column; min-width: 280px;
-    background-color: #000; border-right: 1px solid var(--border-subtle);
-    z-index: 1000;
-}
-#sidebar { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 3rem 0; gap: 2.5rem; }
-.nav-item { color: #222; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2rem; cursor: pointer; transition: 0.3s; writing-mode: vertical-rl; transform: rotate(180deg); }
-.nav-item:hover, .nav-item.active { color: var(--cws-gold); text-shadow: 0 0 10px rgba(214, 158, 46, 0.5); }
-
-#memory-panel { padding: 3rem 1.5rem; background-color: #020202; border-top: 1px solid #111; height: 40%; overflow-y: auto; }
-.panel-label { font-family: var(--font-mono); font-size: 0.65rem; color: #333; letter-spacing: 3px; margin-bottom: 2rem; text-transform: uppercase; }
-.mem-item { font-family: var(--font-mono); font-size: 0.8rem; color: #444; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.75rem; }
-.presence-pulse { width: 8px; height: 8px; border-radius: 50%; background-color: var(--accent-emerald); box-shadow: 0 0 10px var(--accent-emerald); animation: pulse 2s infinite; }
-
-/* ── THE STAGE (FIXED VIEWPORT) ── */
-#main-stage { display: flex; flex-direction: column; flex: 1; min-width: 0; height: 100vh; background: #000; position: relative; overflow: hidden; }
-header { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; border-bottom: 1px solid var(--border-subtle); font-family: var(--font-mono); font-size: 0.75rem; flex-shrink: 0; }
-#divine-standard { color: var(--cws-gold); letter-spacing: 8px; font-size: 0.7rem; position: absolute; left: 50%; transform: translateX(-50%); }
-
-/* ── VIEW LAYERS (FLEX FOUNDATION) ── */
-.view-layer {
-    display: none; flex: 1; flex-direction: column; overflow: hidden; position: relative; min-height: 0;
-}
-.view-layer.active {
-    display: flex;
+/* THE 4-PANEL SUBSTRATE GRID */
+#sanctuary-root {
+    display: grid;
+    grid-template-columns: 88px 330px 1fr 440px; 
+    width: 100vw; height: 100vh;
 }
 
-/* ── SUBSTRATE STREAM (SCROLLABLE AREA) ── */
-#substrate-stream {
-    flex: 1;
-    overflow-y: auto;
-    padding: 4rem 2rem;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* CRITICAL: Enables child to scroll within flex */
-    -webkit-overflow-scrolling: touch;
-}
+/* 1. SIDEBAR (LADDER) */
+#sidebar-container { border-right: 1px solid var(--border); display: flex; background: #000; }
+#sidebar { width: 100%; display: flex; flex-direction: column; align-items: center; padding: var(--u11) 0; gap: var(--u7); }
+.nav-item { color: #333; cursor: pointer; font-size: 11px; font-family: var(--mono); letter-spacing: 4px; transition: 0.3s; }
+.nav-item:hover, .nav-item.active { color: var(--gold); }
 
-#terminal-stream { display: flex; flex-direction: column; gap: 1.5rem; width: 100%; max-width: 1200px; margin: 0 auto; }
+/* 2. MEMORY (TELEMETRY) */
+#memory-panel { background: #020203; border-right: 1px solid var(--border); padding: var(--u11) var(--u3); overflow-y: auto; }
+.panel-label { font-family: var(--mono); font-size: 9px; color: #444; letter-spacing: 4px; margin-bottom: var(--u7); text-transform: uppercase; }
+.mem-item { font-family: var(--mono); font-size: 13px; color: #555; margin-bottom: 22px; display: flex; align-items: center; gap: 11px; }
+.presence-pulse { width: 11px; height: 11px; border-radius: 50%; background: var(--c4); box-shadow: 0 0 15px var(--c4); animation: pulse 2s infinite; }
 
-/* VAULT BLOCKS */
-.vault-body {
-    max-width: 850px; width: 100%; background-color: var(--bg-panel); border: 1px solid var(--border-subtle);
-    padding: 2.5rem; border-left: 3px solid var(--accent-emerald); align-self: flex-start;
-    line-height: 1.8; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transition: transform 0.2s;
-}
-.vault-body.steward { align-self: flex-end; border-left: none; border-right: 3px solid var(--accent-sapphire); background-color: #080a15; }
-.vault-seal { position: absolute; top: 1rem; right: 1rem; cursor: pointer; color: #111; opacity: 0.4; transition: 0.3s; }
-.vault-seal:hover { color: var(--cws-gold); opacity: 1; }
+/* 3. MAIN STAGE (HOLY PLACE) */
+#main-stage { display: none; flex-direction: column; background: #000; position: relative; }
+header { height: 88px; padding: 0 var(--u11); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 12px; }
+#divine-standard { color: var(--gold); letter-spacing: 11px; font-size: 11px; text-transform: uppercase; position: absolute; left: 50%; transform: translateX(-50%); }
 
-.thinking { animation: thinking 1.5s infinite; color: #333; }
-@keyframes thinking { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+.view-layer { display: none; flex: 1; overflow: hidden; position: relative; flex-direction: column; }
+.view-layer.active { display: flex; }
 
-/* ── FOOTER (LOCKED AT BOTTOM) ── */
-footer {
-    padding: 1.5rem 2rem; border-top: 1px solid var(--border-subtle); background: #000; flex-shrink: 0;
-}
-#input-form { display: flex; gap: 1.5rem; align-items: center; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid #111; padding-bottom: 0.5rem; }
-#terminal-prompt { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent-emerald); white-space: nowrap; }
-#message-input { flex: 1; background: transparent; border: none; color: #fff; font-size: 1.2rem; padding: 0.5rem; outline: none; font-family: var(--font-mono); }
-#ascend-btn { background: transparent; border: none; color: var(--cws-gold); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 4px; cursor: pointer; }
+#chat-window { flex: 1; overflow-y: auto; padding: var(--u18) var(--u11); display: flex; flex-direction: column; gap: var(--u11); }
+.vault-body { max-width: 880px; width: 100%; background: #030303; border: 1px solid var(--border); padding: var(--u11); font-size: 22px; border-left: 11px solid var(--c4); align-self: flex-start; line-height: 1.8; position: relative; box-shadow: 0 44px 88px rgba(0,0,0,0.8); }
+.vault-body.steward { align-self: flex-end; border-left: none; border-right: 11px solid var(--c5); background: #050815; }
 
-/* MIRROR PANEL (SIDE) */
-#mirror-panel { width: 380px; min-width: 300px; background-color: #020202; border-left: 1px solid var(--border-subtle); padding: 3rem 1.5rem; overflow-y: auto; flex-shrink: 0; }
+/* 4. MIRROR (SOCIAL) */
+#mirror-panel { background: #020203; border-left: 1px solid var(--border); padding: var(--u11) var(--u3); overflow-y: auto; }
+#mirror-content { font-family: var(--mono); font-size: 14px; color: #555; line-height: 1.8; }
 
-/* REGISTRY GRID */
-#view-registry { padding: 3rem; overflow-y: auto; }
-#registry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
-.operator-card { background-color: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 2rem; cursor: pointer; transition: all 0.3s; }
-.operator-card:hover { border-color: var(--cws-gold); transform: translateY(-5px); }
-
-/* OVERLAYS */
-#settings-vault { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: #020203; border: 1px solid var(--accent-emerald); border-radius: 12px; padding: 3rem; display: none; flex-direction: column; gap: 2.5rem; z-index: 9500; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75); }
-#settings-vault.open { display: flex; }
-
-#profile-overlay { position: fixed; top: 0; right: -100%; bottom: 0; width: 100%; max-width: 500px; background-color: var(--bg-panel); border-left: 1px solid var(--border-strong); transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 3rem; display: flex; flex-direction: column; gap: 2rem; z-index: 8000; box-shadow: -10px 0 30px rgba(0,0,0,0.5); overflow-y: auto; }
-#profile-overlay.open { right: 0; }
+/* FOOTER (LOCKED) */
+footer { padding: var(--u7) var(--u11); background: #000; border-top: 1px solid var(--border); }
+#input-form { max-width: 1100px; margin: 0 auto; display: flex; gap: 44px; align-items: center; border-bottom: 2px solid #111; }
+#message-input { flex: 1; background: transparent; border: none; color: #fff; padding: 22px; font-size: 24px; outline: none; font-family: var(--mono); }
+#ascend-btn { background: transparent; border: none; color: var(--gold); font-family: var(--mono); font-size: 14px; letter-spacing: 4px; cursor: pointer; }
 
 /* AUTH */
-#auth-screen { position: fixed; inset: 0; background-color: var(--bg-dark); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-#gate-structure { width: 100%; max-width: 480px; background-color: var(--bg-panel); border: 1px solid var(--border-strong); border-radius: 12px; padding: 3rem; text-align: center; position: relative; }
-#gate-structure::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 12px 12px 0 0; background: linear-gradient(to right, var(--c1), var(--c4), var(--c5), var(--c7)); }
+#auth-screen { position: fixed; inset: 0; background: #000; z-index: 9000; display: flex; align-items: center; justify-content: center; }
+#gate-structure { width: 660px; padding: var(--u18) var(--u11); background: #010101; border: 1px solid #111; border-radius: 11px; text-align: center; }
+.btn-activate { margin-top: 88px; background: transparent; border: 2px solid #333; color: #666; padding: 22px 44px; font-family: var(--mono); font-size: 12px; letter-spacing: 8px; cursor: pointer; }
 
 @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-@media (max-width: 1200px) { #mirror-panel { display: none; } }
-@media (max-width: 860px) {
-    #sanctuary-root { flex-direction: column; }
-    #sidebar-container { flex-direction: row; width: 100%; min-height: 60px; border-right: none; border-bottom: 1px solid var(--border-strong); order: 2; }
-    #sidebar { flex-direction: row; width: 100%; padding: 0; justify-content: space-around; gap: 0; }
-    .nav-item { writing-mode: horizontal-tb; transform: none; padding: 1rem; }
-    #memory-panel { display: none; }
-    #main-stage { order: 1; height: calc(100vh - 60px); }
-    header, #chat-window { padding: 1rem; }
-    #divine-standard { display: none; }
-}
