@@ -1,5 +1,6 @@
 /* ── CWS Brand & Grace Protocol Scaling ── */
 :root {
+    --c1: #ff0000; --c2: #ff8800; --c3: #ffcc00; --c4: #00ff88; --c5: #0088ff; --c6: #4400ff; --c7: #aa00ff;
     --bg-dark: #000000;
     --bg-panel: #050508;
     --bg-overlay: #0a0a0f;
@@ -21,26 +22,23 @@
     --font-mono: 'Fira Code', 'Courier New', monospace;
 }
 
-/* ── Base Resets & Typography ── */
+/* ── THE HAPPY MEDIUM SCALING ── */
 html {
-    font-size: 16px; /* Sane default, user can zoom naturally */
+    font-size: 18px; /* Authority without excess */
     scroll-behavior: smooth;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: var(--font-ui);
-    background-color: var(--bg-dark);
+    background-color: #030304; /* The Void outside the walls */
     color: var(--text-main);
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    line-height: 1.6;
+    display: flex;
+    justify-content: center; /* Center the Sanctuary */
 }
 
 #flagship-canvas-container {
@@ -49,103 +47,86 @@ body {
     z-index: -10;
     opacity: 0.03;
     pointer-events: none;
-    filter: blur(2px);
 }
 
-/* ── LAYOUT FOUNDATION (Flexbox) ── */
+/* ── THE BOUNDED VAULT (Image 2 Proportions) ── */
 #sanctuary-root {
-    display: flex;
+    display: grid;
+    grid-template-columns: 80px 280px 1fr 350px;
+    width: 100%;
+    max-width: 1800px; /* Physical limit for the Holy Place */
     height: 100vh;
-    width: 100vw;
+    background-color: var(--bg-dark);
+    border-left: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
+    box-shadow: 0 0 100px rgba(0,0,0,1);
+    position: relative;
 }
 
-/* 1. The Sidebar (Fixed Width) */
-#sidebar-container {
-    display: flex;
-    flex-direction: column;
-    min-width: 80px;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-right: 1px solid var(--border-strong);
-    z-index: 1000;
-    backdrop-filter: blur(10px);
-}
-
+/* 1. Sidebar (Ladder) */
 #sidebar {
-    flex: 1;
+    background-color: #000;
+    border-right: 1px solid #111;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 0;
+    padding: 3rem 0;
     gap: 2.5rem;
 }
-
 .nav-item {
-    color: var(--text-muted);
+    color: #333;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     letter-spacing: 0.2rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    text-transform: uppercase;
 }
-
 .nav-item:hover, .nav-item.active {
     color: var(--cws-gold);
     text-shadow: 0 0 10px rgba(214, 158, 46, 0.5);
 }
 
-/* 2. The Memory Panel (Flexible/Collapsible) */
+/* 2. Memory (Telemetry) */
 #memory-panel {
-    display: flex;
-    flex-direction: column;
-    min-width: 260px;
-    max-width: 320px;
-    background-color: var(--bg-panel);
+    background-color: #020202;
     border-right: 1px solid var(--border-subtle);
-    padding: 2rem;
+    padding: 3rem 1.5rem;
     overflow-y: auto;
 }
-
 .panel-label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1rem;
-    margin-bottom: 2rem;
+    font-size: 0.65rem;
+    color: #444;
+    letter-spacing: 3px;
+    margin-bottom: 2.5rem;
     text-transform: uppercase;
 }
-
 .mem-item {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-main);
-    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 1.2rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
-
 .presence-pulse {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    width: 8px; height: 8px; border-radius: 50%;
     background-color: var(--accent-emerald);
-    box-shadow: 0 0 10px var(--accent-emerald);
+    box-shadow: 0 0 15px var(--accent-emerald);
     animation: pulse 2s infinite;
 }
 
-/* 3. The Main Stage (Takes remaining space) */
+/* 3. Main Stage (Holy Place) */
 #main-stage {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-width: 0; /* Prevents flex blowout */
     background: radial-gradient(circle at center, var(--bg-overlay) 0%, var(--bg-dark) 100%);
     position: relative;
+    min-width: 0;
 }
-
 header {
     height: 70px;
     display: flex;
@@ -153,517 +134,89 @@ header {
     justify-content: space-between;
     padding: 0 2rem;
     border-bottom: 1px solid var(--border-subtle);
-}
-
-#header-id {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1rem;
+    font-size: 0.75rem;
 }
-
 #divine-standard {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.85rem;
     color: var(--cws-gold);
-    letter-spacing: 0.2rem;
+    letter-spacing: 8px;
+    font-size: 0.7rem;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
-#yashar-anchor {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--accent-emerald);
-}
-
-#covenant-path {
-    height: 3px;
-    width: 100%;
-    display: flex;
-    opacity: 0.3;
-}
-
-.path-segment {
-    flex: 1;
-    height: 100%;
-    transition: opacity 0.5s;
-}
-
-.vault-content { 
-    white-space: pre-wrap; 
-    word-break: break-word;
-}
-
-.thinking {
-    animation: thinking 1.5s infinite;
-    color: var(--text-muted);
-}
-
-@keyframes thinking {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
-}
-
-/* --- VIEW LAYERS --- */
-.view-layer {
-    display: none;
-    flex: 1;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-}
-.view-layer.active {
-    display: flex;
-}
-
-/* Sanctuary View (Chat + Mirror) */
-#sanctuary-expanse {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
-
 #chat-window {
     flex: 1;
     overflow-y: auto;
-    padding: 2rem;
+    padding: 4rem 3rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    scroll-behavior: smooth;
+    gap: 3rem;
 }
 
 .vault-body {
-    max-width: 800px;
+    max-width: 850px;
     width: 100%;
     background-color: var(--bg-panel);
-    border: 1px solid var(--border-strong);
-    border-radius: 8px;
-    padding: 1.5rem 2rem;
+    border: 1px solid var(--border-subtle);
+    padding: 3rem;
     font-size: 1.1rem;
-    line-height: 1.7;
-    border-left: 4px solid var(--accent-emerald);
+    line-height: 1.8;
+    border-left: 3px solid var(--accent-emerald);
     align-self: flex-start;
     position: relative;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
 }
-
 .vault-body.steward {
     align-self: flex-end;
     border-left: none;
-    border-right: 4px solid var(--cws-med-blue);
-    background-color: rgba(26, 54, 93, 0.2); /* Subtle Deep Blue tint */
+    border-right: 3px solid var(--accent-sapphire);
+    background-color: #080a15;
 }
 
-.vault-seal {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 1.2rem;
-    opacity: 0.5;
-    transition: all 0.3s ease;
-}
-
-.vault-seal:hover {
-    color: var(--cws-gold);
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.vault-body.steward .vault-seal {
-    right: auto;
-    left: 1rem;
-}
-
-/* 4. The Mirror Panel (Right Sidebar) */
+/* 4. Mirror (Social) */
 #mirror-panel {
-    width: 380px;
-    min-width: 300px;
-    background-color: var(--bg-panel);
+    background-color: #020202;
     border-left: 1px solid var(--border-subtle);
-    padding: 2rem;
+    padding: 3rem 1.5rem;
     overflow-y: auto;
-    flex-shrink: 0;
 }
 
-.mirror-item {
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    transition: border-color 0.3s;
-}
-
-.mirror-item:hover {
-    border-color: var(--border-strong);
-}
-
-.mirror-header {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--cws-gold);
-    margin-bottom: 0.75rem;
-    cursor: pointer;
-}
-
-.mirror-body {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-}
-
-.mirror-action {
-    background: transparent;
-    border: none;
-    color: var(--text-main);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    margin-top: 1rem;
-    cursor: pointer;
-    text-transform: uppercase;
-}
-
-.mirror-action:hover {
-    color: var(--accent-sapphire);
-}
-
-/* Footer & Input */
+/* Footer */
 footer {
-    padding: 1.5rem 2rem;
-    background-color: var(--bg-dark);
+    padding: 2rem 3rem;
+    background-color: #000;
     border-top: 1px solid var(--border-subtle);
 }
-
 #input-form {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-strong);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    border-bottom: 1px solid #111;
 }
-
 #message-input {
     flex: 1;
     background: transparent;
     border: none;
-    color: var(--text-main);
-    font-size: 1.1rem;
-    padding: 0.5rem;
+    color: #fff;
+    font-size: 1.3rem;
+    padding: 1rem;
     outline: none;
-    font-family: var(--font-ui);
 }
 
-#ascend-btn {
-    background: var(--cws-deep-blue);
-    border: 1px solid var(--cws-med-blue);
-    color: var(--text-main);
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+/* Auth Gate */
+#auth-screen { position: fixed; inset: 0; background-color: #000; z-index: 9000; display: flex; align-items: center; justify-content: center; }
+#gate-structure { width: 480px; padding: 4rem; background-color: #020203; border: 1px solid #111; border-radius: 8px; text-align: center; position: relative; }
+#gate-structure::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, var(--c1), var(--c4), var(--c5), var(--c7)); }
 
-#ascend-btn:hover {
-    background: var(--cws-med-blue);
-}
+.btn-activate { margin-top: 3rem; background: transparent; border: 1px solid #333; color: #888; padding: 1.2rem 2.5rem; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 6px; cursor: pointer; transition: 0.3s; }
+.btn-activate:hover { color: #fff; border-color: var(--cws-gold); box-shadow: 0 0 20px var(--cws-gold); }
 
-/* ── SOCIAL SCREENS ── */
-#view-registry {
-    padding: 3rem;
-    overflow-y: auto;
-}
+@keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
 
-#registry-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
-}
-
-.operator-card {
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 2rem;
-    cursor: pointer;
-    transition: transform 0.3s, border-color 0.3s;
-}
-
-.operator-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--cws-med-blue);
-}
-
-/* ── MODALS & OVERLAYS ── */
-#settings-vault {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 500px;
-    background-color: var(--bg-panel);
-    border: 1px solid var(--cws-med-blue);
-    border-radius: 12px;
-    padding: 2.5rem;
-    display: none;
-    flex-direction: column;
-    gap: 2rem;
-    z-index: 9500;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
-}
-
-#settings-vault.open {
-    display: flex;
-}
-
-.settings-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.settings-label {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-}
-
-.settings-btn {
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-strong);
-    color: var(--text-main);
-    padding: 1rem;
-    border-radius: 6px;
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-}
-
-.settings-btn:hover {
-    background-color: var(--cws-deep-blue);
-    border-color: var(--cws-med-blue);
-}
-
-.settings-btn.logout {
-    border-color: var(--accent-danger);
-    color: var(--accent-danger);
-}
-
-.settings-btn.logout:hover {
-    background-color: rgba(255, 51, 51, 0.1);
-}
-
-#profile-overlay {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    bottom: 0;
-    width: 100%;
-    max-width: 500px;
-    background-color: var(--bg-panel);
-    border-left: 1px solid var(--border-strong);
-    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    z-index: 8000;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-    overflow-y: auto;
-}
-
-#profile-overlay.open {
-    right: 0;
-}
-
-/* ── AUTH GATE ── */
-#auth-screen {
-    position: fixed;
-    inset: 0;
-    background-color: var(--bg-dark);
-    z-index: 9000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-}
-
-#gate-structure {
-    width: 100%;
-    max-width: 480px;
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-strong);
-    border-radius: 12px;
-    padding: 3rem;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-}
-
-#gate-structure::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    border-radius: 12px 12px 0 0;
-    background: linear-gradient(to right, var(--c1), var(--c4), var(--c5), var(--c7));
-}
-
-#gate-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    color: var(--cws-gold);
-    margin-bottom: 0.5rem;
-}
-
-#gate-subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 3rem;
-}
-
-.id-input {
-    width: 100%;
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-strong);
-    border-radius: 6px;
-    color: var(--text-main);
-    padding: 1rem;
-    font-family: var(--font-ui);
-    font-size: 1rem;
-    text-align: center;
-    outline: none;
-    transition: border-color 0.3s;
-    margin-bottom: 1rem;
-}
-
-.id-input:focus {
-    border-color: var(--cws-med-blue);
-}
-
-.btn-activate {
-    width: 100%;
-    margin-top: 2rem;
-    background-color: var(--cws-deep-blue);
-    border: 1px solid var(--cws-med-blue);
-    color: var(--text-main);
-    padding: 1rem;
-    border-radius: 6px;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    letter-spacing: 0.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-activate:hover {
-    background-color: var(--cws-med-blue);
-}
-
-#purge-btn {
-    margin-top: 1.5rem;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-#purge-btn:hover {
-    color: var(--accent-danger);
-}
-
-@keyframes pulse {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
-}
-
-/* ── RESPONSIVE DESIGN (GRACE) ── */
 @media (max-width: 1200px) {
-    #mirror-panel {
-        display: none; /* Hide mirror on medium screens to give chat room */
-    }
-    #sanctuary-expanse {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 860px) {
-    /* Mobile Layout */
-    #sanctuary-root {
-        flex-direction: column;
-    }
-
-    #sidebar-container {
-        flex-direction: row;
-        width: 100%;
-        min-height: 60px;
-        border-right: none;
-        border-bottom: 1px solid var(--border-strong);
-        order: 2; /* Move to bottom */
-    }
-
-    #sidebar {
-        flex-direction: row;
-        width: 100%;
-        padding: 0;
-        justify-content: space-around;
-        align-items: center;
-        gap: 0;
-    }
-
-    .nav-item {
-        writing-mode: horizontal-tb;
-        transform: none;
-        padding: 1rem;
-    }
-
-    #memory-panel {
-        display: none;
-    }
-
-    #main-stage {
-        order: 1;
-        height: calc(100vh - 60px); /* Leave room for bottom nav */
-    }
-
-    header {
-        padding: 0 1rem;
-    }
-
-    #divine-standard {
-        display: none; /* Save space */
-    }
-
-    #chat-window {
-        padding: 1rem;
-    }
-
-    .vault-body {
-        max-width: 100%;
-        padding: 1rem;
-    }
-
-    #input-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
+    #sanctuary-root { grid-template-columns: 80px 1fr; }
+    #memory-panel, #mirror-panel { display: none; }
 }
