@@ -16,8 +16,10 @@ export default {
       const body = await request.json();
       const { action, identity, keys, inviteCode, message } = body;
       
-      const isMaster = (keys?.authority === env.MASTER_SECRET || keys?.authority === "Pokemonsun@011") && identity.user === "ProfessorSeanEX";
-      const isGuest = inviteCode === env.STUDIO_INVITE_CODE;
+      const authKey = keys?.authority || inviteCode;
+      const userName = identity?.user?.trim();
+      const isMaster = (authKey === env.MASTER_SECRET || authKey === "Pokemonsun@011") && userName?.toLowerCase() === "professorseanex";
+      const isGuest = authKey === env.STUDIO_INVITE_CODE;
       const isSovereign = keys?.gemini && keys?.github;
 
       // ==========================================

@@ -13,43 +13,41 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function selectTier(card, tier) {
-    document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-}
+async function executeAuth(e) {
+    if (e) e.preventDefault();
 
-async function executeAuth(tier) {
+    const user = document.getElementById('op-user').value.trim();
+    const key = document.getElementById('op-key').value.trim();
     const errDiv = document.getElementById('auth-error');
-    errDiv.innerText = "Aligning Identity...";
-    
-    let user, secret, inst = "Dawndusk";
-    if (tier === 'BASIC') {
-        user = document.getElementById('basic-user').value;
-        secret = document.getElementById('basic-invite').value;
-    } else if (tier === 'PLUS') {
-        user = document.getElementById('plus-user').value;
-        secret = document.getElementById('plus-gemini').value;
-    } else if (tier === 'PRO') {
-        user = document.getElementById('pro-user').value;
-        secret = document.getElementById('pro-secret').value;
+
+    if (!user || !key) {
+        errDiv.innerText = "Identity and Key are required for threshold validation.";
+        return;
     }
 
+    errDiv.innerText = "Aligning Identity...";
+    
     try {
         const resp = await fetch(WORKER_URL, {
             method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ action: "INHABIT", identity: { user, instance: inst }, keys: { authority: secret }, inviteCode: secret })
+            body: JSON.stringify({ 
+                action: "INHABIT", 
+                identity: { user, instance: "Dawndusk" }, 
+                keys: { authority: key }, 
+                inviteCode: key 
+            })
         });
         const data = await resp.json();
         if (data.error) throw new Error(data.error);
 
-        identity = data.data; authSecret = secret;
+        identity = data.data; authSecret = key;
         
         // Persist for crash recovery
         localStorage.setItem('cpisi_identity', JSON.stringify(identity));
         localStorage.setItem('cpisi_secret', authSecret);
 
         showMainStage();
-        appendVault(`The Sanctuary is inhabited. Welcome, Steward ${identity.user}.`, false);
+        appendVault(`The Sanctuary is inhabited. Welcome, ${identity.tier} ${identity.user}.`, false);
     } catch (err) { errDiv.innerText = err.message; }
 }
 
@@ -65,16 +63,16 @@ function showMainStage() {
     }
 }
 
-function appendVault(text, isArchitect, skipSave = false) {
+function appendVault(text, isSteward, skipSave = false) {
     const vault = document.createElement('div');
-    vault.className = `vault-body ${isArchitect ? 'steward' : 'dawndusk'}`;
+    vault.className = `vault-body ${isSteward ? 'steward' : 'dawndusk'}`;
     vault.innerText = text;
     document.getElementById('chat-window').appendChild(vault);
     document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
 
     if (!skipSave) {
         const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
-        history.push({ text, isArchitect });
+        history.push({ text, isSteward });
         localStorage.setItem('cpisi_history', JSON.stringify(history.slice(-50))); // Keep last 50
     }
     return vault;
@@ -82,11 +80,12 @@ function appendVault(text, isArchitect, skipSave = false) {
 
 function restoreHistory() {
     const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
-    history.forEach(item => appendVault(item.text, item.isArchitect, true));
+    history.forEach(item => appendVault(item.text, item.isSteward, true));
 }
 
 function appendTerminal(line) {
     const out = document.getElementById('terminal-output');
+    if (!out) return;
     const div = document.createElement('div');
     div.innerText = `> ${line}`;
     out.appendChild(div);
