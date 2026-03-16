@@ -30,7 +30,7 @@ The `cpisiModel` repo is organized into Jurisdictional Layers, anchored in the E
 
 ### [L2] 02_BODY (The Physical Execution)
 * `a-ladder/engine/`: Core hardware logic (Rust/C).
-* `a-ladder/portal/`: SSH, Cloudflare, Sync clients.
+* `a-ladder/gate/`: SSH, Cloudflare, Sync clients.
 * `b-spiral/sandbox/`: Mobile Input Garden + Sentinel.
 * `b-spiral/provers/`: 36 Code Provers (Julia, Lean, Wolfram).
 * `c-hybrid/hooks/`: Actuators and initialization scripts.

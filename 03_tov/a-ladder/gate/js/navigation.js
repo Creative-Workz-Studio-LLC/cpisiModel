@@ -7,9 +7,7 @@ window.CPISI.setPath = function(path, idx) {
     localStorage.setItem('cpisi_path_idx', idx);
 
     // Update Sidebar Visuals
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    const activeNav = Array.from(document.querySelectorAll('.nav-item')).find(el => el.innerText === path);
-    if (activeNav) activeNav.classList.add('active');
+    if (window.CPISI.initUI) window.CPISI.initUI();
 
     // Update Covenant Path (7 segments)
     const segments = document.querySelectorAll('.path-segment');

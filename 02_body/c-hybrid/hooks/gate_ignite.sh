@@ -1,9 +1,9 @@
 #!/bin/bash
-# #!omni:hook --portal-ignite
+# #!omni:hook --gate-ignite
 # ==============================================================================
-# [S-hook-portal-ignite] The Full System Initialization (Production Grade)
+# [S-hook-gate-ignite] The Full System Initialization (Production Grade)
 # ==============================================================================
-# This script ignites the entire 3-Way Sync / Mobile Portal ecosystem.
+# This script ignites the entire 3-Way Sync / Gate ecosystem.
 # It starts the server, the tunnel, and the sentinel using the tiered paths.
 # ==============================================================================
 
@@ -11,7 +11,7 @@ PROJECT_ROOT="/media/seanje-lenox-wise/Project/cpisiModel"
 BIN_DIR="/home/seanje-lenox-wise/.local/share/cpisi/bin"
 BERESHIT_ROOT="/media/seanje-lenox-wise/Project/Bereshit"
 
-echo "[PORTAL] Igniting the Dawndusk Ecosystem..."
+echo "[GATE] Igniting the Dawndusk Ecosystem..."
 
 # 1. Start the cws-server (Body Heart)
 # Pointing to the tiered Game GUI and the Bereshit builder config
@@ -26,10 +26,10 @@ $BIN_DIR/cws-server \
 # 2. Start the Cloudflare Tunnel (The Bridge)
 echo "[2/3] Starting Cloudflare Bridge..."
 pkill cloudflared || true
-cloudflared tunnel --config "${PROJECT_ROOT}/02_body/a-ladder/portal/tunnel_config.yml" run cpisi-bridge &
+cloudflared tunnel --config "${PROJECT_ROOT}/02_body/a-ladder/gate/tunnel_config.yml" run cpisi-bridge &
 
 # 3. Start the Sandbox Sentinel (The Guard)
 echo "[3/3] Starting Sandbox Sentinel..."
 docker start cpisi-sentinel || docker run -d --name cpisi-sentinel -v "${PROJECT_ROOT}/02_body/b-spiral/sandbox:/root/sandbox" cpisi-agent-node:a-01.01 ./sandbox-engine
 
-echo "[PORTAL] All systems Go. 0.0 Yashar."
+echo "[GATE] All systems Go. 0.0 Yashar."

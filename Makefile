@@ -14,7 +14,7 @@ GAME_RULES  := $(GAME_ROOT)/a-ladder/Rules
 GAME_META   := $(GAME_ROOT)/b-spiral/meta
 
 # Engine Jurisdictions
-PORTAL_DIR  := 02_body/a-ladder/portal/client
+GATE_DIR    := 02_body/a-ladder/gate/client
 HOOKS_DIR   := 02_body/c-hybrid/hooks
 VOID_DIR    := 02_body/c-hybrid/void
 GATE_DIST   := 03_tov/a-ladder/gate
@@ -39,16 +39,16 @@ test:
 	@bash $(VOID_DIR)/court_runner.sh
 
 # 5. The Build (Act)
-build: build-engine build-portal
+build: build-engine build-gate
 
 build-engine:
 	@echo "[BUILD] Striking the Rust Game Engine (CLI Native)..."
 	@cd $(GAME_DIR) && CARGO_TARGET_DIR=$(USER_CACHE)/game-engine cargo build --release
 	@cp $(USER_CACHE)/game-engine/release/cpisi-game $(PROJECT_BIN)/
 
-build-portal:
+build-gate:
 	@echo "[BUILD] Striking the Go Sync Client..."
-	@cd $(PORTAL_DIR) && go build -o ../../../../$(PROJECT_BIN)/sync-client .
+	@cd $(GATE_DIR) && go build -o ../../../../$(PROJECT_BIN)/sync-client .
 
 # 6. The Install (Locus)
 install:

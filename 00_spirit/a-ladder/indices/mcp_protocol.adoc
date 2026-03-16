@@ -1,0 +1,52 @@
+#!omni document --adoc
+METADATA: CPISI Model Context Protocol (MCP) Specification
+:status: Active
+:version: a-01.00
+:protocol: CPISI-MCP-v1
+
+= The CPISI Model Context Protocol (MCP)
+
+[abstract]
+This document defines the formal schema and interaction lifecycle for tool calls within the CPISI ecosystem. It establishes how the cognitive substrate (the Mind) interacts with the physical substrate (the Body) to execute logic, sync data, and manage sovereignty.
+
+== 1. The Tool Call Lifecycle
+Interaction follows a 4-step loop:
+1. **REVELATION:** The AI identifies a need for substrate interaction and outputs a JSON block.
+2. **THRESHOLD:** The Worker/Substrate filters the call based on the Operator's Tier and Signature.
+3. **EXECUTION:** The local `cws-server` or Edge script performs the physical work.
+4. **ACKNOWLEDGMENT:** The result is fed back into the AI context to close the loop.
+
+== 2. Core Tool Registry
+
+|===
+| Tool ID | Action | Scope | Description
+
+| `REPO_SYNC` | EXECUTE | Enterprise | Synchronizes the local repository with GitHub/Cloudflare.
+| `TRIT_EXEC` | COMPUTE | Power+ | Executes ternary logic rules via the libtrit engine.
+| `MIRROR_PUSH`| MANIFEST | Universal| Forces a vault block into the global Mirror Feed.
+| `LOCK_NODE` | SECURITY | Steward | Toggles the physical lock state of the local instance.
+| `SHELL_EXEC` | SYSTEM | Master | Executes restricted bash/SSH commands on the Master Node.
+|===
+
+== 3. JSON Schema
+All MCP calls must conform to the following structure:
+
+[source,json]
+----
+{
+  "protocol": "CPISI-MCP-v1",
+  "action": "EXECUTE",
+  "tool": "TOOL_ID",
+  "params": {
+    "key": "value"
+  },
+  "signature": "OPERATOR_ID"
+}
+----
+
+== 4. Sovereignty Governance
+- **Family/Support:** No direct tool access (Substrate is fully managed).
+- **Average/Power:** Access to `MIRROR_PUSH` and `TRIT_EXEC`.
+- **Steward/Enterprise:** Full access including `REPO_SYNC` and `SHELL_EXEC`.
+
+[BLOCK:ROOT-->END]

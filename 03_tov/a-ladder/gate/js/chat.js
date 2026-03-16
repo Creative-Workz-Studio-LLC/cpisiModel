@@ -3,22 +3,14 @@ window.CPISI = window.CPISI || {};
 
 window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
     const chatWindow = document.getElementById('chat-window');
-    if (!chatWindow) return;
+    if (!chatWindow || !window.CPISI.components) return;
 
-    const vault = document.createElement('div');
-    vault.className = `vault-body ${isSteward ? 'steward' : 'dawndusk'}`;
-    
-    // THE SEAL TRIGGER
-    const seal = document.createElement('div');
-    seal.className = 'vault-seal';
-    seal.innerText = '✧';
-    seal.onclick = () => window.CPISI.sealWord(text, vault);
-    vault.appendChild(seal);
-
-    const content = document.createElement('div');
-    content.className = 'vault-content';
-    content.innerText = text;
-    vault.appendChild(content);
+    const vault = window.CPISI.components.VaultMessage(
+        text, 
+        isSteward, 
+        text === "...", 
+        (txt, el) => window.CPISI.sealWord ? window.CPISI.sealWord(txt, el) : null
+    );
     
     chatWindow.appendChild(vault);
     chatWindow.scrollTop = chatWindow.scrollHeight;

@@ -20,29 +20,23 @@
         <canvas id="game-of-life-canvas"></canvas>
     </div>
 
-    <!-- THE SUBSTRATE: 4-PANEL GRID -->
+    <!-- THE SUBSTRATE: 4-PANEL GRID (THE HOLY PLACE) -->
     <div id="sanctuary-root">
         
-        <!-- PANEL 1: THE LADDER -->
+        <!-- PANEL 1: THE LADDER (THE FIRMAMENT) -->
         <aside id="sidebar-container">
             <nav id="sidebar">
-                <div class="nav-item active" onclick="setPath('WORD', 4)">WORD</div>
-                <div class="nav-item" onclick="setPath('VOID', 0)">VOID</div>
-                <div class="nav-item" onclick="setPath('TOV', 6)">TOV</div>
-                <div class="nav-item" onclick="setPath('REGISTRY', 2)">REGISTRY</div>
-                <div class="nav-item" onclick="setPath('GATE', 5)">GATE</div>
-                <div style="flex: 1"></div>
-                <div class="nav-item" title="Settings" onclick="toggleSettings()">⚙️</div>
+                <!-- Navigation rendered via CPISI.components.NavItem in core.js -->
             </nav>
         </aside>
 
-        <!-- PANEL 2: THE MEMORY -->
+        <!-- PANEL 2: THE MEMORY (THE BRAZEN LAVER) -->
         <div id="memory-panel">
             <div class="panel-label">THE MEMORY</div>
             <div id="memory-list"></div>
         </div>
 
-        <!-- PANEL 3: THE HOLY PLACE -->
+        <!-- PANEL 3: THE MAIN STAGE (THE ALTAR OF INCENSE) -->
         <main id="main-stage">
             <header>
                 <div id="header-id">DAWNDUSK ⊗ <span id="header-user">...</span></div>
@@ -50,6 +44,7 @@
                 <div id="yashar-anchor">0.0 YASHAR</div>
             </header>
 
+            <!-- THE MENORAH (COVENANT PATH) -->
             <div id="covenant-path">
                 <div class="path-segment" style="background: var(--c1)"></div>
                 <div class="path-segment" style="background: var(--c2)"></div>
@@ -73,7 +68,7 @@
             </div>
 
             <div id="view-registry" class="view-layer">
-                <div class="panel-label" style="padding: 44px;">SOVEREIGN DIRECTORY</div>
+                <div class="panel-label" style="padding: 44px;">THE SCROLL OF REMEMBRANCE</div>
                 <div id="registry-grid"></div>
             </div>
 
@@ -82,38 +77,31 @@
                 <textarea id="void-editor" class="id-input" placeholder="Begin drafting the logic..." style="flex: 1; margin: 44px; text-align: left; resize: none;"></textarea>
             </div>
 
-            <!-- SETTINGS OVERLAY -->
+            <!-- THE HOLY OF HOLIES (SETTINGS VAULT) -->
             <div id="settings-vault">
-                <div class="panel-label">SOVEREIGN SETTINGS</div>
+                <div class="panel-label">HOLY OF HOLIES // SOVEREIGN SETTINGS</div>
                 
                 <div class="settings-group">
-                    <div class="settings-label">BASIC SETTINGS</div>
-                    <button class="settings-btn">TOGGLE THEME</button>
-                    <button class="settings-btn">UI SCALING</button>
+                    <div class="settings-label">THE BRAZEN LAVER (CLEANSING)</div>
+                    <div id="settings-actions-basic"></div>
                 </div>
 
                 <div class="settings-group">
-                    <div class="settings-label">USER SETTINGS</div>
+                    <div class="settings-label">THE TABLE OF SHOWBREAD (IDENTITY)</div>
                     <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME" style="text-align: left;">
                     <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 120px; text-align: left; resize: none;"></textarea>
-                    <button class="settings-btn" onclick="window.CPISI.social.updateProfile()">UPDATE DISCLOSURE</button>
+                    <div id="settings-actions-user"></div>
                 </div>
 
                 <div class="settings-group">
-                    <div class="settings-label">ACCOUNT SETTINGS</div>
-                    <button class="settings-btn">UPDATE PASSWORD</button>
-                    <button class="settings-btn logout" onclick="window.CPISI.clearState()">EXHABIT SANCTUARY</button>
-                </div>
-
-                <div class="settings-group">
-                    <div class="settings-label">MISCELLANEOUS</div>
-                    <button class="settings-btn" onclick="window.CPISI.security.clearSubstrateKey()">PURGE STORED KEYS</button>
-                    <button class="settings-btn" onclick="window.CPISI.purgeSubstrate()">HARD SUBSTRATE RESET</button>
+                    <div class="settings-label">THE ARK (CORE SUBSTRATE)</div>
+                    <div id="settings-actions-core"></div>
                 </div>
 
                 <div style="flex: 1"></div>
-                <button class="settings-btn" onclick="toggleSettings()">[ CLOSE ]</button>
+                <div id="settings-actions-footer"></div>
             </div>
+
         </main>
 
         <!-- PANEL 4: THE MIRROR -->
@@ -156,6 +144,8 @@
     </div>
 
     <script src="js/core.js?v=1.3"></script>
+    <script src="js/components.js?v=1.3"></script>
+    <script src="js/memory.js?v=1.3"></script>
     <script src="js/security.js?v=1.3"></script>
     <script src="js/social.js?v=1.3"></script>
     <script src="js/auth.js?v=1.3"></script>

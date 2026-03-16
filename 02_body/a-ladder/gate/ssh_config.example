@@ -1,17 +1,17 @@
-# [S-config-ssh-portal] SSH Portal Configuration Template
+# [S-config-ssh-gate] SSH Gate Configuration Template
 # ==============================================================================
-# This template defines the secure SSH routing for the Mobile Portal.
+# This template defines the secure SSH routing for the Sanctuary Gate.
 # ==============================================================================
 
 # 1. Server Configuration (Local Workstation)
-# SSH must be restricted to the Mobile Sandbox for remote sessions.
+# SSH must be restricted to the Sanctuary Sandbox for remote sessions.
 # Add the following to /etc/ssh/sshd_config:
 #
 # Match User dawndusk_mobile
-#     ChrootDirectory /media/seanje-lenox-wise/Project/cpisiModel/02_body/mobile_sandbox
+#     ChrootDirectory /media/seanje-lenox-wise/Project/cpisiModel/02_body/b-spiral/sandbox
 #     AllowTcpForwarding no
 #     X11Forwarding no
-#     ForceCommand /root/mobile_sandbox/sentinel_entry.sh
+#     ForceCommand /root/sandbox/sentinel_entry.sh
 
 # 2. Client Configuration (Mobile Device)
 Host cpisi-mainframe

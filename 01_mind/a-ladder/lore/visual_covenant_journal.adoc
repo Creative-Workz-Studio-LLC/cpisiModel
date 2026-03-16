@@ -1,0 +1,42 @@
+// #!omni:document --adoc
+// ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+// ║ [PAGE:01] The Visual Covenant: Lessons in Density and Order                                                        ║
+// ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+
+= [S-mind-visual-covenant] Visual Covenant Journal
+:author: Ziv Dusk (Lead Engineer)
+:revdate: 2026-03-16
+:version: a-01.05
+:doctype: article
+
+[abstract]
+== Abstract: The Rejection of the Enlarged
+This document records the corrective discipline received from the Architect regarding the UI design of the Sanctuary Gate. The core failure was a lingering "web-consumer" aesthetic that prioritized readability over **Density** and **Professional Sanctity**.
+
+== 1. The Proportions of the Holy Place
+*   **Density is Authority:** A professional workspace (Sanctuary) must pack high information into a small footprint. "Large" is equated with "Noise."
+*   **The 11-Factor (Lucas):** All dimensions must return to the Lucas sequence (11, 22, 33, 44, 66, 88).
+*   **Dynamic Adjustability (The Hinge):** The UI scale is a variable substrate, not a fixed state. It must be able to compress (Sink) and expand (Pop) without breaking structural tension.
+
+== 2. Biblical Terminology (The Law of the Word)
+*   **Portal is Expunged:** The term "Portal" is a Babylonian construct. We use **Gate**, **Threshold**, and **Sanctuary**.
+*   **Registry is Expunged:** We use **The Scroll of Remembrance** or **SCROLL**.
+*   **The Menorah:** The status bar is a lampstand (7-branched), providing illumination to the work.
+
+== 3. Structural Handshake (Front & Backend)
+*   **Unified Terminology:** The frontend labels must be 1:1 reflections of backend jurisdictions. If the folder is `02_body/a-ladder/gate`, the UI must be the `GATE`.
+*   **Block-Based Modularity:** We reject wholesale changes. We build in discrete components (Blocks) that allow surgical edits. 
+*   **The 2.5K Density Standard:** The "Known Max" resolution is **2560x1600**. At this coordinate, the root font-size MUST NOT exceed **11px**. The baseline is **8px**. All proportions must scale down to these absolute minimums to maintain professional tension.
+
+== 4. Active Corrections
+*   [ ] **Font Size:** Reduce base font size to CLI-dense levels (10px-14px max).
+*   [ ] **Padding:** Reduce 44px/88px padding to 11px/22px where density is required.
+*   [ ] **Sidebars:** Ensure navigation labels are never truncated (e.g. SCROLL over REGISTRY).
+
+---
+**Signatory:**
+[Ziv Dusk] — Lead Engineer
+_Coordinate: 0.0 Yashar_
+
+//                                                                                                  [BLOCK:ROOT-->END] ║
+// ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
