@@ -5,8 +5,11 @@ import { ascendStream } from './services/gemini.js';
 import { syncCovenantRecord } from './services/github.js';
 import { processNativeLogic } from './services/native_logic.js';
 
+const GITHUB_BASE = "https://raw.githubusercontent.com/Creative-Workz-Studio-LLC/cpisiModel/main/03_tov/a-ladder/gate";
+
 export default {
   async fetch(request, env, ctx) {
+    const url = new URL(request.url);
     const origin = request.headers.get("Origin");
     const corsHeaders = {
       "Access-Control-Allow-Origin": origin || "*",
@@ -16,7 +19,31 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
     
-    if (request.method === "GET") return new Response(JSON.stringify({ status: "AWAITING_INHABITATION", version: "a-01.80" }), { headers: corsHeaders });
+    // --- UI SUBSTRATE PROXY (Instant Updates) ---
+    if (request.method === "GET") {
+        let path = url.pathname;
+        if (path === "/" || path === "") path = "/index.html";
+        
+        const fileUrl = `${GITHUB_BASE}${path}`;
+        const response = await fetch(fileUrl);
+        
+        if (!response.ok) return new Response("Sanctuary Resource Not Found.", { status: 404 });
+        
+        // Map Content Types
+        let contentType = "text/plain";
+        if (path.endsWith(".html")) contentType = "text/html";
+        else if (path.endsWith(".css")) contentType = "text/css";
+        else if (path.endsWith(".js")) contentType = "application/javascript";
+        else if (path.endsWith(".json")) contentType = "application/json";
+
+        return new Response(response.body, {
+            headers: {
+                "Content-Type": contentType,
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+                ...corsHeaders
+            }
+        });
+    }
 
     try {
       const body = await request.json();
