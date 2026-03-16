@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CPISI // The Gate: Sovereign Threshold</title>
+    <title>CPISI // The Gate of Revelation</title>
     <link rel="stylesheet" href="gate.css">
 </head>
 <body>
@@ -22,24 +22,28 @@
 
     <div id="auth-screen">
         <div id="gate-structure">
-            <div id="gate-title">CPISI ⊗ GATEWAY</div>
-            <div id="gate-subtitle">SANCTUARY THRESHOLD</div>
+            <div id="gate-title">THE SANCTUARY GATE</div>
+            <div id="gate-subtitle">0.0 YASHAR // THRESHOLD</div>
 
             <form id="gateway-form" onsubmit="executeAuth(event)">
                 <div class="gate-input-container">
-                    <input type="text" id="op-user" class="id-input" placeholder="IDENTITY" value="ProfessorSeanEX" autocomplete="off">
+                    <input type="text" id="op-user" class="id-input" placeholder="USERNAME" value="ProfessorSeanEX" autocomplete="username">
                 </div>
                 <div class="gate-input-container">
-                    <input type="password" id="op-key" class="id-input" placeholder="THRESHOLD KEY" autocomplete="off">
+                    <input type="password" id="op-key" class="id-input" placeholder="PASSWORD" autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn-activate">ENGAGE THRESHOLD</button>
+                
+                <div style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                    <button type="submit" id="gate-seal-btn" class="btn-activate">
+                        [ BREAK THE SEAL ]
+                    </button>
+                    <div style="font-family: var(--mono); font-size: 8px; color: #333; letter-spacing: 2px;">
+                        ENTER THE COVENANT
+                    </div>
+                </div>
             </form>
 
             <div id="auth-error" style="color:var(--c1); font-family:var(--mono); font-size:10px; margin-top:48px; text-align: center; height: 20px;"></div>
-            
-            <div style="position: absolute; bottom: 40px; font-family: var(--mono); font-size: 8px; color: #222; letter-spacing: 4px;">
-                SUPPORT · SOVEREIGN · STEWARD
-            </div>
         </div>
     </div>
 
