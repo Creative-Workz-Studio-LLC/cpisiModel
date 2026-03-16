@@ -95,7 +95,6 @@ window.CPISI.handleMessageSubmit = async function(e) {
     window.CPISI.appendVault(val, true);
     inputEl.value = '';
     
-    // Create response block with loading state
     const respVault = window.CPISI.appendVault("...", false);
     const respContent = respVault.querySelector('.vault-content');
     respContent.classList.add('thinking');
@@ -115,15 +114,22 @@ window.CPISI.handleMessageSubmit = async function(e) {
             body: JSON.stringify(payload) 
         });
         
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || `Server Error ${response.status}`);
+        }
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
+        let buffer = "";
         
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
             
-            const chunk = decoder.decode(value);
-            const lines = chunk.split('\n');
+            buffer += decoder.decode(value, { stream: true });
+            let lines = buffer.split('\n');
+            buffer = lines.pop(); // Keep partial line in buffer
             
             for (const line of lines) {
                 if (line.startsWith('data: ')) {
@@ -133,7 +139,7 @@ window.CPISI.handleMessageSubmit = async function(e) {
                         
                         if (part) {
                             if (fullReply === "") {
-                                respContent.innerText = ""; // Clear "..." on first real data
+                                respContent.innerText = "";
                                 respContent.classList.remove('thinking');
                             }
                             fullReply += part;
