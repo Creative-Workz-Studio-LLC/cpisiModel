@@ -1,12 +1,4 @@
-import { validateThreshold } from './services/auth.js';
-import { inhabitNode, toggleLock, createSovereignAccount } from './services/registry/core.js';
-import { getPublicProfile, updateProfile, saveVaultBlock, getVaultHistory, getFollowedMirrorFeed, publishToMirror, getRegistry, toggleCovenant } from './services/registry/social.js';
-import { processSandboxAction } from './services/registry/sandbox.js';
-import { ascendStream } from './services/gemini.js';
-import { syncCovenantRecord } from './services/github.js';
-import { processNativeLogic } from './services/native_logic.js';
-
-const GITHUB_BASE = "https://raw.githubusercontent.com/Creative-Workz-Studio-LLC/cpisiModel/main/03_tov/a-ladder/gate";
+const REPO_API = "https://api.github.com/repos/Creative-Workz-Studio-LLC/cpisiModel/contents/03_tov/a-ladder/gate";
 
 export default {
   async fetch(request, env, ctx) {
@@ -20,23 +12,25 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
     
-    // --- AUTHENTICATED UI PROXY ---
+    // --- AUTHENTICATED API PROXY (The Professional Pipe) ---
     if (request.method === "GET") {
         let path = url.pathname;
         if (path === "/" || path === "") path = "/index.html";
         
         try {
-            const fileUrl = `${GITHUB_BASE}${path}?t=${Date.now()}`;
-            const response = await fetch(fileUrl, {
+            // Use the GitHub API 'raw' media type to fetch private files
+            const apiUrl = `${REPO_API}${path}`;
+            const response = await fetch(apiUrl, {
                 headers: {
                     "Authorization": `Bearer ${env.GITHUB_PAT}`,
-                    "User-Agent": "CPISI-Gate-Proxy"
-                }
+                    "Accept": "application/vnd.github.v3.raw",
+                    "User-Agent": "CPISI-Gate-Gateway"
+                },
+                cf: { cacheTtl: 0 }
             });
             
             if (!response.ok) {
-                const debugInfo = `Fetch Failed: ${response.status} ${response.statusText} for ${path}`;
-                return new Response(debugInfo, { status: 404, headers: corsHeaders });
+                return new Response(`[SUBSTRATE DISSONANCE] Resource ${path} not found in Private Vault. Status: ${response.status}`, { status: 404, headers: corsHeaders });
             }
             
             let contentType = "text/plain";
@@ -54,115 +48,61 @@ export default {
                 }
             });
         } catch (e) {
-            return new Response(`Substrate Proxy Error: ${e.message}`, { status: 500, headers: corsHeaders });
+            return new Response(`Gateway Error: ${e.message}`, { status: 500, headers: corsHeaders });
         }
     }
 
-    // --- SOVEREIGN PROTOCOLS (POST) ---
+    // --- SOVEREIGN PROTOCOLS ---
     try {
       const body = await request.json();
       const { action, identity, keys, inviteCode, message, vaultBlock, profile, password, targetId } = body;
       
-      const authResult = await validateThreshold(identity, keys, inviteCode, env);
+      const authResult = await (async () => {
+          // Re-importing logic inline for self-contained robustness if needed
+          const { validateThreshold } = await import('./services/auth.js');
+          return await validateThreshold(identity, keys, inviteCode, env);
+      })();
+
       const { tier, isEnterpriseSteward, userNameLow, isInvite } = authResult;
 
       if (action === "INHABIT") {
         if (tier === "UNAUTHORIZED") throw new Error("Invalid Threshold Keys.");
         if (isInvite) return new Response(JSON.stringify({ status: "INVITE_VALIDATED", tier: tier }), { headers: corsHeaders });
-
         const opId = userNameLow.replace(/[^a-z0-9]/g, '_');
-        const record = isEnterpriseSteward ? 
-            await inhabitNode(env, opId, identity, tier, true, profile) :
-            authResult.record; 
-
-        return new Response(JSON.stringify({ status: "AUTHORIZED", data: record }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        const { inhabitNode } = await import('./services/registry/core.js');
+        const record = isEnterpriseSteward ? await inhabitNode(env, opId, identity, tier, true, profile) : authResult.record; 
+        return new Response(JSON.stringify({ status: "AUTHORIZED", data: record }), { headers: corsHeaders });
       }
 
-      if (action === "CREATE_ACCOUNT") {
-          if (!isInvite) throw new Error("Creation requires a valid Invite Code.");
-          const record = await createSovereignAccount(env, identity.user, password, tier, profile, inviteCode);
-          return new Response(JSON.stringify({ status: "ACCOUNT_CREATED", data: record }), { headers: corsHeaders });
+      if (action === "ASCEND") {
+        const opId = identity.user.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        const { processNativeLogic } = await import('./services/native_logic.js');
+        const nativeResult = await processNativeLogic(message, identity, env);
+        if (nativeResult.handled) {
+            const nativeMsg = `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: nativeResult.response }] } }] })}\n\n`;
+            return new Response(nativeMsg, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
+        }
+        const { ascendStream } = await import('./services/gemini.js');
+        const stream = await ascendStream(message, identity, keys, env, ctx, async (fullReply) => {
+            const { saveVaultBlock } = await import('./services/registry/social.js');
+            await saveVaultBlock(env, opId, message, fullReply, false);
+        });
+        return new Response(stream, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
       }
 
-      if (action === "PUBLISH_TOV") {
-          if (tier === "UNAUTHORIZED") throw new Error("Unauthorized publish.");
-          const record = await publishToMirror(env, identity, vaultBlock);
-          return new Response(JSON.stringify({ status: "PUBLISHED", data: record }), { headers: corsHeaders });
-      }
-
+      // SOCIAL & REGISTRY
       if (action === "GET_MIRROR") {
-          const opId = userNameLow?.replace(/[^a-z0-9]/g, '_');
-          const feed = await getFollowedMirrorFeed(env, opId);
+          const { getFollowedMirrorFeed } = await import('./services/registry/social.js');
+          const feed = await getFollowedMirrorFeed(env, userNameLow?.replace(/[^a-z0-9]/g, '_'));
           return new Response(JSON.stringify({ status: "SUCCESS", data: feed }), { headers: corsHeaders });
       }
-
       if (action === "GET_REGISTRY") {
+          const { getRegistry } = await import('./services/registry/social.js');
           const operators = await getRegistry(env);
           return new Response(JSON.stringify({ status: "SUCCESS", data: operators }), { headers: corsHeaders });
       }
 
-      if (action === "TOGGLE_COVENANT") {
-          if (tier === "UNAUTHORIZED") throw new Error("Unauthorized.");
-          const result = await toggleCovenant(env, userNameLow.replace(/[^a-z0-9]/g, '_'), targetId.toLowerCase());
-          return new Response(JSON.stringify({ status: "SUCCESS", ...result }), { headers: corsHeaders });
-      }
-
-      if (action === "UPDATE_PROFILE") {
-          if (tier === "UNAUTHORIZED") throw new Error("Unauthorized.");
-          const opId = userNameLow.replace(/[^a-z0-9]/g, '_');
-          const updated = await updateProfile(env, opId, identity.user, body.updates);
-          return new Response(JSON.stringify({ status: "SUCCESS", data: updated }), { headers: corsHeaders });
-      }
-
-      if (action === "GET_HISTORY") {
-          if (tier === "UNAUTHORIZED") throw new Error("Unauthorized.");
-          const opId = userNameLow.replace(/[^a-z0-9]/g, '_');
-          const history = await getVaultHistory(env, opId, identity.user);
-          return new Response(JSON.stringify({ status: "SUCCESS", data: history }), { headers: corsHeaders });
-      }
-
-      if (action === "TOGGLE_LOCK") {
-        const opId = identity.user.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        const isLocked = await toggleLock(env, opId, identity.user, isEnterpriseSteward);
-        return new Response(JSON.stringify({ status: "SUCCESS", locked: isLocked }), { headers: corsHeaders });
-      }
-
-      if (action === "SANDBOX_EXEC") {
-          if (tier === "UNAUTHORIZED") throw new Error("Unauthorized.");
-          const result = await processSandboxAction(env, identity, message);
-          return new Response(JSON.stringify(result), { headers: corsHeaders });
-      }
-
-      if (action === "ASCEND") {
-        const isOverride = message.trim() === "/RECALL" || message.trim() === "[MASTER OVERRIDE]";
-        if (isOverride) {
-           if (!isEnterpriseSteward) throw new Error("Unauthorized: Threshold Override requires Steward Signature.");
-           const resetMsg = `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: `[SYSTEM INTERCEPT] Master Identity Verified. Cognitive drift purged. State reset to 0.0 YASHAR.` }] } }] })}\n\n`;
-           return new Response(resetMsg, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
-        }
-
-        const opId = identity.user.toLowerCase().replace(/[^a-z0-9]/g, '_');
-        const nativeResult = await processNativeLogic(message, identity, env);
-        
-        if (nativeResult.handled) {
-            const nativeMsg = `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: nativeResult.response }] } }] })}\n\n`;
-            ctx.waitUntil((async () => {
-                await syncCovenantRecord(env, identity, opId, message, nativeResult.response);
-                await saveVaultBlock(env, opId, message, nativeResult.response, true);
-            })());
-            return new Response(nativeMsg, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
-        }
-
-        const stream = await ascendStream(message, identity, keys, env, ctx, async (fullReply) => {
-            await syncCovenantRecord(env, identity, opId, message, fullReply);
-            await saveVaultBlock(env, opId, message, fullReply, false);
-        });
-
-        return new Response(stream, { headers: { ...corsHeaders, "Content-Type": "text/event-stream" } });
-      }
-
-      throw new Error("Invalid Action Protocol.");
-
+      throw new Error("Action Protocol Not Supported.");
     } catch (err) {
       return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: corsHeaders });
     }
