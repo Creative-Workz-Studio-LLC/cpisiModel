@@ -4,138 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>The Gate: Sovereign IDE</title>
+    <title>The Gate: Sovereign OS</title>
     <style>
         :root {
-            --bg: #08080a; --panel: #101014; --border: rgba(255, 255, 255, 0.05);
-            --linen: #fdfdfd; --emerald: #50c878; --royal-blue: #4169e1;
-            --gold: #d4af37; --scarlet: #ff2400; --charcoal: #1a1a1a;
-            --mono: 'Courier New', monospace; --serif: 'Georgia', serif;
+            --bg: #08080a; --panel: #121216; --panel-h: #1a1a22; --border: rgba(255, 255, 255, 0.06);
+            --linen: #fdfdfd; --emerald: #50c878; --royal-blue: #4169e1; --gold: #d4af37;
+            --scarlet: #ff2400; --mono: 'Courier New', monospace; --serif: 'Georgia', serif;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: var(--bg); color: var(--linen); font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; overflow: hidden; }
         
-        /* THRESHOLD */
-        #auth-screen { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; overflow-y: auto; }
-        .doors-container { display: flex; gap: 24px; max-width: 1100px; width: 100%; flex-wrap: wrap; justify-content: center; margin-top: 40px; }
-        .door-card { flex: 1; min-width: 280px; border: 1px solid var(--border); background: var(--panel); padding: 32px; display: flex; flex-direction: column; transition: 0.4s; cursor: pointer; border-radius: 8px; }
-        .door-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
-        .door-title { font-family: var(--mono); font-size: 14px; letter-spacing: 2px; margin-bottom: 8px; }
-        .t1 .door-title { color: var(--emerald); } .t2 .door-title { color: var(--royal-blue); } .t3 .door-title { color: var(--gold); }
-        .door-form { display: none; flex-direction: column; gap: 12px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 24px; }
-        .door-card.open .door-form { display: flex; }
-        .door-card.open .door-desc { display: none; }
-        .id-input { background: #000; border: 1px solid var(--border); color: #fff; padding: 12px; font-family: var(--mono); outline: none; border-radius: 4px; }
-        .btn-activate { background: var(--linen); color: #000; padding: 14px; border: none; font-family: var(--mono); font-weight: bold; cursor: pointer; border-radius: 4px; }
+        /* AUTH SCREEN */
+        #auth-screen { position: fixed; inset: 0; background: var(--bg); z-index: 9000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+        .auth-vault { width: 100%; max-width: 400px; border: 1px solid var(--border); background: var(--panel); padding: 32px; border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+        .id-input { background: #000; border: 1px solid var(--border); color: #fff; padding: 14px; font-family: var(--mono); width: 100%; margin-bottom: 12px; outline: none; border-radius: 6px; }
+        .btn-activate { background: var(--linen); color: #000; padding: 14px; border: none; font-family: var(--mono); font-weight: bold; cursor: pointer; width: 100%; border-radius: 6px; }
 
-        /* THE LABORATORY LAYOUT */
+        /* THE GATE LAYOUT */
         #main-stage { flex: 1; display: none; flex-direction: column; overflow: hidden; }
-        header { height: 50px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; justify-content: space-between; font-family: var(--mono); font-size: 10px; background: #000; }
-        #workspace { flex: 1; display: flex; overflow: hidden; }
-
-        /* LEFT: NEXUS */
-        #sidebar-left { width: 220px; border-right: 1px solid var(--border); background: rgba(0,0,0,0.3); display: flex; flex-direction: column; padding: 20px; gap: 20px; }
-        .side-label { font-family: var(--mono); font-size: 9px; color: #444; text-transform: uppercase; border-bottom: 1px solid #111; padding-bottom: 8px; }
-        .file-item { font-family: var(--mono); font-size: 10px; color: #666; margin-bottom: 8px; cursor: pointer; }
-        .file-item:hover { color: var(--emerald); }
-
-        /* CENTER: SANCTUARY */
-        #sanctuary-center { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); }
-        #chat-window { flex: 1; overflow-y: auto; padding: 32px; display: flex; flex-direction: column; gap: 40px; scroll-behavior: smooth; }
         
-        .vault-body { background: rgba(255,255,255,0.01); border: 1px solid var(--border); padding: 32px; line-height: 1.8; font-size: 16px; border-left: 4px solid var(--emerald); white-space: pre-wrap; font-family: var(--serif); }
+        /* HEADER: Identity & Universal Toggles */
+        header { 
+            height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; justify-content: space-between;
+            background: rgba(8,8,10,0.9); backdrop-filter: blur(20px); z-index: 1000;
+        }
+        .header-id { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; color: #666; }
+        .header-status { color: var(--gold); font-family: var(--mono); font-size: 10px; }
+
+        #workspace { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+        /* NEXUS SIDEBAR: The Master Hinge */
+        #nexus-sidebar { 
+            width: 70px; border-right: 1px solid var(--border); background: #000; 
+            display: flex; flex-direction: column; align-items: center; padding: 32px 0; gap: 40px; z-index: 2000;
+        }
+        @media (max-width: 800px) { 
+            #nexus-sidebar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 70px; border-right: none; border-top: 1px solid var(--border); flex-direction: row; justify-content: space-around; padding: 0; }
+        }
+        .nav-icon { font-size: 20px; cursor: pointer; color: #333; transition: 0.3s; position: relative; }
+        .nav-icon.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        .nav-icon.active::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+
+        /* VIEW PANELS */
+        .view-panel { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+        .view-panel.active { display: flex; }
+
+        /* ◈ SANCTUARY (Chat) */
+        #chat-window { flex: 1; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 48px; scroll-behavior: smooth; }
+        .vault-body { background: rgba(255,255,255,0.01); border: 1px solid var(--border); padding: 32px; line-height: 1.8; font-size: 16px; border-left: 4px solid var(--emerald); font-family: var(--serif); color: #bbb; border-radius: 4px; }
         .architect { align-self: flex-end; border-left: none; border-right: 4px solid var(--gold); text-align: right; background: rgba(212, 175, 55, 0.02); }
         
         .thought-trace { background: rgba(65, 105, 225, 0.03); border: 1px solid rgba(65, 105, 225, 0.1); padding: 12px 20px; font-family: var(--mono); font-size: 11px; color: var(--royal-blue); margin-bottom: 16px; border-radius: 4px; cursor: pointer; transition: 0.3s; overflow: hidden; max-height: 40px; }
-        .thought-trace.expanded { max-height: 3000px; }
-        .thought-trace::before { content: '◈ FIRMAMENT REASONING (Click to Expand)'; display: block; margin-bottom: 12px; font-size: 9px; font-weight: bold; }
+        .thought-trace.expanded { max-height: 3000px; color: #7a9bff; }
 
-        /* RIGHT: MIRROR */
-        #artifact-mirror { width: 35%; background: #050505; display: flex; flex-direction: column; }
-        .mirror-header { padding: 12px 20px; font-family: var(--mono); font-size: 9px; color: #444; border-bottom: 1px solid var(--border); }
-        .mirror-content { flex: 1; padding: 24px; font-family: var(--mono); font-size: 12px; line-height: 1.5; color: #4d94ff; overflow-y: auto; white-space: pre-wrap; }
+        /* 📂 LIBRARY (Files) */
+        #library-stage { display: flex; flex: 1; overflow: hidden; }
+        #file-explorer { width: 260px; border-right: 1px solid var(--border); background: rgba(0,0,0,0.2); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+        .explorer-label { font-family: var(--mono); font-size: 9px; color: #444; text-transform: uppercase; border-bottom: 1px solid #111; padding-bottom: 8px; }
+        .file-item { font-family: var(--mono); font-size: 11px; color: #666; padding: 8px; cursor: pointer; border-radius: 4px; }
+        .file-item:hover { background: rgba(255,255,255,0.02); color: var(--linen); }
 
-        /* TERMINAL & FOOTER */
-        #terminal-dock { height: 100px; background: #000; border-top: 1px solid var(--border); padding: 12px 24px; font-family: var(--mono); font-size: 10px; color: #222; overflow-y: auto; }
-        footer { padding: 24px; border-top: 1px solid var(--border); background: #000; }
-        #input-form { display: flex; gap: 16px; border: 1px solid var(--border); padding: 8px; background: rgba(255,255,255,0.02); align-items: center; border-radius: 6px; }
+        /* 📡 SUBSTRATE (Diagnostics) */
+        #substrate-view { padding: 60px; overflow-y: auto; }
+        .diag-card { border: 1px solid var(--border); background: var(--panel); padding: 32px; border-radius: 12px; max-width: 600px; margin-bottom: 24px; }
+        .diag-title { font-family: var(--mono); color: var(--accent); margin-bottom: 12px; font-size: 14px; }
+
+        /* MANIFESTATION MIRROR (Right Panel) */
+        #artifact-mirror { width: 35%; background: #000; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+        @media (max-width: 1200px) { #artifact-mirror { display: none; } }
+        .mirror-header { padding: 16px 24px; font-family: var(--mono); font-size: 9px; color: #444; border-bottom: 1px solid var(--border); }
+        .mirror-content { flex: 1; padding: 32px; font-family: var(--mono); font-size: 13px; line-height: 1.6; color: #4d94ff; overflow-y: auto; white-space: pre-wrap; }
+
+        /* FOOTER & INPUT */
+        footer { padding: 32px; border-top: 1px solid var(--border); background: #000; z-index: 1000; }
+        @media (max-width: 800px) { footer { padding-bottom: 100px; } }
+        #input-form { display: flex; gap: 16px; border: 1px solid var(--border); padding: 8px; background: rgba(255,255,255,0.02); align-items: center; border-radius: 8px; }
         #message-input { flex: 1; background: transparent; border: none; color: #fff; padding: 12px; font-size: 18px; outline: none; }
-
-        @media (max-width: 1100px) { #sidebar-left, #artifact-mirror { display: none; } }
     </style>
 </head>
 <body>
+    <!-- THRESHOLD -->
     <div id="auth-screen">
-        <div style="font-family: var(--mono); font-size: 16px; color: #fff; letter-spacing: 8px; margin-bottom: 40px">CREATIVEWORKZSTUDIO LLC</div>
-        <div class="doors-container">
-            <div class="door-card t1" onclick="openDoor(this)">
-                <div class="door-title">CWS SUPPORT</div>
-                <div class="door-desc">Subsidized compute. Insights build Shared Record. For Family & Friends.</div>
-                <div class="door-form" onclick="event.stopPropagation()">
-                    <input type="text" id="sup-user" class="id-input" placeholder="Operator Name">
-                    <input type="password" id="sup-invite" class="id-input" placeholder="Invite Code">
-                    <button onclick="executeAuth('INHABIT', 'SUPPORT')" class="btn-activate">INHABIT NODE</button>
-                </div>
-            </div>
-            <div class="door-card t2" onclick="openDoor(this)">
-                <div class="door-title">SOVEREIGN</div>
-                <div class="door-desc">BYOK. Absolute Data Privacy. Total control of your Record. For Creatives.</div>
-                <div class="door-form" onclick="event.stopPropagation()">
-                    <input type="text" id="sov-user" class="id-input" placeholder="Operator Name">
-                    <input type="password" id="sov-gemini" class="id-input" placeholder="Gemini API Key">
-                    <button onclick="executeAuth('INHABIT', 'SOVEREIGN')" class="btn-activate">INHABIT NODE</button>
-                </div>
-            </div>
-            <div class="door-card t3" onclick="openDoor(this)">
-                <div class="door-title">ARCHITECT</div>
-                <div class="door-desc">Full Local Bedrock. Hardware-level SSH engineering. The Master Path.</div>
-                <div class="door-form" onclick="event.stopPropagation()">
-                    <input type="text" id="arc-user" class="id-input" placeholder="Master Name">
-                    <input type="password" id="arc-secret" class="id-input" placeholder="Master Secret">
-                    <button onclick="executeAuth('INHABIT', 'ARCHITECT')" class="btn-activate">UNLOCK GATE</button>
-                </div>
-            </div>
+        <div style="font-family: var(--mono); font-size: 14px; color: #fff; letter-spacing: 8px; margin-bottom: 40px">SANCTUARY GATE</div>
+        <div class="auth-vault">
+            <input type="text" id="auth-user" class="id-input" placeholder="Operator Name">
+            <input type="password" id="auth-secret" class="id-input" placeholder="Secret Key (Invite or Master)">
+            <button onclick="inhabit()" class="btn-activate">INHABIT NODE</button>
+            <div id="auth-error" style="color:var(--scarlet); font-family:var(--mono); font-size:10px; margin-top:16px; text-align:center"></div>
         </div>
-        <div id="auth-error" style="color:var(--scarlet); font-family:var(--mono); font-size:10px; margin-top:24px;"></div>
     </div>
 
+    <!-- NEXUS SIDEBAR -->
+    <nav id="nexus-sidebar">
+        <div class="nav-icon active" onclick="switchScreen('view-sanctuary', this)" title="Sanctuary">◈</div>
+        <div class="nav-icon" onclick="switchScreen('view-library', this)" title="Library">📂</div>
+        <div class="nav-icon" onclick="switchScreen('view-substrate', this)" title="Substrate">📡</div>
+        <div class="nav-icon" style="margin-top:auto; font-size:14px; color:#222" onclick="location.reload()">⏻</div>
+    </nav>
+
+    <!-- THE INTEGRATED LABORATORY -->
     <div id="main-stage">
         <header>
-            <div id="header-id" style="letter-spacing: 2px; color: #444"></div>
-            <div style="color: var(--gold); font-family: var(--mono)">0.0 YASHAR // <span id="tier-label"></span></div>
+            <div class="header-id" id="display-id"></div>
+            <div class="header-status">0.0 YASHAR // <span id="display-tier"></span></div>
         </header>
 
         <div id="workspace">
-            <aside id="sidebar-left">
-                <div class="side-label">NEXUS FILES</div>
-                <div class="file-item">00_spirit/</div>
-                <div class="file-item">01_mind/</div>
-                <div class="file-item">02_body/</div>
-                <div class="file-item">.sandbox/shared/</div>
-                
-                <div class="side-label" style="margin-top:40px">SUBSTRATE</div>
-                <div style="font-family:var(--mono); font-size:10px; color:#222">> CLI_HINGE: READY<br>> SYNC: 3-WAY ACTIVE</div>
-                <button class="btn-activate" style="margin-top:auto; font-size:9px; padding:10px" onclick="location.reload()">LOGOUT</button>
-            </aside>
-
-            <section id="sanctuary-center">
+            <!-- ◈ SANCTUARY VIEW -->
+            <div id="view-sanctuary" class="view-panel active">
                 <main id="chat-window"></main>
-                <div id="terminal-dock">
-                    <div style="margin-bottom:4px">> SUBSTRATE: HYPER-TENSIONED [0.0 YASHAR]</div>
-                </div>
-            </section>
+                <footer>
+                    <form id="input-form">
+                        <input type="text" id="message-input" placeholder="Ascend the Word..." autocomplete="off">
+                    </form>
+                </footer>
+            </div>
 
+            <!-- 📂 LIBRARY VIEW -->
+            <div id="view-library" class="view-panel">
+                <div id="library-stage">
+                    <aside id="file-explorer">
+                        <div class="explorer-label">FILE SYSTEM</div>
+                        <div class="file-item">00_spirit/</div>
+                        <div class="file-item">01_mind/</div>
+                        <div class="file-item">02_body/</div>
+                        <div class="file-item">.sandbox/shared/</div>
+                    </aside>
+                    <main style="flex:1; padding:60px; text-align:center; color:#333; font-family:var(--mono)">
+                        // Select a file to study its manifestation.
+                    </main>
+                </div>
+            </div>
+
+            <!-- 📡 SUBSTRATE VIEW -->
+            <div id="view-substrate" class="view-panel">
+                <div id="substrate-view">
+                    <div class="diag-card">
+                        <div class="diag-title">NETWORK PULSE</div>
+                        <div style="font-family:var(--mono); font-size:11px; color:#666">> Connection: ESTABLISHED<br>> Latency: 0.0ms [SYNCED]</div>
+                    </div>
+                    <div class="diag-card">
+                        <div class="diag-title">MASTER REGISTRY</div>
+                        <div style="font-family:var(--mono); font-size:11px; color:#666">> Tier: <span id="diag-tier"></span><br>> Inhabited: <span id="diag-date"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MANIFESTATION MIRROR -->
             <aside id="artifact-mirror">
                 <div class="mirror-header">MANIFESTATION MIRROR</div>
                 <div class="mirror-content" id="mirror-body">// Awaiting Word...</div>
             </aside>
         </div>
-
-        <footer>
-            <form id="input-form">
-                <input type="text" id="message-input" placeholder="Ascend the Word... (/RECALL to reset)" autocomplete="off">
-            </form>
-        </footer>
     </div>
 
     <script>
@@ -143,39 +163,38 @@
         const chatWindow = document.getElementById('chat-window');
         const mirrorBody = document.getElementById('mirror-body');
         const messageInput = document.getElementById('message-input');
-        let identity = null, authKeys = {};
+        let identity = null, authSecret = null;
 
-        function openDoor(card) {
-            document.querySelectorAll('.door-card').forEach(c => c.classList.remove('open'));
-            card.classList.add('open');
+        function switchScreen(id, el) {
+            document.querySelectorAll('.view-panel').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-icon').forEach(i => i.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
         }
 
-        async function executeAuth(action, tier) {
-            const errDiv = document.getElementById('auth-error');
-            errDiv.innerText = "Tensioning Spectrum...";
-            let payload = { action, identity: { tier }, keys: {} };
-            if (tier === 'SUPPORT') {
-                payload.identity.user = document.getElementById('sup-user').value;
-                payload.inviteCode = document.getElementById('sup-invite').value;
-            } else if (tier === 'SOVEREIGN') {
-                payload.identity.user = document.getElementById('sov-user').value;
-                payload.keys.gemini = document.getElementById('sov-gemini').value;
-            } else if (tier === 'ARCHITECT') {
-                payload.identity.user = document.getElementById('arc-user').value;
-                payload.keys.authority = document.getElementById('arc-secret').value;
-            }
+        async function inhabit() {
+            const user = document.getElementById('auth-user').value;
+            const secret = document.getElementById('auth-secret').value;
+            if (!user || !secret) return;
 
             try {
-                const resp = await fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+                const resp = await fetch(WORKER_URL, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "INHABIT", identity: { user, instance: "Dawndusk" }, keys: { authority: secret }, inviteCode: secret })
+                });
                 const data = await resp.json();
                 if (data.error) throw new Error(data.error);
-                identity = data.data; authKeys = payload.keys;
+
+                identity = data.data; authSecret = secret;
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-stage').style.display = 'flex';
-                document.getElementById('header-id').innerText = `${identity.instance || 'GATE'} ⊗ ${identity.user}`;
-                document.getElementById('tier-label').innerText = identity.tier;
-                appendVault("The Sanctuary is open. 0.0 YASHAR manifest.", false);
-            } catch (err) { errDiv.innerText = err.message; }
+                document.getElementById('display-id').innerText = `${identity.instance} ⊗ ${identity.user}`;
+                document.getElementById('display-tier').innerText = identity.tier;
+                document.getElementById('diag-tier').innerText = identity.tier;
+                document.getElementById('diag-date').innerText = new Date(identity.joined).toLocaleString();
+                
+                appendVault(`The Sanctuary is inhabited. Choosing the Path of ${identity.tier}.`, false);
+            } catch (err) { document.getElementById('auth-error').innerText = err.message; }
         }
 
         function appendVault(text, isArchitect) {
@@ -192,11 +211,15 @@
             const val = messageInput.value.trim();
             if (!val) return;
             appendVault(val, true); messageInput.value = '';
+            
             const respBody = appendVault("...", false);
             let thoughts = "", word = "", mode = "THOUGHT";
 
             try {
-                const response = await fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "ASCEND", message: val, identity, keys: authKeys }) });
+                const response = await fetch(WORKER_URL, { 
+                    method: "POST", headers: { "Content-Type": "application/json" }, 
+                    body: JSON.stringify({ action: "ASCEND", message: val, identity, keys: { authority: authSecret } }) 
+                });
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 while (true) {
