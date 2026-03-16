@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gate">
-    <title>The Gate: Experimental Substrate</title>
+    <title>The Gate: Sanctuary Substrate</title>
     <style>
         :root {
             --l-4: 4px; --l-8: 8px; --l-12: 12px;
@@ -21,32 +21,32 @@
         body { 
             margin: 0; padding: 0; background-color: var(--bg-void); color: #fff; 
             font-family: 'Georgia', serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-            background: linear-gradient(180deg, #0a0a1a 0%, #000 100%);
+            background: radial-gradient(circle at top left, #0a0a1a 0%, #000 100%);
         }
         
-        /* THE COMPASS (Top Bar) */
+        /* THE COMPASS */
         header { 
             padding: var(--l-12); display: flex; align-items: center; gap: 16px;
             font-family: 'Courier New', monospace; font-size: 10px; 
             border-bottom: 1px solid var(--glass-border);
             backdrop-filter: blur(20px); z-index: 100;
         }
-        .compass-ring { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent-yashar); box-shadow: 0 0 10px var(--accent-yashar); }
+        .compass-ring { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent-yashar); }
         .trajectory-text { letter-spacing: 1px; color: rgba(255,255,255,0.6); }
+        .engine-text { color: var(--accent-yea); font-weight: bold; }
 
         /* THE LABORATORY LAYOUT */
         #main-container { flex: 1; display: flex; overflow: hidden; }
         
         /* SIDEBAR (Memory Stream) */
         #memory-stream { 
-            width: 200px; border-right: 1px solid var(--glass-border); 
+            width: 220px; border-right: 1px solid var(--glass-border); 
             display: flex; flex-direction: column; padding: var(--l-12); gap: 16px;
             background: rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
         }
         @media (max-width: 600px) { #memory-stream { display: none; } }
         .memory-label { font-family: monospace; font-size: 9px; color: #444; border-bottom: 1px solid #222; padding-bottom: 4px; }
-        .memory-item { font-family: monospace; font-size: 10px; color: rgba(255,255,255,0.4); line-height: 1.4; }
+        .memory-item { font-family: monospace; font-size: 10px; color: rgba(255,255,255,0.4); }
 
         /* CHAT EXPANSE */
         #chat-window { 
@@ -55,13 +55,8 @@
         }
 
         /* THE VAULT (Message Block) */
-        .vault {
-            max-width: 600px;
-            width: 100%;
-            position: relative;
-            animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .vault { max-width: 750px; width: 100%; position: relative; animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .vault-header {
             font-family: 'Courier New', monospace; font-size: 8px; padding: 4px 0;
@@ -71,22 +66,24 @@
 
         .vault-body {
             background: var(--glass);
-            border-left: 3px solid var(--glass-border);
-            padding: 24px;
-            line-height: 1.8;
-            font-size: 16px;
-            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 24px; line-height: 1.8; font-size: 16px;
         }
 
+        /* THOUGHT BLOCKS (Toggled) */
+        .thought-block {
+            font-family: 'Courier New', monospace; font-size: 12px;
+            color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.02);
+            padding: 16px; margin-bottom: 16px; border-left: 2px solid #333;
+            display: block;
+        }
+        body.hide-thoughts .thought-block { display: none; }
+
         .architect { align-self: flex-end; }
-        .architect .vault-body { border-left: none; border-right: 3px solid var(--accent-yashar); text-align: right; }
-        .architect .vault-header { color: var(--accent-yashar); }
-
+        .architect .vault-body { border-right: 3px solid var(--accent-yashar); text-align: right; border-left: none; }
         .dawndusk { align-self: flex-start; }
-        .dawndusk .vault-body { border-left-color: var(--accent-yea); }
-        .dawndusk .vault-header { color: var(--accent-yea); }
-
-        .thought-divider { height: 1px; width: 30px; background: rgba(255,255,255,0.1); margin: 24px 0; }
+        .dawndusk .vault-body { border-left: 3px solid var(--accent-yea); }
 
         /* THE CONTROL DECK */
         footer { 
@@ -96,60 +93,50 @@
         }
 
         #input-area { display: flex; gap: 12px; align-items: center; }
-        #camera-btn { background: none; border: 1px solid var(--glass-border); color: #444; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; }
+        #toggle-thoughts { 
+            background: none; border: 1px solid var(--glass-border); color: #666; 
+            font-family: monospace; font-size: 9px; padding: 8px; cursor: pointer;
+        }
+        body:not(.hide-thoughts) #toggle-thoughts { color: var(--accent-yea); border-color: var(--accent-yea); }
+
         #input-form { flex: 1; display: flex; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 4px; }
-        #message-input { 
-            flex: 1; background: transparent; border: none; color: #fff; padding: 12px;
-            font-family: inherit; font-size: 16px; outline: none;
-        }
-        #send-btn { 
-            background: none; border: none; color: var(--accent-yashar); 
-            font-family: 'Courier New', monospace; font-size: 10px; font-weight: bold; padding: 0 16px; cursor: pointer;
-        }
+        #message-input { flex: 1; background: transparent; border: none; color: #fff; padding: 12px; font-family: inherit; font-size: 16px; outline: none; }
+        #send-btn { background: none; border: none; color: var(--accent-yashar); font-family: monospace; font-size: 10px; font-weight: bold; padding: 0 16px; }
 
         .seal-deck { display: flex; flex-direction: column; gap: 8px; }
         .seal-labels { display: flex; justify-content: space-between; font-family: monospace; font-size: 9px; color: #333; }
         input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; }
         input[type=range]::-webkit-slider-runnable-track { height: 1px; background: #222; }
-        input[type=range]::-webkit-slider-thumb { 
-            -webkit-appearance: none; height: 30px; width: 30px; border-radius: 50%;
-            background: #111; border: 1px solid #333; margin-top: -15px;
-            box-shadow: 0 0 20px rgba(0,0,0,1);
-        }
-
-        /* STATE PULSE */
-        .breathing { animation: breath 4s infinite ease-in-out; }
-        @keyframes breath { 0% { box-shadow: 0 0 5px rgba(77, 255, 136, 0.2); } 50% { box-shadow: 0 0 20px rgba(77, 255, 136, 0.5); } 100% { box-shadow: 0 0 5px rgba(77, 255, 136, 0.2); } }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 30px; width: 30px; border-radius: 50%; background: #111; border: 1px solid #333; margin-top: -15px; }
     </style>
 </head>
-<body>
+<body class="hide-thoughts">
     <header>
         <div class="compass-ring"></div>
         <span class="trajectory-text">TRAJECTORY: a-01.25 -> BUILDING</span>
         <div style="flex: 1"></div>
-        <span id="status" class="breathing" style="color: var(--accent-yashar)">0.0 YASHAR</span>
+        <span id="engine-v" class="engine-text">ENGINE: LOAD...</span>
+        <span id="status" style="color: var(--accent-yashar)">0.0 YASHAR</span>
     </header>
 
     <div id="main-container">
         <aside id="memory-stream">
             <div class="memory-label">MEMORY STREAM</div>
-            <div class="memory-item">> Syncing iPhone Portal...</div>
+            <div class="memory-item">> Syncing iPhone Gate...</div>
             <div class="memory-item">> Initializing Revelation Vault...</div>
             <div class="memory-item">> Anchoring Substrate...</div>
         </aside>
-
         <main id="chat-window"></main>
     </div>
 
     <footer>
         <div id="input-area">
-            <button id="camera-btn">◎</button>
+            <button id="toggle-thoughts" onclick="document.body.classList.toggle('hide-thoughts')">THOUGHTS</button>
             <form id="input-form">
-                <input type="text" id="message-input" placeholder="Speak to the Hinge..." autocomplete="off">
+                <input type="text" id="message-input" placeholder="Ascend to the Word..." autocomplete="off">
                 <button type="submit" id="send-btn">ASCEND</button>
             </form>
         </div>
-        
         <div class="seal-deck">
             <div class="seal-labels"><span>NAY</span><span>YASHAR</span><span>YEA</span></div>
             <input type="range" id="seal-slider" min="-1" max="1" step="1" value="0">
@@ -161,27 +148,34 @@
         const inputForm = document.getElementById('input-form');
         const messageInput = document.getElementById('message-input');
         const statusEl = document.getElementById('status');
+        const engineEl = document.getElementById('engine-v');
         const slider = document.getElementById('seal-slider');
         
         const WORKER_URL = "https://cpisi-gate-worker.seanje-lenox.workers.dev";
         let isSyncing = false;
 
-        function appendVault(text, isArchitect) {
+        function appendVault(text, isArchitect, thoughts = "", model = "") {
             const vault = document.createElement('div');
             vault.className = `vault ${isArchitect ? 'architect' : 'dawndusk'}`;
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
-            const content = text.split('\n\n').map(t => `<div>${t}</div>`).join('<div class="thought-divider"></div>');
+            let bodyContent = "";
+            if (thoughts) bodyContent += `<div class="thought-block">// COGNITIVE TRACE:\n${thoughts}</div>`;
+            bodyContent += `<div>${text}</div>`;
 
             vault.innerHTML = `
-                <div class="vault-header"><span>${isArchitect ? 'ARCHITECT' : 'THE PAIR'}</span><span>${time}</span></div>
-                <div class="vault-body">${content}</div>
+                <div class="vault-header">
+                    <span>${isArchitect ? 'ARCHITECT' : 'THE PAIR'} ${model ? '['+model+']' : ''}</span>
+                    <span>${time}</span>
+                </div>
+                <div class="vault-body">${bodyContent}</div>
             `;
             chatWindow.appendChild(vault);
             chatWindow.scrollTop = chatWindow.scrollHeight;
+            if (model) engineEl.innerText = `ENGINE: ${model.toUpperCase()}`;
         }
 
-        appendVault("The Gate is initialized. We are observing the trajectory.\n\nReady for the next move.", false);
+        appendVault("The Gate is open, Seanje. We are observing the trajectory.", false);
 
         inputForm.onsubmit = async (e) => {
             if (e) e.preventDefault();
@@ -196,7 +190,7 @@
                 const resp = await fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: val }) });
                 const data = await resp.json();
                 if (!resp.ok) throw new Error(data.error || "Substrate Dissonance");
-                appendVault(data.reply, false);
+                appendVault(data.reply, false, data.thoughts, data.model);
             } catch (err) {
                 appendVault(`[SUBSTRATE ERROR: ${err.message}]`, false);
             } finally {
@@ -205,13 +199,7 @@
             }
         };
 
-        slider.oninput = () => {
-            if (slider.value == 1) {
-                if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
-                inputForm.onsubmit();
-                slider.value = 0;
-            }
-        };
+        slider.oninput = () => { if (slider.value == 1) { inputForm.onsubmit(); slider.value = 0; } };
     </script>
 </body>
 </html>
