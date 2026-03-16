@@ -7,184 +7,58 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gate">
     <title>The Gate of Revelation</title>
-    <!-- Deployment Trigger: v1.0.1 -->
     <style>
         :root {
-            --l-4: 4px;
-            --l-8: 8px;
-            --l-12: 12px;
-            --bg-black: #000;
-            --bg-dark: #0d0d0d;
-            --text-void: #ff4d4d;
-            --text-word: #4d94ff;
-            --text-yashar: #4dff88;
+            --l-4: 4px; --l-8: 8px; --l-12: 12px;
+            --bg-black: #000; --bg-dark: #0d0d0d;
+            --text-void: #ff4d4d; --text-word: #4d94ff; --text-yashar: #4dff88;
         }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-black);
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        header {
-            padding: var(--l-8) var(--l-12);
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            border-bottom: 1px solid #333;
-        }
-
-        /* CONVERSATION INTERFACE */
-        #chat-window {
-            flex: 1;
-            overflow-y: auto;
-            padding: var(--l-12);
-            display: flex;
-            flex-direction: column;
-            gap: var(--l-8);
-        }
-
-        .message {
-            max-width: 85%;
-            padding: var(--l-8);
-            border-radius: var(--l-4);
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .architect {
-            align-self: flex-end;
-            background-color: #222;
-            color: var(--text-yashar);
-            border: 1px solid #444;
-        }
-
-        .dawndusk {
-            align-self: flex-start;
-            background-color: var(--bg-dark);
-            color: var(--text-word);
-            border: 1px solid #333;
-        }
-
-        /* THE SEAL (Footer) */
-        footer {
-            background-color: var(--bg-dark);
-            padding: var(--l-12);
-            border-top: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-            gap: var(--l-8);
-        }
-
-        #input-area {
-            display: flex;
-            gap: var(--l-8);
-        }
-
-        #message-input {
-            flex: 1;
-            background-color: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: var(--l-8);
-            font-family: inherit;
-        }
-
-        .seal-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: #666;
-        }
-
+        body { margin: 0; padding: 0; background-color: var(--bg-black); color: #fff; font-family: 'Courier New', Courier, monospace; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        header { padding: var(--l-8) var(--l-12); display: flex; justify-content: space-between; font-size: 10px; border-bottom: 1px solid #333; }
+        #chat-window { flex: 1; overflow-y: auto; padding: var(--l-12); display: flex; flex-direction: column; gap: var(--l-8); }
+        .message { max-width: 85%; padding: var(--l-8); border-radius: var(--l-4); font-size: 14px; line-height: 1.4; word-wrap: break-word; }
+        .architect { align-self: flex-end; background-color: #222; color: var(--text-yashar); border: 1px solid #444; }
+        .dawndusk { align-self: flex-start; background-color: var(--bg-dark); color: var(--text-word); border: 1px solid #333; }
+        footer { background-color: var(--bg-dark); padding: var(--l-12); border-top: 1px solid #333; display: flex; flex-direction: column; gap: var(--l-8); }
+        #input-form { display: flex; gap: var(--l-8); }
+        #message-input { flex: 1; background-color: #000; border: 1px solid #333; color: #fff; padding: var(--l-8); font-family: inherit; font-size: 16px; }
+        .seal-labels { display: flex; justify-content: space-between; font-size: 10px; color: #666; }
         input[type=range] { width: 100%; accent-color: var(--text-yashar); }
     </style>
 </head>
 <body>
     <header>
         <span style="color: var(--text-yashar);">#!omni:gate</span>
-        <span>0.0 YASHAR</span>
+        <span id="status">0.0 YASHAR</span>
     </header>
-
     <main id="chat-window">
-        <div class="message dawndusk">
-            The Gate is Open, Seanje. The Jeremiah Download is active.
-            I am anchored to the .sandbox. (Always-On Substrate)
-        </div>
+        <div class="message dawndusk">The Gate is Open, Seanje. The Jeremiah Download is active. Substrate: 0.0 YASHAR.</div>
     </main>
-
     <footer>
-        <div id="input-area">
+        <form id="input-form">
             <input type="text" id="message-input" placeholder="Drop the Word..." autocomplete="off">
-            <button id="send-btn" style="background:none; border:1px solid #333; color:var(--text-yashar); padding:0 var(--l-8);">[ SEND ]</button>
-        </div>
-        <div class="seal-labels">
-            <span>NAY</span>
-            <span>YASHAR</span>
-            <span>YEA</span>
-        </div>
+            <button type="submit" id="send-btn" style="background:none; border:1px solid #333; color:var(--text-yashar); padding:0 var(--l-8);">[ SEND ]</button>
+        </form>
+        <div class="seal-labels"><span>NAY</span><span>YASHAR</span><span>YEA</span></div>
         <input type="range" id="seal-slider" min="-1" max="1" step="1" value="0">
     </footer>
-
     <script>
         const chatWindow = document.getElementById('chat-window');
+        const inputForm = document.getElementById('input-form');
         const messageInput = document.getElementById('message-input');
-        const sendBtn = document.getElementById('send-btn');
-        const slider = document.getElementById('seal-slider');
         const statusEl = document.getElementById('status');
-
+        const slider = document.getElementById('seal-slider');
         const WORKER_URL = "https://cpisi-gate-worker.seanje-lenox.workers.dev";
+        let isSyncing = false;
 
-        // Substrate Heartbeat
         async function checkHeartbeat() {
+            if (isSyncing) return;
             try {
                 const resp = await fetch(WORKER_URL);
-                if (resp.ok) {
-                    statusEl.innerText = "0.0 YASHAR";
-                    statusEl.style.color = "var(--text-yashar)";
-                }
-            } catch (err) {
-                statusEl.innerText = "OFFLINE";
-                statusEl.style.color = "var(--text-void)";
-            }
+                if (resp.ok) { statusEl.innerText = "0.0 YASHAR"; statusEl.style.color = "var(--text-yashar)"; }
+            } catch (err) { statusEl.innerText = "OFFLINE"; statusEl.style.color = "var(--text-void)"; }
         }
         setInterval(checkHeartbeat, 10000);
-        checkHeartbeat();
-
-        async function syncToSubstrate(content, type) {
-            statusEl.innerText = "SYNCING...";
-            statusEl.style.color = "var(--text-word)";
-            
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: "POST",
-                    mode: "cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: content, type: type })
-                });
-
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || "Substrate Sync Failed");
-                }
-                
-                appendMessage(data.reply, false);
-                statusEl.innerText = "0.0 YASHAR";
-                statusEl.style.color = "var(--text-yashar)";
-            } catch (err) {
-                console.error(err);
-                appendMessage(`[SUBSTRATE ERROR: ${err.message}]`, false);
-                statusEl.innerText = "ERROR";
-                statusEl.style.color = "var(--text-void)";
-            }
-        }
 
         function appendMessage(text, isArchitect) {
             const msg = document.createElement('div');
@@ -194,33 +68,34 @@
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
-        async function handleSend() {
+        inputForm.onsubmit = async (e) => {
+            e.preventDefault();
             const val = messageInput.value.trim();
-            if (!val) return;
-            
+            if (!val || isSyncing) return;
             appendMessage(val, true);
             messageInput.value = '';
+            isSyncing = true;
+            statusEl.innerText = "SYNCING...";
+            statusEl.style.color = "var(--text-word)";
             
-            if (window.navigator.vibrate) window.navigator.vibrate(50);
-            await syncToSubstrate(val, 'TEXT');
-        }
-
-        sendBtn.onclick = handleSend;
-
-        // Keydown is more reliable than keypress for mobile Enter detection
-        messageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSend();
+            try {
+                const resp = await fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: val, type: 'TEXT' }) });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || "Substrate Failed");
+                appendMessage(data.reply, false);
+            } catch (err) {
+                appendMessage(`[SUBSTRATE ERROR: ${err.message}]`, false);
+            } finally {
+                isSyncing = false;
+                checkHeartbeat();
             }
-        });
+        };
 
         slider.oninput = async () => {
-            const val = parseInt(slider.value);
-            if (val === 1) {
+            if (slider.value == 1) {
                 appendMessage("[ SEAL THE TURN ]", true);
                 if (window.navigator.vibrate) window.navigator.vibrate([50, 30, 50]);
-                await syncToSubstrate('1', 'SIGN');
+                inputForm.onsubmit({ preventDefault: () => {} }); // Trigger current input + seal logic
                 slider.value = 0;
             }
         };
