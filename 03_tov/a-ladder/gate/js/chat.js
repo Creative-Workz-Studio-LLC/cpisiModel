@@ -4,7 +4,18 @@ window.CPISI = window.CPISI || {};
 window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
     const vault = document.createElement('div');
     vault.className = `vault-body ${isSteward ? 'steward' : 'dawndusk'}`;
-    vault.innerText = text;
+    
+    // THE SEAL TRIGGER
+    const seal = document.createElement('div');
+    seal.className = 'vault-seal';
+    seal.innerText = '✧';
+    seal.title = 'Seal this Word to the Mirror';
+    seal.onclick = () => window.CPISI.sealWord(text, vault);
+    vault.appendChild(seal);
+
+    const content = document.createElement('div');
+    content.innerText = text;
+    vault.appendChild(content);
     
     const chatWindow = document.getElementById('chat-window');
     if (chatWindow) {
@@ -20,6 +31,35 @@ window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
     return vault;
 };
 
+window.CPISI.sealWord = async function(text, element) {
+    console.log("CPISI: Sealing Word to Mirror...");
+    
+    // Visual Feedback
+    element.classList.add('projecting');
+    const mirror = document.getElementById('mirror-content');
+    mirror.classList.remove('active');
+    
+    setTimeout(() => {
+        mirror.innerText = text;
+        mirror.classList.add('active');
+        element.classList.remove('projecting');
+    }, 300);
+
+    // Public Manifestation
+    try {
+        await fetch(window.CPISI.config.WORKER_URL, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "PUBLISH_TOV",
+                identity: window.CPISI.state.identity,
+                inviteCode: window.CPISI.state.authSecret,
+                vaultBlock: text
+            })
+        });
+        console.log("CPISI: Word Manifested to Covenant Mirror.");
+    } catch (e) { console.error("CPISI: Mirror Dissonance", e); }
+};
+
 window.CPISI.restoreHistory = function() {
     const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
     history.forEach(item => window.CPISI.appendVault(item.text, item.isSteward, true));
@@ -31,7 +71,6 @@ window.CPISI.handleMessageSubmit = async function(e) {
     const val = inputEl.value.trim();
     if (!val) return;
     
-    // Command Processing for Terminal/Experience
     if (val.startsWith('/') && window.CPISI.handleCommand) {
         window.CPISI.handleCommand(val.substring(1));
         inputEl.value = '';
@@ -50,17 +89,14 @@ window.CPISI.handleMessageSubmit = async function(e) {
             identity: window.CPISI.state.identity, 
             keys: { authority: window.CPISI.state.authSecret } 
         };
-
-        // If user has a persisted substrate key (BYOK), include it
         const substrateKey = window.CPISI.security.getSubstrateKey();
-        if (substrateKey) {
-            payload.keys.gemini = substrateKey;
-        }
+        if (substrateKey) payload.keys.gemini = substrateKey;
 
         const response = await fetch(window.CPISI.config.WORKER_URL, { 
             method: "POST", headers: { "Content-Type": "application/json" }, 
             body: JSON.stringify(payload) 
         });
+        
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         while (true) {
@@ -73,7 +109,7 @@ window.CPISI.handleMessageSubmit = async function(e) {
                     try {
                         const part = JSON.parse(line.substring(6)).candidates?.[0]?.content?.parts?.[0]?.text || "";
                         fullReply += part;
-                        respBody.innerText = fullReply;
+                        respBody.querySelector('div:last-child').innerText = fullReply; // Target content div
                         const chatWindow = document.getElementById('chat-window');
                         if(chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
                     } catch (e) {}
@@ -85,8 +121,6 @@ window.CPISI.handleMessageSubmit = async function(e) {
             history[history.length - 1].text = fullReply;
             localStorage.setItem('cpisi_history', JSON.stringify(history));
         }
-        const mirror = document.getElementById('mirror-content');
-        if (mirror) mirror.innerText = fullReply;
     } catch (err) { 
         respBody.innerText = `[Dissonance] ${err.message}`; 
     }
