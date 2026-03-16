@@ -60,8 +60,8 @@
                 <section id="sanctuary-expanse">
                     <div id="chat-window"></div>
                     <aside id="mirror-panel">
-                        <div class="panel-label">LATEST REVELATION MIRROR</div>
-                        <div id="mirror-content">...</div>
+                        <div class="panel-label">COVENANT MIRROR</div>
+                        <div id="mirror-content">Select a Word from the Sanctuary to project it here.</div>
                     </aside>
                 </section>
                 <footer>
@@ -73,17 +73,18 @@
             </div>
 
             <div id="view-registry" class="view-layer">
-                <div class="panel-label" style="padding: 44px;">SOVEREIGN DIRECTORY</div>
+                <div class="panel-label" style="padding: 44px 0 20px 44px;">SOVEREIGN DIRECTORY</div>
                 <div id="registry-grid"></div>
             </div>
 
+            <!-- PROFILE OVERLAY (SLIDER) -->
             <div id="profile-overlay">
                 <div id="profile-vault-content"></div>
                 <div style="flex: 1"></div>
                 <button class="settings-btn" onclick="toggleProfileDrawer()">[ CLOSE VAULT ]</button>
             </div>
 
-            <!-- SETTINGS OVERLAY -->
+            <!-- SETTINGS MODAL -->
             <div id="settings-vault">
                 <div class="panel-label">SOVEREIGN SETTINGS</div>
                 <div class="settings-group">
@@ -93,14 +94,9 @@
                 </div>
                 
                 <div class="settings-group">
-                    <div class="settings-label">SUBSTRATE</div>
-                    <button class="settings-btn" onclick="window.CPISI.security.clearSubstrateKey()">PURGE STORED KEYS</button>
-                </div>
-
-                <div class="settings-group">
                     <div class="settings-label">PROFILE DISCLOSURE</div>
-                    <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME">
-                    <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 120px; resize: none;"></textarea>
+                    <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME" style="text-align: left;">
+                    <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 120px; text-align: left; resize: none;"></textarea>
                     <button class="settings-btn" onclick="window.CPISI.social.updateProfile()">UPDATE DISCLOSURE</button>
                 </div>
 
