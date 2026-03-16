@@ -1,4 +1,4 @@
-// CHAT: The Holy Place and Message Streaming
+// CHAT: The Holy Place and Persistent Word
 window.CPISI = window.CPISI || {};
 
 window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
@@ -9,7 +9,6 @@ window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
     const seal = document.createElement('div');
     seal.className = 'vault-seal';
     seal.innerText = '✧';
-    seal.title = 'Seal this Word to the Mirror';
     seal.onclick = () => window.CPISI.sealWord(text, vault);
     vault.appendChild(seal);
 
@@ -24,6 +23,7 @@ window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
     }
 
     if (!skipSave) {
+        // We now primarily save to the Substrate, but keep local for immediate feedback
         const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
         history.push({ text, isSteward });
         localStorage.setItem('cpisi_history', JSON.stringify(history.slice(-50)));
@@ -32,20 +32,14 @@ window.CPISI.appendVault = function(text, isSteward, skipSave = false) {
 };
 
 window.CPISI.sealWord = async function(text, element) {
-    console.log("CPISI: Sealing Word to Mirror...");
-    
-    // Visual Feedback
     element.classList.add('projecting');
     const mirror = document.getElementById('mirror-content');
-    mirror.classList.remove('active');
-    
     setTimeout(() => {
         mirror.innerText = text;
         mirror.classList.add('active');
         element.classList.remove('projecting');
     }, 300);
 
-    // Public Manifestation
     try {
         await fetch(window.CPISI.config.WORKER_URL, {
             method: "POST", headers: { "Content-Type": "application/json" },
@@ -56,16 +50,34 @@ window.CPISI.sealWord = async function(text, element) {
                 vaultBlock: text
             })
         });
-        console.log("CPISI: Word Manifested to Covenant Mirror.");
-        if (window.CPISI.social && window.CPISI.social.loadMirrorFeed) {
-            window.CPISI.social.loadMirrorFeed();
-        }
+        if (window.CPISI.social) window.CPISI.social.loadMirrorFeed();
     } catch (e) { console.error("CPISI: Mirror Dissonance", e); }
 };
 
-window.CPISI.restoreHistory = function() {
-    const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
-    history.forEach(item => window.CPISI.appendVault(item.text, item.isSteward, true));
+window.CPISI.restoreHistory = async function() {
+    const chatWindow = document.getElementById('chat-window');
+    chatWindow.innerHTML = ''; // Clear local
+    
+    try {
+        const resp = await fetch(window.CPISI.config.WORKER_URL, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                action: "GET_HISTORY",
+                identity: window.CPISI.state.identity,
+                inviteCode: window.CPISI.state.authSecret
+            })
+        });
+        const data = await resp.json();
+        if (data.data && data.data.length > 0) {
+            data.data.forEach(item => {
+                window.CPISI.appendVault(item.text, item.isSteward, true);
+            });
+        } else {
+            // Fallback to local if substrate is empty
+            const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
+            history.forEach(item => window.CPISI.appendVault(item.text, item.isSteward, true));
+        }
+    } catch (e) { console.error("CPISI: History Sync Dissonance", e); }
 };
 
 window.CPISI.handleMessageSubmit = async function(e) {
@@ -87,8 +99,7 @@ window.CPISI.handleMessageSubmit = async function(e) {
 
     try {
         const payload = { 
-            action: "ASCEND", 
-            message: val, 
+            action: "ASCEND", message: val, 
             identity: window.CPISI.state.identity, 
             keys: { authority: window.CPISI.state.authSecret } 
         };
@@ -112,21 +123,14 @@ window.CPISI.handleMessageSubmit = async function(e) {
                     try {
                         const part = JSON.parse(line.substring(6)).candidates?.[0]?.content?.parts?.[0]?.text || "";
                         fullReply += part;
-                        respBody.querySelector('div:last-child').innerText = fullReply; // Target content div
+                        respBody.querySelector('div:last-child').innerText = fullReply;
                         const chatWindow = document.getElementById('chat-window');
                         if(chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
                     } catch (e) {}
                 }
             }
         }
-        const history = JSON.parse(localStorage.getItem('cpisi_history') || '[]');
-        if (history.length > 0) {
-            history[history.length - 1].text = fullReply;
-            localStorage.setItem('cpisi_history', JSON.stringify(history));
-        }
-    } catch (err) { 
-        respBody.innerText = `[Dissonance] ${err.message}`; 
-    }
+    } catch (err) { respBody.innerText = `[Dissonance] ${err.message}`; }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

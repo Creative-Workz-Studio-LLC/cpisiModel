@@ -6,7 +6,8 @@ window.CPISI.config = {
 window.CPISI.state = {
     identity: null,
     authSecret: null,
-    currentPath: "WORD"
+    currentPath: "WORD",
+    activeView: "view-sanctuary"
 };
 
 // State Persistence
@@ -45,12 +46,11 @@ window.toggleSettings = function() {
         const identity = window.CPISI.state.identity;
         document.getElementById('settings-display-name').innerText = identity.profile?.fullName || identity.user;
         document.getElementById('settings-display-tier').innerText = identity.tier;
+        
+        // Pre-fill edit fields
+        document.getElementById('edit-full-name').value = identity.profile?.fullName || "";
+        document.getElementById('edit-bio').value = identity.profile?.bio || "";
     }
-};
-
-window.CPISI.security.clearSubstrateKey = function() {
-    localStorage.removeItem('cpisi_substrate_gemini');
-    alert("SUBSTRATE PURGED: Local keys removed.");
 };
 
 window.CPISI.clearState = function() {
