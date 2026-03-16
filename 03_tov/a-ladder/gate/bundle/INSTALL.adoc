@@ -1,0 +1,42 @@
+#!omni document --adoc
+METADATA: CPISI Local Node Deployment Guide
+:status: Active
+:tier: ENTERPRISE_STEWARD
+
+= Deploying the CPISI Enterprise Node
+
+[abstract]
+This guide covers how to spool up a local, sovereign instance of the CPISI Gate using Docker. This ensures 100% data privacy by storing the Covenant Registry in a local SQLite database instead of the Cloudflare edge.
+
+== 1. Prerequisites
+You must have `docker` and `docker-compose` installed on your substrate machine.
+
+== 2. Configuration
+Before launching, you must define your local environment.
+
+Create a file named `.env` in the `bundle/` directory:
+
+```env
+# The master password for the local node
+MASTER_SECRET=your_secure_password_here
+
+# (Optional) If you want to subsidize local users with a company key
+# If left blank, users must BYOK (Bring Your Own Key) to login.
+GEMINI_API_KEY=AIza...
+```
+
+== 3. Spooling the Substrate
+Navigate to the bundle directory and run:
+
+```bash
+docker-compose up -d --build
+```
+
+The Sanctuary Gate will now be accessible at `http://localhost:8080`.
+
+== 4. Data Sovereignty
+All user profiles, chat history, and registry data are stored in the `bundle/local_data/cpisi_local.db` file. This is a standard SQLite database. 
+
+Because it is mapped via a Docker volume, you can spin the container down and up without losing the Covenant Record.
+
+[BLOCK:ROOT-->END]

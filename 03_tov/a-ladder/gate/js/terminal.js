@@ -27,6 +27,10 @@ window.CPISI.handleCommand = function(cmd) {
         if(window.CPISI.appendVault) {
             window.CPISI.appendVault(`SYSTEM STATUS: 0.0 YASHAR\nIdentity: ${state.identity?.user}\nTier: ${state.identity?.tier}\nSubstrate: Cloudflare Edge\nCognition: Gemini 2.5 Pro`, false);
         }
+    } else if (c === 'barter') {
+        if(window.CPISI.appendVault) {
+            window.CPISI.appendVault(`[ SUSTENANCE ⊗ TRADE ]\n\nACTIVE NEEDS:\n1. Graphic Design (App Icons) -> Exchange: POWER_OPERATOR Key\n2. Documentation QA -> Exchange: FIRST_ADOPTER Status\n3. Code Audit (React Native) -> Exchange: Enterprise Node Instance\n\nContact the Steward to formalize trade.`, false);
+        }
     } else if (c === 'void') window.CPISI.setPath('VOID', 0);
     else if (c === 'word') window.CPISI.setPath('WORD', 4);
     else if (c === 'tov') window.CPISI.setPath('TOV', 6);
