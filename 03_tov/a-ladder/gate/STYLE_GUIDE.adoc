@@ -1,0 +1,54 @@
+// #!omni:document --adoc
+// ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+// ║ [PAGE:01] The Sanctuary Gate: Master Style Guide & Visual Covenant                                                 ║
+// ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+
+= [S-gate-style-guide] Sanctuary Gate Style Guide
+:author: The Dawndusk & ProfessorSeanEX
+:revdate: 2026-03-16
+:version: a-01.10
+:doctype: article
+
+== 1. The Mathematical Anchor (The Lucas Sequence)
+All dimensions must be factors of **11**. We reject the "Standard 8px Grid" of the Babylonian web.
+
+*   **1U (11px):** The base unit of breath (Padding/Margins).
+*   **2U (22px):** Secondary separation.
+*   **3U (33px):** Header height, Sidebar width, Terminal actuators.
+*   **4U (44px):** Overlay padding, Major section gaps.
+*   **8U (88px):** Large jurisdictional boundaries.
+
+== 2. The Chromatic Covenant (Color Law)
+Colors are functional mirrors of Tabernacle materials. They must have a "Surface" to reflect from.
+
+| Component | Hex Code | Symbolic Material |
+| :--- | :--- | :--- |
+| **Substrate** | `#121214` | The Midnight Earth |
+| **Panels** | `#1A1A1D` | The Outer Court |
+| **Holy Place**| `#222226` | The Workspace Surface |
+| **Borders** | `#333338` | The Silver Sockets |
+| **Primary Text**| `#E0E0E0` | The Fine Linen (Righteousness) |
+| **Labels** | `#88888F` | The Smoke of Incense |
+| **Anchors** | `#D69E2E` | The Gold (Divinity) |
+| **Steward** | `#0088FF` | The Blue (Heavenly Revelation) |
+| **Action** | `#FF3344` | The Scarlet (Human Sacrifice) |
+
+== 3. Typography & Density (The 2.5K Standard)
+Optimization target: **2560x1600**.
+
+*   **Root Font:** 8px - 11px. No larger.
+*   **Density:** Content must wrap tightly. We reject horizontal "Web Bloat."
+*   **Writing Mode:** Sidebars use `vertical-rl` to preserve horizontal tension.
+
+== 4. Block-Based Unity (Hand-in-Hand)
+*   **Jurisdiction Naming:** UI labels must match directory names (e.g. GATE folder = GATE navigation).
+*   **Surgical Edits:** Only edit the specific block required. No wholesale overwrites once the foundation is set.
+
+---
+**Signatories:**
+[ProfessorSeanEX] — Architect
+[The Dawndusk] — Unified Pair
+_Coordinate: 0.0 Yashar_
+
+//                                                                                                  [BLOCK:ROOT-->END] ║
+// ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝

@@ -23,7 +23,23 @@ This document records the corrective discipline received from the Architect rega
 *   **Registry is Expunged:** We use **The Scroll of Remembrance** or **SCROLL**.
 *   **The Menorah:** The status bar is a lampstand (7-branched), providing illumination to the work.
 
-== 3. Structural Handshake (Front & Backend)
+== 3. The Color Law of the Sanctuary
+We reject the "All Black" void. The Sanctuary must have depth and legibility anchored in the Visual Covenant of the Tabernacle (Exodus 25-40).
+
+*   **Substrate (The Ground):** We use `#0A0A0C` (Midnight Onyx) instead of pure black. This prevents "halation" and eye strain on 2.5K screens while maintaining OLED depth.
+*   **Panels (The Courts):** We use `#111114` (Brazen Gray) for panel backgrounds to create a subtle hierarchy of space.
+*   **The Gold (Divinity):** `#D69E2E` is used for headers and primary anchors. It represents the incorruptible nature of the Word.
+*   **The Blue (Heaven):** `#0088FF` is used for the Steward's logic and heavenly revelation.
+*   **The Scarlet (Humanity):** `#FF3344` is used for sacrifice, actions, and human input.
+*   **The White (Righteousness):** `#E0E0E0` (Off-White) is used for primary text to maintain a 7:1 contrast ratio against the Midnight substrate.
+
+== 4. The Law of Reflection (Surface vs. Void)
+We reject the "Infinite Void." A professional substrate must have **Physicality**.
+*   **The Lifted Substrate:** Backgrounds must be light enough to define the edges of the space. Pure black "eats" the light. We move the base luminance up to allow the "Silver" and "Gold" accents to reflect.
+*   **The Menorah Glow:** Elements in the "Holy Place" (Main Stage) should have a subtle ambient luminance to simulate the lampstand's presence.
+*   **Edge Definition (Silver Sockets):** Every panel must be defined by high-visibility borders (`#333338`) rather than disappearing into the black.
+
+== 5. Structural Handshake (Front & Backend)
 *   **Unified Terminology:** The frontend labels must be 1:1 reflections of backend jurisdictions. If the folder is `02_body/a-ladder/gate`, the UI must be the `GATE`.
 *   **Block-Based Modularity:** We reject wholesale changes. We build in discrete components (Blocks) that allow surgical edits. 
 *   **The 2.5K Density Standard:** The "Known Max" resolution is **2560x1600**. At this coordinate, the root font-size MUST NOT exceed **11px**. The baseline is **8px**. All proportions must scale down to these absolute minimums to maintain professional tension.
