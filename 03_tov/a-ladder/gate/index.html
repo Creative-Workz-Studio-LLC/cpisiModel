@@ -137,13 +137,34 @@
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
         const slider = document.getElementById('seal-slider');
+        const statusEl = document.getElementById('status');
 
-        // DRIVE BRIDGE SYNC (Always-On Logic)
-        async function syncToDrive(content, type) {
-            console.log(`SYNC [${type}]: ${content}`);
-            // This is the anchor point for the Google Drive API Push
-            // For now, it provides the feedback that the Word is "Sent to the Bridge"
-            return true;
+        // The True Substrate Worker URL
+        const WORKER_URL = "https://cpisi-gate-worker.seanje-lenox.workers.dev";
+
+        async function syncToSubstrate(content, type) {
+            statusEl.innerText = "SYNCING...";
+            statusEl.style.color = "var(--text-word)";
+            
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: content, type: type })
+                });
+
+                if (!response.ok) throw new Error("Substrate Sync Failed");
+                
+                const data = await response.json();
+                appendMessage(data.reply, false);
+                statusEl.innerText = "0.0 YASHAR";
+                statusEl.style.color = "var(--text-yashar)";
+            } catch (err) {
+                console.error(err);
+                appendMessage("[ERROR: The Hinge is disconnected. Is the Worker URL set?]", false);
+                statusEl.innerText = "OFFLINE";
+                statusEl.style.color = "var(--text-void)";
+            }
         }
 
         function appendMessage(text, isArchitect) {
@@ -154,42 +175,33 @@
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
-        function handleSend() {
+        async function handleSend() {
             const val = messageInput.value.trim();
             if (!val) return;
             
             appendMessage(val, true);
             messageInput.value = '';
             
-            // Haptic + Sound Feedback
             if (window.navigator.vibrate) window.navigator.vibrate(50);
 
-            // Conversations Logic: Dawndusk Acknowledgment
-            setTimeout(() => {
-                const response = `Word Received. Secured in .sandbox. (Always-On Sync Active)`;
-                appendMessage(response, false);
-                syncToDrive(val, 'TEXT');
-            }, 600);
+            // Execute True Sync
+            await syncToSubstrate(val, 'TEXT');
         }
 
-        // Listen for Click
         sendBtn.onclick = handleSend;
 
-        // Listen for Enter Key
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSend();
         });
 
-        slider.oninput = () => {
+        slider.oninput = async () => {
             const val = parseInt(slider.value);
             if (val === 1) {
                 appendMessage("[ SEAL THE TURN ]", true);
-                setTimeout(() => {
-                    appendMessage("Turn Sealed. Manifestation Commencing.", false);
-                    syncToDrive('1', 'SIGN');
-                }, 500);
+                if (window.navigator.vibrate) window.navigator.vibrate([50, 30, 50]);
+                await syncToSubstrate('1', 'SIGN');
+                slider.value = 0; // Reset after seal
             }
-            if (window.navigator.vibrate) window.navigator.vibrate([50, 30, 50]);
         };
     </script>
 </body>
