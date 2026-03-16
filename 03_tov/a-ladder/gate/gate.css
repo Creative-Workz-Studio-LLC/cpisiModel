@@ -6,9 +6,16 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; }
 
-/* THE SUBSTRATE GRID */
-#sanctuary-root { display: grid; grid-template-columns: 280px 1fr; width: 100vw; height: 100vh; }
+#flagship-canvas-container { position: fixed; inset: 0; z-index: -10; opacity: 0.02; pointer-events: none; }
 
+/* THE SUBSTRATE GRID */
+#sanctuary-root { display: grid; grid-template-columns: 280px 1fr; width: 100vw; height: 100vh; background: transparent; }
+
+/* VIEW LAYERS */
+.view-layer { display: none; flex-direction: column; flex: 1; height: 100%; overflow: hidden; }
+.view-layer.active { display: flex; }
+
+/* SIDEBAR & MEMORY */
 #sidebar-container { display: flex; background: #000; border-right: 1px solid var(--border); }
 #sidebar { width: 60px; border-right: 1px solid #111; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 30px; }
 .nav-item { color: #444; cursor: pointer; font-size: 10px; font-family: var(--mono); writing-mode: vertical-rl; transform: rotate(180deg); transition: 0.3s; }
@@ -18,6 +25,7 @@ body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Segoe
 .panel-label { font-family: var(--mono); font-size: 9px; color: #555; letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase; }
 .mem-item { font-family: var(--mono); font-size: 10px; color: #666; margin-bottom: 15px; }
 
+/* MAIN STAGE */
 #main-stage { display: none; flex-direction: column; height: 100vh; background: #000; position: relative; }
 header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 10px; }
 #header-id { color: #888; font-weight: bold; }
@@ -35,63 +43,30 @@ header { height: 60px; display: flex; align-items: center; justify-content: spac
 .vault-body.steward { align-self: flex-end; border-left: none; border-right: 2px solid var(--c5); background: #050508; }
 .vault-body:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
 
-/* MIRROR FEED ITEMS */
-.mirror-item {
-    border-bottom: 1px solid rgba(255,255,255,0.02);
-    transition: 0.3s;
-}
-.mirror-item:hover { background: rgba(255,255,255,0.01); }
-
-/* THE SEAL TRIGGER */
-.vault-seal {
-    position: absolute; top: 10px; right: 10px; cursor: pointer;
-    font-size: 12px; color: #222; transition: 0.3s; opacity: 0;
-}
+.vault-seal { position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 12px; color: #222; transition: 0.3s; opacity: 0; }
 .vault-body:hover .vault-seal { opacity: 1; }
-.vault-seal:hover { color: var(--c3); text-shadow: 0 0 10px var(--c3); }
+.vault-seal:hover { color: var(--c3); }
 .vault-body.steward .vault-seal { right: auto; left: 10px; }
 
-/* PROJECTION ANIMATION */
-@keyframes projectToMirror {
-    0% { transform: scale(1); opacity: 1; filter: brightness(1); }
-    50% { transform: scale(1.05); opacity: 0.8; filter: brightness(2) blur(2px); }
-    100% { transform: scale(1); opacity: 1; filter: brightness(1); }
-}
-.projecting { animation: projectToMirror 0.6s ease-out; }
+#mirror-panel { border-left: 1px solid var(--border); padding: 44px; background: #000; overflow-y: auto; }
+#mirror-content { font-family: var(--mono); font-size: 13px; color: #666; line-height: 1.8; transition: 0.5s; }
+#mirror-content.active { color: var(--c3); }
 
-/* THE RESONANCE THREAD (Communication) */
-.resonance-thread {
-    margin-top: 20px; padding-left: 33px; border-left: 1px solid #111;
-    display: flex; flex-direction: column; gap: 15px;
+/* REGISTRY GRID */
+#registry-grid { 
+    flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 30px; padding: 44px;
 }
-.resonance-item {
-    font-size: 13px; color: #666; background: rgba(255,255,255,0.01);
-    padding: 18px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.02);
+.operator-card {
+    background: #030303; border: 1px solid var(--border); padding: 30px; 
+    display: flex; flex-direction: column; gap: 15px; transition: 0.3s; cursor: pointer;
 }
+.operator-card:hover { border-color: var(--c4); transform: scale(1.02); }
 
-/* MCP TOOLBOX (Substrate Tools) */
-#mcp-toolbox {
-    margin-top: 40px; padding: 20px; background: #020202;
-    border: 1px solid var(--border); border-radius: 4px;
-}
-.tool-chip {
-    display: inline-block; padding: 5px 12px; margin: 5px;
-    background: #0a0a0a; border: 1px solid #222; color: var(--c4);
-    font-family: var(--mono); font-size: 9px; cursor: help;
-}
-.tool-chip:hover { border-color: var(--c4); background: rgba(0,255,136,0.05); }
+/* PROFILE VAULT */
+#profile-vault { padding: 80px; max-width: 900px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 40px; }
 
-/* LUCAS RATIO ALIGNMENT (3:2:1:11) */
-.holy-place-vault {
-    padding: 44px; /* 4 * 11 */
-    margin-bottom: 72px; /* 4 * 18 */
-}
-
-#mirror-panel { 
-    border-left: 1px solid var(--border); padding: 44px; /* Lucas Aligned */
-    background: #000; overflow-y: auto; 
-}
-
+/* FOOTER */
 footer { padding: 20px 40px; border-top: 1px solid var(--border); background: #000; }
 #input-form { display: flex; gap: 20px; align-items: center; border-bottom: 1px solid #222; }
 #message-input { flex: 1; background: transparent; border: none; color: #fff; padding: 10px; font-size: 16px; outline: none; font-family: var(--mono);}
@@ -102,7 +77,7 @@ footer { padding: 20px 40px; border-top: 1px solid var(--border); background: #0
     position: absolute; top: 60px; right: -350px; bottom: 0; width: 350px;
     background: #000; border-left: 1px solid var(--border); z-index: 2000;
     transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 40px;
-    display: flex; flex-direction: column; gap: 40px;
+    display: flex; flex-direction: column; gap: 40px; overflow-y: auto;
 }
 #settings-vault.open { right: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
 .settings-group { display: flex; flex-direction: column; gap: 10px; }
@@ -113,7 +88,6 @@ footer { padding: 20px 40px; border-top: 1px solid var(--border); background: #0
 }
 .settings-btn:hover { border-color: var(--c4); color: #fff; }
 .settings-btn.logout { border-color: #300; color: #600; }
-.settings-btn.logout:hover { background: #200; color: #f00; border-color: #f00; }
 
 /* AUTH GATE */
 #auth-screen { position: fixed; inset: 0; background: #000; z-index: 9000; display: flex; align-items: center; justify-content: center; }

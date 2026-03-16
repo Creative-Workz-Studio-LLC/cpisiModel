@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CPISI // The Sanctuary Gate</title>
+    <title>CPISI // The Horizon Node</title>
     
     <!-- PWA & MOBILE INFUSION -->
     <link rel="manifest" href="manifest.json">
@@ -20,6 +20,7 @@
         <canvas id="game-of-life-canvas"></canvas>
     </div>
 
+    <!-- THE BLUEPRINT: TRIPLE VAULT SUBSTRATE -->
     <div id="sanctuary-root">
         
         <aside id="sidebar-container">
@@ -54,21 +55,31 @@
                 <div class="path-segment" style="background: var(--c7)"></div>
             </div>
             
-            <section id="sanctuary-expanse">
-                <div id="chat-window"></div>
-                
-                <aside id="mirror-panel">
-                    <div class="panel-label">LATEST REVELATION MIRROR</div>
-                    <div id="mirror-content">...</div>
-                </aside>
-            </section>
+            <!-- VIEW LAYERS -->
+            <div id="view-sanctuary" class="view-layer active">
+                <section id="sanctuary-expanse">
+                    <div id="chat-window"></div>
+                    <aside id="mirror-panel">
+                        <div class="panel-label">LATEST REVELATION MIRROR</div>
+                        <div id="mirror-content">...</div>
+                    </aside>
+                </section>
+                <footer>
+                    <form id="input-form">
+                        <input type="text" id="message-input" placeholder="Drop the Word..." autocomplete="off">
+                        <button type="submit" id="ascend-btn">[ ASCEND ]</button>
+                    </form>
+                </footer>
+            </div>
 
-            <footer>
-                <form id="input-form">
-                    <input type="text" id="message-input" placeholder="Drop the Word..." autocomplete="off">
-                    <button type="submit" id="ascend-btn">[ ASCEND ]</button>
-                </form>
-            </footer>
+            <div id="view-registry" class="view-layer">
+                <div class="panel-label" style="padding: 44px;">SOVEREIGN DIRECTORY</div>
+                <div id="registry-grid"></div>
+            </div>
+
+            <div id="view-profile" class="view-layer">
+                <div id="profile-vault"></div>
+            </div>
 
             <!-- SETTINGS OVERLAY -->
             <div id="settings-vault">
@@ -78,25 +89,24 @@
                     <div id="settings-display-name" style="font-size: 14px; color: #fff;"></div>
                     <div id="settings-display-tier" style="font-size: 10px; color: var(--c4); letter-spacing: 2px;"></div>
                 </div>
+                
                 <div class="settings-group">
                     <div class="settings-label">SUBSTRATE</div>
                     <button class="settings-btn" onclick="window.CPISI.security.clearSubstrateKey()">PURGE STORED KEYS</button>
                 </div>
 
-                <!-- SUSTENANCE & TRADE -->
+                <!-- PROFILE EDIT -->
                 <div class="settings-group">
-                    <div class="settings-label">SUSTENANCE ⊗ TRADE</div>
-                    <a href="#" onclick="alert('Trade Protocol: Use /barter in terminal to view active requests.')" class="settings-btn" style="text-decoration: none; text-align: center;">THE BARTER BOARD</a>
-                    <a href="#" onclick="alert('BTC Address copied to clipboard.')" class="settings-btn" style="text-decoration: none; text-align: center;">COVENANT PROVISION (BTC)</a>
-                    <a href="#" onclick="alert('Routing to OpenCollective...')" class="settings-btn" style="text-decoration: none; text-align: center; border-color: var(--c3); color: var(--c3);">SUPPORT THE SANCTUARY</a>
+                    <div class="settings-label">PROFILE (DISCLOSURE)</div>
+                    <input type="text" id="edit-full-name" class="id-input" placeholder="FULL NAME">
+                    <textarea id="edit-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 60px;"></textarea>
+                    <button class="settings-btn" onclick="window.CPISI.social.updateProfile()">UPDATE DISCLOSURE</button>
                 </div>
 
-                <!-- MCP TOOLBOX -->
-                <div id="mcp-toolbox">
-                    <div class="settings-label">MCP TOOLS (STREAMS)</div>
-                    <div class="tool-chip" title="Local Repository Sync">REPO_SYNC</div>
-                    <div class="tool-chip" title="Ternary Logic Engine">TRIT_EXEC</div>
-                    <div class="tool-chip" title="Covenant Mirror Broadcast">MIRROR_PUSH</div>
+                <div class="settings-group">
+                    <div class="settings-label">SUSTENANCE ⊗ TRADE</div>
+                    <button class="settings-btn" onclick="handleCommand('barter')">THE BARTER BOARD</button>
+                    <button class="settings-btn" onclick="alert('Provision: Open Collective link active soon.')">SUPPORT SANCTUARY</button>
                 </div>
 
                 <div style="flex: 1"></div>
@@ -105,6 +115,7 @@
         </main>
     </div>
 
+    <!-- THE THRESHOLD -->
     <div id="auth-screen">
         <div id="gate-structure">
             <div id="gate-title">CPISI ⊗ GATEWAY</div>
@@ -128,6 +139,7 @@
                     <div id="extended-profile" style="display:none; flex-direction: column; gap: 10px;">
                         <input type="text" id="prof-name" class="id-input" placeholder="FULL NAME (OPTIONAL)">
                         <input type="email" id="prof-email" class="id-input" placeholder="EMAIL (OPTIONAL)">
+                        <textarea id="prof-bio" class="id-input" placeholder="BIO / WITNESS" style="height: 60px;"></textarea>
                     </div>
                     <button type="button" id="toggle-prof-btn" onclick="toggleProfile()" style="background:transparent; border:none; color:#222; font-family:var(--mono); font-size:8px; cursor:pointer;">[ + PROFILE DETAILS ]</button>
                 </div>
