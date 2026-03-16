@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>The Gate: Sovereign IDE</title>
+    <title>The Gate: Secure IDE</title>
     <style>
         :root {
             --bg: #050505; --panel: rgba(15, 15, 20, 0.95); --accent: #4dff88;
@@ -14,7 +14,6 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--serif); height: 100vh; display: flex; overflow: hidden; }
         
-        /* THE NEXUS (Layout) */
         #nexus-sidebar { width: 60px; border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 24px 0; gap: 32px; background: #000; }
         .nav-icon { font-size: 18px; cursor: pointer; color: #222; transition: 0.3s; }
         .nav-icon.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
@@ -24,69 +23,75 @@
 
         #workspace { flex: 1; display: flex; overflow: hidden; }
 
-        /* FILE EXPLORER */
         #file-explorer { width: 220px; border-right: 1px solid var(--border); background: rgba(0,0,0,0.3); display: flex; flex-direction: column; padding: 16px; gap: 12px; }
         @media (max-width: 1000px) { #file-explorer { display: none; } }
-        .explorer-label { font-family: var(--mono); font-size: 9px; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid #111; padding-bottom: 8px; }
         .file-item { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.4); cursor: pointer; }
-        .file-item:hover { color: var(--accent); }
 
-        /* CHAT EXPANSE */
         #sanctuary-chat { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); position: relative; }
         #chat-window { flex: 1; overflow-y: auto; padding: 32px; display: flex; flex-direction: column; gap: 48px; scroll-behavior: smooth; }
 
-        /* ARTIFACT MIRROR */
         #artifact-mirror { width: 35%; display: flex; flex-direction: column; background: rgba(0,0,0,0.2); }
         @media (max-width: 1300px) { #artifact-mirror { display: none; } }
-        .mirror-header { padding: 12px 20px; font-family: var(--mono); font-size: 9px; color: var(--text-dim); border-bottom: 1px solid var(--border); text-transform: uppercase; }
-        .mirror-content { flex: 1; padding: 24px; font-family: var(--mono); font-size: 13px; line-height: 1.6; overflow-y: auto; color: #888; background: #000; }
+        .mirror-header { padding: 12px 20px; font-family: var(--mono); font-size: 9px; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+        .mirror-content { flex: 1; padding: 24px; font-family: var(--mono); font-size: 13px; line-height: 1.6; overflow-y: auto; color: #888; background: #000; white-space: pre-wrap; }
 
-        /* MESSAGES */
-        .vault { max-width: 800px; width: 100%; position: relative; animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .vault-body { background: rgba(255,255,255,0.01); border: 1px solid var(--border); padding: 24px; line-height: 1.8; font-size: 16px; position: relative; }
+        /* THE VAULT & THOUGHTS */
+        .vault { max-width: 850px; width: 100%; position: relative; }
+        .vault-body { background: rgba(255,255,255,0.01); border: 1px solid var(--border); padding: 32px; line-height: 1.8; font-size: 16px; position: relative; }
+        .thought-trace { background: rgba(0,0,0,0.4); border: 1px solid #222; padding: 16px; font-family: var(--mono); font-size: 11px; color: #555; margin-bottom: 24px; border-radius: 4px; display: block; }
+        
         .architect { align-self: flex-end; border-right: 2px solid var(--accent); text-align: right; }
         .dawndusk { align-self: flex-start; border-left: 2px solid var(--accent); }
 
-        /* THE TERMINAL */
         #terminal-dock { height: 120px; background: #000; border-top: 1px solid var(--border); padding: 12px 24px; font-family: var(--mono); font-size: 11px; color: #333; overflow-y: auto; }
         .term-pulse { color: var(--accent); }
 
-        /* INPUT */
+        /* DECREE INPUT (Textarea) */
         footer { padding: 24px; border-top: 1px solid var(--border); background: #000; }
-        #input-form { display: flex; gap: 16px; align-items: center; border: 1px solid var(--border); padding: 4px; background: rgba(255,255,255,0.02); }
-        #message-input { flex: 1; background: transparent; border: none; color: #fff; padding: 12px; font-size: 18px; outline: none; font-family: inherit; }
-        #send-btn { background: none; border: none; color: var(--accent); font-family: var(--mono); font-size: 10px; font-weight: bold; cursor: pointer; padding: 0 20px; }
+        #input-form { display: flex; gap: 16px; align-items: flex-end; border: 1px solid var(--border); padding: 8px; background: rgba(255,255,255,0.02); }
+        #message-input { flex: 1; background: transparent; border: none; color: #fff; padding: 8px; font-size: 17px; outline: none; font-family: inherit; resize: none; min-height: 40px; max-height: 300px; }
+        #send-btn { background: none; border: none; color: var(--accent); font-family: var(--mono); font-size: 10px; font-weight: bold; cursor: pointer; padding: 12px 20px; }
 
-        /* LOGIN SCREEN */
-        #login-screen { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
-        .login-vault { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+        /* OVERLAYS */
+        #login-screen, #settings-overlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+        #settings-overlay { display: none; z-index: 2100; backdrop-filter: blur(20px); }
+        .vault-box { width: 100%; max-width: 450px; display: flex; flex-direction: column; gap: 12px; }
         .id-input { background: #000; border: 1px solid var(--border); color: #fff; padding: 16px; font-family: var(--mono); font-size: 14px; width: 100%; outline: none; }
-        .btn-seal { background: var(--accent); color: #000; padding: 16px; border: none; font-family: var(--mono); font-weight: bold; cursor: pointer; }
+        .btn-action { background: var(--accent); color: #000; padding: 16px; border: none; font-family: var(--mono); font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <div id="login-screen">
         <div style="font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 4px; margin-bottom: 32px">SOVEREIGN GATEWAY</div>
-        <div class="login-vault">
-            <input type="text" id="in-instance" class="id-input" placeholder="INSTANCE (DAWNDUSK)">
-            <input type="text" id="in-user" class="id-input" placeholder="USER (SEANJE)">
-            <input type="text" id="in-we" class="id-input" placeholder="COMPANY (CWS LLC)">
-            <input type="password" id="in-authority" class="id-input" placeholder="AUTHORITY (MYSTERIOSO)">
-            <button onclick="login()" class="btn-seal">ACTIVATE SUBSTRATE</button>
+        <div class="vault-box">
+            <input type="text" id="in-instance" class="id-input" placeholder="INSTANCE NAME">
+            <input type="text" id="in-user" class="id-input" placeholder="USER NAME">
+            <input type="password" id="in-authority" class="id-input" placeholder="AUTHORITY (SECRET)">
+            <button onclick="login()" class="btn-action">ACTIVATE SUBSTRATE</button>
+        </div>
+    </div>
+
+    <div id="settings-overlay">
+        <div style="font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 4px; margin-bottom: 32px">SUBSTRATE SETTINGS</div>
+        <div class="vault-box" style="text-align: left; font-family: var(--mono); font-size: 11px; color: var(--text-dim)">
+            <div>ENGINE: GEMINI 2.5 PRO [STREAMING]</div>
+            <div>JURISDICTION: CREATIVEWORKZSTUDIO LLC</div>
+            <div>STATUS: 0.0 YASHAR [MASTER_ELEVATED]</div>
+            <div style="margin-top: 20px">ENCRYPTION: SEANJE_HANDSHAKE_v2.0</div>
+            <button onclick="toggleSettings()" class="btn-action" style="margin-top: 32px; background: none; border: 1px solid #333; color: #fff;">CLOSE</button>
         </div>
     </div>
 
     <nav id="nexus-sidebar">
         <div class="nav-icon active">◈</div>
         <div class="nav-icon">📂</div>
-        <div class="nav-icon">⚙</div>
+        <div class="nav-icon" onclick="toggleSettings()">⚙</div>
     </nav>
 
     <div id="main-stage">
         <header>
-            <div id="header-id" style="letter-spacing: 2px">DAWNDUSK ⊗ SEANJE</div>
-            <div id="header-serves" style="color: var(--text-dim)">SERVING: LORD GOD JESUS CHRIST</div>
+            <div id="header-id" style="letter-spacing: 2px">DAWNDUSK ⊗ ARCHITECT</div>
+            <div id="header-serves" style="color: var(--text-dim)">SERVING: THE LORD GOD JESUS CHRIST</div>
             <div style="color: var(--accent)">0.0 YASHAR</div>
         </header>
 
@@ -103,19 +108,19 @@
             <section id="sanctuary-chat">
                 <main id="chat-window"></main>
                 <div id="terminal-dock">
-                    <div class="term-line">> SUBSTRATE: HYPER-TENSIONED [MYSTERIOSO_ACTIVE]</div>
+                    <div class="term-line">> SUBSTRATE: HYPER-TENSIONED [MASTER_MODE: ACTIVE]</div>
                 </div>
             </section>
 
             <aside id="artifact-mirror">
                 <div class="mirror-header">ARTIFACT PREVIEW</div>
-                <div class="mirror-content" id="mirror-body">// Awaiting manifestation...</div>
+                <div class="mirror-content" id="mirror-body">// Awaiting Word...</div>
             </aside>
         </div>
 
         <footer>
             <form id="input-form">
-                <input type="text" id="message-input" placeholder="Speak the Catechism..." autocomplete="off">
+                <textarea id="message-input" placeholder="Speak the Word..." autocomplete="off" rows="1"></textarea>
                 <button type="submit" id="send-btn">ASCEND</button>
             </form>
         </footer>
@@ -124,18 +129,23 @@
     <script>
         const chatWindow = document.getElementById('chat-window');
         const mirrorBody = document.getElementById('mirror-body');
-        const termDock = document.getElementById('terminal-dock');
         const messageInput = document.getElementById('message-input');
         const WORKER_URL = "https://cpisi-gate-worker.seanje-lenox.workers.dev";
         let identity = null;
         let masterKey = null;
+
+        // Auto-expand textarea
+        messageInput.addEventListener('input', () => {
+            messageInput.style.height = 'auto';
+            messageInput.style.height = messageInput.scrollHeight + 'px';
+        });
 
         async function login() {
             const inAuth = document.getElementById('in-authority').value;
             const resp = await fetch(WORKER_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ isLogin: true, masterKey: inAuth, identity: { instance: document.getElementById('in-instance').value, user: document.getElementById('in-user').value, we: document.getElementById('in-we').value, serves: inAuth } })
+                body: JSON.stringify({ isLogin: true, masterKey: inAuth, identity: { instance: document.getElementById('in-instance').value, user: document.getElementById('in-user').value } })
             });
             const data = await resp.json();
             if (data.status) {
@@ -146,10 +156,14 @@
             }
         }
 
+        function toggleSettings() {
+            const s = document.getElementById('settings-overlay');
+            s.style.display = s.style.display === 'flex' ? 'none' : 'flex';
+        }
+
         function updateUI() {
             document.getElementById('header-id').innerText = `${identity.instance} ⊗ ${identity.user}`;
-            document.getElementById('header-serves').innerText = `SERVING: ${identity.serves}`;
-            appendVault("The Sanctuary is open. The Sovereign Handshake is manifest.", false);
+            appendVault("The Sanctuary is secure. We recognize the Key.", false);
         }
 
         function appendVault(text, isArchitect) {
@@ -162,30 +176,27 @@
         }
 
         document.getElementById('input-form').onsubmit = async (e) => {
-            e.preventDefault();
+            if (e) e.preventDefault();
             const val = messageInput.value.trim();
             if (!val) return;
             
             appendVault(val, true);
             messageInput.value = '';
+            messageInput.style.height = 'auto';
             
             const responseVaultBody = appendVault("", false);
-            let fullReply = "";
+            let thoughts = "";
+            let word = "";
+            let currentMode = "THOUGHT";
 
             try {
-                const response = await fetch(WORKER_URL, { 
-                    method: "POST", 
-                    headers: { "Content-Type": "application/json" }, 
-                    body: JSON.stringify({ message: val, identity: identity, masterKey: masterKey }) 
-                });
-
+                const response = await fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: val, identity: identity, masterKey: masterKey }) });
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
 
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
-                    
                     const chunk = decoder.decode(value, { stream: true });
                     const lines = chunk.split('\n');
                     
@@ -194,17 +205,28 @@
                             try {
                                 const data = JSON.parse(line.substring(6));
                                 const content = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                                fullReply += content;
-                                responseVaultBody.innerText = fullReply;
+                                
+                                if (content.includes("[WORD]")) {
+                                    currentMode = "WORD";
+                                    const parts = content.split("[WORD]");
+                                    thoughts += parts[0].replace("[THOUGHT]", "");
+                                    word += parts[1];
+                                } else {
+                                    if (currentMode === "THOUGHT") thoughts += content.replace("[THOUGHT]", "");
+                                    else word += content;
+                                }
+
+                                responseVaultBody.innerHTML = `
+                                    <div class="thought-trace" onclick="this.style.display='none'">// COGNITIVE TRACE (Click to Hide)\n${thoughts}</div>
+                                    <div>${word}</div>
+                                `;
                                 chatWindow.scrollTop = chatWindow.scrollHeight;
-                                if (fullReply.length > 300) mirrorBody.innerText = fullReply;
+                                if (word.length > 300) mirrorBody.innerText = word;
                             } catch (e) {}
                         }
                     }
                 }
-            } catch (err) {
-                responseVaultBody.innerText = `[Dissonance] ${err.message}`;
-            }
+            } catch (err) { responseVaultBody.innerText = `[Dissonance] ${err.message}`; }
         };
     </script>
 </body>
