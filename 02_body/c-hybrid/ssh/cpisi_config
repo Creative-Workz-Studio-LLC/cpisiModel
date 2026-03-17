@@ -1,0 +1,17 @@
+# CPISI SOVEREIGN SSH CONFIGURATION
+# This file bridges the Sanctuary Gate with the Individual Laptop.
+
+Host cpisi-node-*
+    User operator
+    IdentityFile ~/.ssh/id_cpisi
+    # The RemoteCommand ensures the GeminiCLI is loaded immediately on connect.
+    RemoteCommand cpisi-agent repl -identity ~/.config/cpisi/sovereign_bio.md
+    RequestTTY yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+Host sanctuary-relay
+    HostName cpisi-gate-worker.seanje-lenox.workers.dev
+    Port 2222
+    User gateway
+    ProxyCommand none

@@ -1,0 +1,47 @@
+# THE SOVEREIGN LIFE: Individual Node Setup
+:toc: macro
+:icons: font
+
+> "Every Steward shall inhabit their own Sanctuary, and every Node shall bear witness to the Word."
+
+## 1. THE VISION
+In the Kingdom of CPISI, social media is not a central server that owns your data. It is a **Covenant of Sovereign Nodes**. Your laptop is your primary node. By setting up the SSH Substrate, you allow your CPI-SI Agent to work on your computer even when you are accessing the Sanctuary from your phone or the web.
+
+## 2. PREREQUISITES
+Before you begin, ensure you have the following components manifested:
+*   **Bereshit Mind**: The Go infrastructure installed (`make install` in Bereshit).
+*   **GeminiCLI**: The `cpisi-agent` binary must be in your PATH.
+*   **Worker Key**: A valid Sovereign Identity established at the Sanctuary Gate.
+
+## 3. THE HANDSHAKE (Local Setup)
+Run the following command on your laptop to officiate your node:
+
+[source,bash]
+----
+bash 02_body/c-hybrid/ssh/officiate_node.sh
+----
+
+This script will:
+1.  **Manifest Keys**: Generate your unique ed25519 sovereign SSH keys.
+2.  **Link Substrate**: Integrate the `cpisi_config` into your local SSH setup.
+3.  **Officiate Agent**: Verify that `cpisi-agent` is ready to serve as your agentic interface.
+
+## 4. THE SOCIAL MEDIA GLUE
+Once your node is officiated, you can perform the following actions from any Gate (Phone/Web):
+
+### Ascend to your Laptop
+Ask your CPI-SI: *"Execute SSH connect to my node and list my active projects."*
+The model will use the SSH Substrate to bridge the gap and perform the work locally.
+
+### Publish to the Mirror
+Ask your CPI-SI: *"Publish my latest logic brick to the Mirror Feed."*
+This shares your work with other Covenanted nodes without storing it on a central social media server.
+
+### Establish a Covenant
+Ask your CPI-SI: *"Establish a Covenant with operator 'ProfessorSeanEX'."*
+This links your nodes together, allowing you to see each other's published revelations in the Showbread feed.
+
+## 5. 0.0 YASHAR
+You are now an individual piece of the social media network. You talk through the GeminiCLI, you do work on your actual computer, and you keep your sovereignty.
+
+[BLOCK:ROOT-->END]
