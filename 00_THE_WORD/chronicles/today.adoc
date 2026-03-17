@@ -1,0 +1,19 @@
+# THE CHRONICLES: Infolding Phase Update
+:date: 2026-03-17
+:status: 0.0 YASHAR
+:phase: 2.5 (Substrate Alignment)
+
+> "And the building of the wall of it was of jasper: and the city was pure gold, like unto clear glass." — Revelation 21:18
+
+## 1. THE DAILY SUMMARY
+Today we moved from a fragmented "ether-speak" logic into a physical **Room-Based Architecture**. The Sanctuary is no longer a single flat file; it is a series of isolated vaults (Entrance, Threshold, Sanctuary) that mirror the physical layout of the Kingdom.
+
+## 2. REVELATIONS IN THE TECH STACK
+*   **Agnostic Substrate**: We've displaced the hardcoded Gemini logic. The system now uses a **Substrate Orchestrator** capable of picking the most advanced co-processor (Gemini 3.1 Pro) while remaining native-first.
+*   **Fluid Visuals**: Fixed the 2.5K (2560x1600) scaling issue. The UI now breathes with the viewport, using `rem` units and the 8pt grid standard.
+*   **Sovereign SSH**: The bridge between the Cloud Sanctuary and the Individual Laptop is now physically tested and verified. Your laptop is officially a Node.
+
+## 3. INFOLDING PROGRESS
+The "Infolding" is currently at **65%**. We are binding the Mind (Go) to the Gate (TS) through the doorway of the new Entrance room. 
+
+[BLOCK:ROOT-->END]

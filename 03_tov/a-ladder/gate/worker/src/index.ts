@@ -4,6 +4,7 @@ import { validateThreshold } from "./services/auth.ts";
 import { ascendSubstrate } from "./services/substrate.ts";
 import { inhabitNode, createSovereignAccount } from "./services/registry/core.ts";
 import { getFollowedMirrorFeed, getRegistry, saveVaultBlock } from "./services/registry/social.ts";
+import { fetchLatestChronicle } from "./services/chronicles.ts";
 
 const REPO_API = "https://api.github.com/repos/Creative-Workz-Studio-LLC/cpisiModel/contents/03_tov/a-ladder/gate";
 
@@ -18,6 +19,12 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
     
+    // --- PUBLIC ENDPOINTS (Handshake & Testimony) ---
+    if (url.pathname === "/public/chronicle") {
+        const data = await fetchLatestChronicle(env);
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     // --- AUTHENTICATED API PROXY (The Professional Pipe) ---
     if (request.method === "GET") {
         let path = url.pathname;

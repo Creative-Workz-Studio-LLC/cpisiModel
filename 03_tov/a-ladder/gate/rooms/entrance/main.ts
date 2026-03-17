@@ -14,11 +14,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // 2. Fetch Latest Word (Optional / Simulated for now)
+    // 2. Fetch Latest Chronicles (Heres where we are so far)
     await renderLatestWord();
-
-    // 3. 2.5K Scaling Verification
-    verifyScaling();
 });
 
 async function renderLatestWord() {
@@ -26,21 +23,23 @@ async function renderLatestWord() {
     if (!feed) return;
 
     try {
-        // Future: Fetch real blog/update data from the Worker's public endpoint
-        // const resp = await fetch(`${config.WORKER_URL}/public/word`);
-        // if (resp.ok) { ... }
+        const resp = await fetch(`${config.WORKER_URL}/public/chronicle`);
+        if (resp.ok) {
+            const data = await resp.json();
+            if (data) {
+                // Update the first item with real data
+                const items = feed.querySelectorAll('.feed-item');
+                if (items.length > 0) {
+                    const first = items[0] as HTMLElement;
+                    first.querySelector('.feed-tag')!.textContent = `CHRONICLE // ${data.date}`;
+                    first.querySelector('.feed-title')!.textContent = data.title;
+                    first.querySelector('.feed-summary')!.textContent = data.summary;
+                    first.style.borderColor = "var(--c3)"; // Gold highlight for new
+                }
+            }
+        }
     } catch (e) {
         console.warn("[CPISI] Dissonance fetching public Word feed.");
-    }
-}
-
-function verifyScaling() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    console.log(`[CPISI] Substrate Dimensions: ${width}x${height}`);
-    
-    if (width >= 2560) {
-        console.log("[CPISI] 2.5K High-Density Surface Identified.");
     }
 }
 
