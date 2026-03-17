@@ -1,0 +1,136 @@
+@import "../../shared/css/covenant.css";
+
+/**
+ * ENTRANCE ROOM STYLING
+ * Fluid, expansive, and vibrant - The Outer Court experience.
+ */
+
+body.entrance-room {
+    overflow-y: auto; /* Allow scrolling for the "blog" content */
+    background: radial-gradient(circle at top, #101015 0%, var(--bg) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-11) var(--space-4);
+}
+
+.entrance-vault {
+    max-width: 66rem; /* Expansive for 2.5K */
+    width: 100%;
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--c3); /* Gold Anchor */
+    padding: var(--space-8);
+    box-shadow: 0 0 121px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+/* HERO SECTION */
+.entrance-hero {
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-8);
+}
+
+.entrance-hero h1 {
+    font-size: 3rem;
+    letter-spacing: 8px;
+    margin: 0;
+    font-family: var(--mono);
+    text-shadow: 0 0 22px rgba(214, 158, 46, 0.3);
+}
+
+.entrance-hero p {
+    color: var(--label);
+    font-size: 1.1rem;
+    margin-top: var(--space-2);
+    letter-spacing: 2px;
+}
+
+/* THE WORD (BLOG FEED) */
+.word-feed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--space-6);
+}
+
+.feed-item {
+    background: #050507;
+    border: 1px solid var(--border);
+    padding: var(--space-4);
+    transition: 0.3s;
+    position: relative;
+}
+
+.feed-item:hover {
+    border-color: var(--c3);
+    transform: translateY(-4px);
+}
+
+.feed-tag {
+    font-size: 0.55rem;
+    font-family: var(--mono);
+    color: var(--c3);
+    text-transform: uppercase;
+    margin-bottom: var(--space-2);
+    display: block;
+}
+
+.feed-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: var(--space-2);
+    color: #fff;
+}
+
+.feed-summary {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.6;
+}
+
+/* TECH STACK VISUALIZER */
+.stack-viz {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.02);
+    padding: var(--space-6);
+    border: 1px dashed var(--border);
+}
+
+.viz-node {
+    text-align: center;
+    flex: 1;
+}
+
+.viz-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--label);
+    margin-bottom: var(--space-2);
+}
+
+.viz-value {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* ONBOARDING CALL */
+.onboarding-call {
+    text-align: center;
+    background: linear-gradient(90deg, transparent, rgba(214, 158, 46, 0.05), transparent);
+    padding: var(--space-8) 0;
+}
+
+.onboarding-call h3 {
+    margin-bottom: var(--space-4);
+    letter-spacing: 4px;
+}
+
+/* MOBILE ADAPTATION */
+@media (max-width: 1000px) {
+    .stack-viz { flex-direction: column; gap: var(--space-4); }
+    .entrance-hero h1 { font-size: 2rem; }
+}
