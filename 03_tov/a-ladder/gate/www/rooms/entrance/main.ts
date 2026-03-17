@@ -19,27 +19,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function renderLatestWord() {
-    const feed = document.getElementById('word-feed');
-    if (!feed) return;
+    const titleEl = document.querySelector('#latest-chronicle .chronicle-title');
+    const metaEl = document.querySelector('#latest-chronicle .chronicle-meta');
+    const contentEl = document.querySelector('#latest-chronicle .chronicle-content');
+
+    if (!titleEl || !metaEl || !contentEl) return;
 
     try {
         const resp = await fetch(`${config.WORKER_URL}/public/chronicle`);
         if (resp.ok) {
             const data = await resp.json();
             if (data) {
-                // Update the first item with real data
-                const items = feed.querySelectorAll('.feed-item');
-                if (items.length > 0) {
-                    const first = items[0] as HTMLElement;
-                    first.querySelector('.feed-tag')!.textContent = `CHRONICLE // ${data.date}`;
-                    first.querySelector('.feed-title')!.textContent = data.title;
-                    first.querySelector('.feed-summary')!.textContent = data.summary;
-                    first.style.borderColor = "var(--c3)"; // Gold highlight for new
-                }
+                metaEl.textContent = `CHRONICLE // ${data.date}`;
+                titleEl.textContent = data.title;
+                // Parse basic newline to <br> for the summary
+                contentEl.innerHTML = data.summary.replace(/\n/g, '<br>');
             }
+        } else {
+            throw new Error("Handshake failed");
         }
     } catch (e) {
         console.warn("[CPISI] Dissonance fetching public Word feed.");
+        metaEl.textContent = "OFFLINE TESTIMONY";
+        titleEl.textContent = "The Substrate is Still";
+        contentEl.textContent = "Unable to fetch the latest revelations. The Sanctuary remains structurally sound.";
     }
 }
 
