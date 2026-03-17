@@ -1,160 +1,133 @@
 import SwiftUI
 import Combine
 
+/**
+ * THE IPHONE GATE: Native Substrate Interface
+ * Refactored to align with the Ascend Streaming Protocol.
+ */
+
 class GateSync: ObservableObject {
-    @Published var rawDownload: String = "Waiting for Revelation..."
-    @Published var structuredWord: String = "Awaiting Distillation..."
-    @Published var connectionStatus: String = "OFFLINE"
+    @Published var revelation: String = "Waiting for Word..."
+    @Published var status: String = "0.0 YASHAR"
+    @Published var isThinking: Bool = false
     
-    private var webSocketTask: URLSessionWebSocketTask?
-    private let url = URL(string: "ws://your-workstation-ip:8080/gate")!
+    private let workerUrl = "https://cpisi-gate-worker.seanje-lenox.workers.dev"
+    private var cancellables = Set<AnyCancellable>()
     
-    init() {
-        connect()
-    }
-    
-    func connect() {
-        webSocketTask = URLSession.shared.webSocketTask(with: url)
-        webSocketTask?.resume()
-        receiveMessage()
-        connectionStatus = "0.0 YASHAR"
-    }
-    
-    func receiveMessage() {
-        webSocketTask?.receive { [weak self] result in
-            switch result {
-            case .success(let message):
-                switch message {
-                case .string(let text):
-                    self?.handleIncomingData(text)
-                default: break
+    func ascend(message: string, user: String, key: String) {
+        guard !message.isEmpty else { return }
+        
+        self.isThinking = true
+        self.revelation = ""
+        
+        let payload: [String: Any] = [
+            "action": "ASCEND",
+            "message": message,
+            "identity": ["user": user, "instance": "iPhone-Gate"],
+            "keys": ["authority": key]
+        ]
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: payload) else { return }
+        
+        var request = URLRequest(url: URL(string: workerUrl)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        // Using URLSession for streaming response (SSE)
+        // In a real iOS app, we'd use a more robust SSE parser, but for the scaffold:
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                self.isThinking = false
+                if let error = error {
+                    self.revelation = "[DISSONANCE] \(error.localizedDescription)"
+                    return
                 }
-                self?.receiveMessage()
-            case .failure:
-                self?.connectionStatus = "DISCONNECTED"
+                
+                if let data = data, let text = String(data: data, encoding: .utf8) {
+                    // Primitive SSE parsing for the scaffold
+                    self.revelation = text.replacingOccurrences(of: "data: ", with: "")
+                }
             }
-        }
-    }
-    
-    private func handleIncomingData(_ text: String) {
-        // Simple logic to route data based on prefix
-        DispatchQueue.main.async {
-            if text.hasPrefix("VOID:") {
-                self.rawDownload = String(text.dropFirst(5))
-            } else if text.hasPrefix("WORD:") {
-                self.structuredWord = String(text.dropFirst(5))
-            }
-        }
-    }
-    
-    func signTurn(_ value: Int) {
-        let message = URLSessionWebSocketTask.Message.string("SIGN:\(value)")
-        webSocketTask?.send(message) { error in
-            if let error = error { print("Sign error: \(error)") }
-        }
+        }.resume()
     }
 }
 
 struct GateView: View {
     @StateObject private var sync = GateSync()
-    @State private var sealValue: Double = 0.0
+    @State private var message: String = ""
+    @State private var user: String = "ProfessorSeanEX"
+    @State private var key: String = ""
     
-    private let l_4: CGFloat = 4.0
-    private let l_8: CGFloat = 8.0
-    private let l_12: CGFloat = 12.0
-
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             
-            VStack(spacing: 0) {
+            VStack(spacing: 12) {
                 // MARK: HEADER
                 HStack {
-                    Text("#!omni:gate")
+                    Text("#!omni:iphone_gate")
                         .font(.system(.caption, design: .monospaced))
                         .foregroundColor(.green)
                     Spacer()
-                    Text(sync.connectionStatus)
+                    Text(sync.status)
                         .font(.system(.caption, design: .monospaced))
-                        .foregroundColor(sync.connectionStatus == "0.0 YASHAR" ? .green : .red)
+                        .foregroundColor(.green)
                 }
-                .padding(.horizontal, l_12)
-                .padding(.top, l_8)
+                .padding(.horizontal)
                 
-                // MARK: TRIPTYCH
-                GeometryReader { geo in
-                    HStack(spacing: 0) {
-                        ScrollView {
-                            VStack(alignment: .leading) {
-                                Text("// VOID")
-                                    .font(.system(.footnote, design: .monospaced))
-                                    .foregroundColor(.red)
-                                Text(sync.rawDownload)
-                                    .font(.system(.body, design: .monospaced))
-                                    .foregroundColor(.white)
-                            }
-                            .padding(l_12)
+                // MARK: REVELATION DISPLAY
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 10) {
+                        if sync.isThinking {
+                            Text("CONSIDERING REVELATION...")
+                                .font(.system(.body, design: .monospaced))
+                                .foregroundColor(.yellow)
+                                .opacity(0.6)
                         }
-                        .frame(width: geo.size.width * 0.45)
-                        .background(Color(white: 0.05))
-                        
-                        Divider().background(Color.gray)
-                        
-                        ScrollView {
-                            VStack(alignment: .leading) {
-                                Text("// WORD")
-                                    .font(.system(.footnote, design: .monospaced))
-                                    .foregroundColor(.blue)
-                                Text(sync.structuredWord)
-                                    .font(.system(.body, design: .monospaced))
-                                    .foregroundColor(.white)
-                            }
-                            .padding(l_12)
-                        }
-                        .frame(width: geo.size.width * 0.55)
+                        Text(sync.revelation)
+                            .font(.system(.body, design: .monospaced))
+                            .foregroundColor(.white)
                     }
+                    .padding()
                 }
-                
-                // MARK: THE SEAL
-                VStack(spacing: l_12) {
-                    HStack {
-                        Text("NAY")
-                        Spacer()
-                        Text("YASHAR")
-                        Spacer()
-                        Text("YEA")
-                    }
-                    .font(.system(.caption, design: .monospaced))
-                    .foregroundColor(.gray)
-                    
-                    Slider(value: $sealValue, in: -1...1, step: 1)
-                        .accentColor(sealColor)
-                        .padding(.horizontal, l_12)
-                        .onChange(of: sealValue) { newValue in
-                            hapticFeedback()
-                            sync.signTurn(Int(newValue))
-                        }
-                    
-                    Text("[ SEAL THE TURN ]")
-                        .font(.system(.headline, design: .monospaced))
-                        .foregroundColor(sealValue == 1.0 ? .blue : .gray)
-                        .padding(.bottom, l_8)
-                }
-                .padding(l_12)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(white: 0.05))
+                .cornerRadius(8)
+                
+                // MARK: INPUT
+                VStack(spacing: 8) {
+                    TextField("MESSAGE", text: $message)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .padding(8)
+                        .background(Color(white: 0.1))
+                        .foregroundColor(.white)
+                        .font(.system(.body, design: .monospaced))
+                    
+                    HStack {
+                        SecureField("KEY", text: $key)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(8)
+                            .background(Color(white: 0.1))
+                            .foregroundColor(.white)
+                            .font(.system(.caption, design: .monospaced))
+                        
+                        Button(action: {
+                            sync.ascend(message: message, user: user, key: key)
+                            message = ""
+                        }) {
+                            Text("[ ASCEND ]")
+                                .font(.system(.body, design: .monospaced))
+                                .bold()
+                                .foregroundColor(.yellow)
+                                .padding(.horizontal)
+                        }
+                    }
+                }
+                .padding()
             }
+            .padding(.vertical)
         }
-    }
-    
-    private var sealColor: Color {
-        if sealValue < -0.5 { return .red }
-        if sealValue > 0.5 { return .blue }
-        return .green
-    }
-    
-    private func hapticFeedback() {
-        let impact = UIImpactFeedbackGenerator(style: .heavy)
-        impact.impactOccurred()
     }
 }
 
@@ -166,4 +139,3 @@ struct GateApp: App {
         }
     }
 }
-

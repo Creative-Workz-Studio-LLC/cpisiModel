@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPISI // SANCTUARY</title>
+    <link rel="stylesheet" href="gate.css?v=1.7">
+</head>
+<body class="sanctuary-room">
+
+    <div id="sanctuary-root" style="display:grid;">
+        
+        <aside id="ladder-sidebar">
+            <div id="sidebar"></div>
+        </aside>
+
+        <section id="memory-panel">
+            <div class="panel-label">THE MEMORY // BRAZEN LAVER</div>
+            <div id="memory-list"></div>
+        </section>
+
+        <main id="main-stage">
+            <header id="stage-header">
+                <div id="header-id">DAWNDUSK ⊗ <span id="header-user">...</span></div>
+                <div id="divine-standard">GENESIS 1:1</div>
+                <div id="yashar-anchor">0.0 YASHAR</div>
+            </header>
+            
+            <div id="stage-content">
+                <div id="chat-window"></div>
+            </div>
+
+            <footer id="stage-footer">
+                <form id="input-form" onsubmit="handleMessageSubmit(event)">
+                    <input type="text" id="message-input" placeholder="Type a message or command...">
+                    <button type="submit" id="ascend-btn">[ ASCEND ]</button>
+                </form>
+            </footer>
+        </main>
+
+        <aside id="mirror-panel">
+            <div class="panel-label">COVENANT MIRROR // SHOWBREAD</div>
+            <div id="mirror-content">Select a Word from the Sanctuary.</div>
+        </aside>
+
+    </div>
+
+    <!-- The Vault Overlay remains available in the Sanctuary -->
+    <div id="vault-overlay" class="overlay-screen" style="display:none;">
+        <div class="wire-vault">
+            <div class="box-label">HOLY OF HOLIES // VAULT</div>
+            
+            <div class="vault-section">
+                <div class="box-label">THE ARK // CONNECTIONS</div>
+                <div id="vault-network-status">NETWORK: ...</div>
+                <div id="vault-db-status">DATABASE: ...</div>
+            </div>
+
+            <div class="vault-section">
+                <div class="box-label">THE MERCY SEAT // DYNAMICS</div>
+                <div id="vault-dynamics-controls"></div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end;">
+                <button onclick="CPISI.vault.toggle()" class="settings-btn">[ CLOSE ]</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bundle.js?v=1.7"></script>
+</body>
+</html>

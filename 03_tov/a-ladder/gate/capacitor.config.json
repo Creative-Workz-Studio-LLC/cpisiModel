@@ -1,0 +1,9 @@
+{
+  "appId": "studio.creativeworkz.cpisi.gate",
+  "appName": "CPISI Sanctuary Gate",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

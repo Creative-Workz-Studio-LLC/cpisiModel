@@ -1,13 +1,23 @@
 {
   "name": "cpisi-gate-worker",
-  "version": "1.0.0",
-  "description": "Always-On Gate Substrate for CPISI",
-  "main": "src/index.js",
+  "version": "1.5.0",
+  "description": "Always-On Gate Substrate for CPISI (TypeScript)",
+  "main": "src/index.ts",
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev"
+    "dev": "wrangler dev",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20240314.0"
   },
   "devDependencies": {
-    "wrangler": "^3.0.0"
-  }
+    "wrangler": "^3.34.0",
+    "typescript": "^5.4.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "Creative Workz Studio LLC",
+  "license": "UNLICENSED"
 }

@@ -1,0 +1,8 @@
+{
+  "name": "cpisi-gate",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom",
+  "id": "4506bbcf"
+}

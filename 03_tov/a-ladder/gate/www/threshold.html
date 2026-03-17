@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPISI // THRESHOLD</title>
+    <link rel="stylesheet" href="gate.css?v=1.7">
+</head>
+<body class="threshold-room">
+
+    <div class="overlay-screen">
+        <div id="gate-structure" class="wire-vault">
+            <div class="box-label">OUTER COURT // THRESHOLD</div>
+            
+            <form id="gateway-form" onsubmit="executeAuth(event)">
+                <div id="threshold-stage">
+                    <input type="text" id="op-user" class="id-input" placeholder="IDENTITY" value="ProfessorSeanEX">
+                    <input type="password" id="op-key" class="id-input" placeholder="KEY">
+                </div>
+
+                <div id="inhabitation-stage" style="display:none;">
+                    <div class="box-label" style="text-align:center">CREATE SOVEREIGN IDENTITY</div>
+                    <input type="text" id="new-user" class="id-input" placeholder="CHOOSE USERNAME">
+                    <input type="password" id="new-pass" class="id-input" placeholder="CHOOSE PASSWORD">
+                    
+                    <div id="extended-profile" style="display:none; flex-direction:column; gap:11px; margin-top:11px;">
+                        <input type="text" id="prof-name" class="id-input" placeholder="FULL NAME">
+                        <input type="text" id="prof-email" class="id-input" placeholder="EMAIL">
+                        <textarea id="prof-bio" class="id-input" placeholder="BIO" style="height:66px;"></textarea>
+                    </div>
+                    <button type="button" id="toggle-prof-btn" onclick="toggleProfile()" style="background:transparent; border:none; color:var(--c5); font-size:0.6rem; cursor:pointer; margin-top:8px;">[ + ADD PROFILE DETAILS ]</button>
+                </div>
+                
+                <button type="submit" id="gate-seal-btn" class="gate-btn" style="margin-top:22px;">[ BREAK THE SEAL ]</button>
+            </form>
+
+            <div id="auth-error" style="color:var(--c1); font-size:0.6rem; margin-top:11px; text-align:center; min-height:1em;"></div>
+            
+            <div style="text-align:center; margin-top:22px;">
+                <a href="entrance.html" style="color:var(--label); font-size:0.5rem; text-decoration:none; font-family:var(--mono);">[ BACK TO ENTRANCE ]</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bundle.js?v=1.7"></script>
+</body>
+</html>

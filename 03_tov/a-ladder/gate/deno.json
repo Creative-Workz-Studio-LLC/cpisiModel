@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "build": "deno run -A https://deno.land/x/esbuild@v0.20.1/mod.js src/index.ts --bundle --outfile=js/bundle.js --minify --sourcemap --platform=browser",
+    "dev": "deno run -A https://deno.land/x/esbuild@v0.20.1/mod.js src/index.ts --bundle --outfile=js/bundle.js --sourcemap --platform=browser --watch"
+  }
+}
